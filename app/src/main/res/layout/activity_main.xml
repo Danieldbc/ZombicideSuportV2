@@ -64,12 +64,14 @@
         android:layout_marginBottom="31dp"
         android:background="@drawable/efecto_btn"
         android:fontFamily="cursive"
+        android:onClick="Entrar"
         android:text="@string/Entrar"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:textColor="@android:color/holo_orange_light"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:ignore="OnClick" />
 
 
 </RelativeLayout>

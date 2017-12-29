@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "28755442503",
+    "firebase_url": "https://zombicidesuport.firebaseio.com",
+    "project_id": "zombicidesuport",
+    "storage_bucket": "zombicidesuport.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28755442503:android:c70cefb3822a1f58",
+        "android_client_info": {
+          "package_name": "edu.eseiaat.upc.pma.manuel.daniel.zombicidesuport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28755442503-ffcuvnhajp31sh5epamr00m1sj9maqo3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.eseiaat.upc.pma.manuel.daniel.zombicidesuport",
+            "certificate_hash": "00eecf19619b7e1dd27d3e5aaf86ca50a151fbfd"
+          }
+        },
+        {
+          "client_id": "28755442503-u25491tftjba9jng5j9spgl0mac1mu5p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS8TlpBcLARlpsTOGdwCzGF4R3DHoYZ_I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28755442503-u25491tftjba9jng5j9spgl0mac1mu5p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

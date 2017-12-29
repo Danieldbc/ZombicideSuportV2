@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -15,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void Crear(View view) {
         Intent intent=new Intent(this,CrearActivity.class);
+        boolean crear=true;
+        intent.putExtra(CrearActivity.KeyCrear,crear);
         startActivity(intent);
         finish();
     }
@@ -23,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=new Intent(this,JuegoActivity.class);
         boolean cargar=true;
         intent.putExtra(JuegoActivity.KeyCargar,cargar);
+        startActivity(intent);
+        finish();
+    }
+
+    public void Entrar(View view) {
+        Intent intent=new Intent(this,CrearActivity.class);
+        boolean crear=false;
+        intent.putExtra(CrearActivity.KeyCrear,crear);
         startActivity(intent);
         finish();
     }

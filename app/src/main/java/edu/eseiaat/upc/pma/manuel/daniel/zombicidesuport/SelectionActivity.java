@@ -15,6 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,12 +50,15 @@ public class SelectionActivity extends AppCompatActivity{
     private Personaje watts,joshua,shannon,grindlock,belle,kim;
     private Carta mashotgun,eviltwins,pistol,rifle,sawedoff,shotgun,submg,baseballbat,chainsaw,crowbar,fireaxe,katana,machete,pan,
             goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano;
+    private TextView sala;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection);
+
+
 
         descripcionPersonaje =(ImageView)findViewById(R.id.DescripcionPersonaje);
         habAzul=(TextView) findViewById(R.id.HabAzul);
@@ -62,9 +71,9 @@ public class SelectionActivity extends AppCompatActivity{
         modoZombie=(CheckBox)findViewById(R.id.ModoZombie);
         borrar=(ImageView)findViewById(R.id.Borrar);
 
-        TextView Sala=(TextView)findViewById(R.id.Sala);
+        sala =(TextView)findViewById(R.id.Sala);
         ListView viewUsuarios=(ListView)findViewById(R.id.ViewUsuarios);
-        Sala.setText(getIntent().getExtras().getString(keysala));
+        //sala.setText(getIntent().getExtras().getString(keysala));
         listaUsuarios=new ArrayList<>();
         listaUsuarios.add(getIntent().getExtras().getString(keynombre));
         adapterUsuarios=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,listaUsuarios);
@@ -90,6 +99,24 @@ public class SelectionActivity extends AppCompatActivity{
         adapterPersonajesSelec =new PersonajesAdapter(this,listaPersonajesSelec);
         viewPersonajesSelec.setAdapter(adapterPersonajesSelec);
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                //String value = dataSnapshot.getValue(String.class);
+                //sala.setText(value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+
+            }
+        });
         borrar.setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {

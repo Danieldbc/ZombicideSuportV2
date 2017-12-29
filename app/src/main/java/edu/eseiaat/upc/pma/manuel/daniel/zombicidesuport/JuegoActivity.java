@@ -35,6 +35,7 @@ public class JuegoActivity extends AppCompatActivity {
     public static String KeyListaCartasCuerpo="key_cartasCuerpo";
     public static String KeyListaCartasEspeciales="key_cartasEspeciales";
     public static String KeyListaCartasOtras="key_cartasOtras";
+
     private TextView habAzul,habAmarilla, habNaranja1, habNaranja2, habRoja1, habRoja2,habRoja3,nombre;
     private ImageView foto;
     private ArrayList<Personaje> listaPersonajes;

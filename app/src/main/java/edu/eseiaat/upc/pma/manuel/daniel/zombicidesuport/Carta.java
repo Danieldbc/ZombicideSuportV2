@@ -12,6 +12,9 @@ public class Carta implements Serializable {
     public int carta;
     public String nombre;
 
+    public Carta() {
+    }
+
     public Carta(int carta, String nombre) {
         this.carta = carta;
         this.nombre = nombre;

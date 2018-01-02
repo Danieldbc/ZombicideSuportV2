@@ -133,6 +133,7 @@ public class JuegoActivity extends AppCompatActivity {
         PersonajeSelec();
         ListenerCartas();
         ListenerHabilidades();
+        ListenerFireBase();
 
 
     }
@@ -182,10 +183,29 @@ public class JuegoActivity extends AppCompatActivity {
         drbelle.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                belle.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
+                belle.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
+                belle.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
+                belle.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
+                belle.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
                 belle.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                belle.level[0]= (int) dataSnapshot.child("level0").getValue();
+                belle.level[1]= (int) dataSnapshot.child("level1").getValue();
+                belle.level[2]= (int) dataSnapshot.child("level2").getValue();
+                belle.level[3]= (int) dataSnapshot.child("level3").getValue();
+                belle.level[4]= (int) dataSnapshot.child("level4").getValue();
+                belle.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
+                belle.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
                 belle.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
+                Personaje p;
+                if(miPersonaje) {
+                    p = listaPersonajes.get(idPersonaje);
+                }else{
+                    p=listaPersonajesOtros.get(idPersonaje);
+                }
+                if(belle.getNombre().equals(p.getNombre())){
+                    PersonajeSelec();
+                }
             }
 
             @Override
@@ -196,10 +216,29 @@ public class JuegoActivity extends AppCompatActivity {
         drgrindlock.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                grindlock.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
+                grindlock.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
+                grindlock.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
+                grindlock.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
+                grindlock.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
                 grindlock.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                grindlock.level[0]= (int) dataSnapshot.child("level0").getValue();
+                grindlock.level[1]= (int) dataSnapshot.child("level1").getValue();
+                grindlock.level[2]= (int) dataSnapshot.child("level2").getValue();
+                grindlock.level[3]= (int) dataSnapshot.child("level3").getValue();
+                grindlock.level[4]= (int) dataSnapshot.child("level4").getValue();
+                grindlock.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
+                grindlock.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
                 grindlock.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
+                Personaje p;
+                if(miPersonaje) {
+                    p = listaPersonajes.get(idPersonaje);
+                }else{
+                    p=listaPersonajesOtros.get(idPersonaje);
+                }
+                if(grindlock.getNombre().equals(p.getNombre())){
+                    PersonajeSelec();
+                }
             }
 
             @Override
@@ -210,10 +249,29 @@ public class JuegoActivity extends AppCompatActivity {
         drjoshua.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                joshua.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
+                joshua.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
+                joshua.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
+                joshua.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
+                joshua.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
                 joshua.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                joshua.level[0]= (int) dataSnapshot.child("level0").getValue();
+                joshua.level[1]= (int) dataSnapshot.child("level1").getValue();
+                joshua.level[2]= (int) dataSnapshot.child("level2").getValue();
+                joshua.level[3]= (int) dataSnapshot.child("level3").getValue();
+                joshua.level[4]= (int) dataSnapshot.child("level4").getValue();
+                joshua.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
+                joshua.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
                 joshua.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
+                Personaje p;
+                if(miPersonaje) {
+                    p = listaPersonajes.get(idPersonaje);
+                }else{
+                    p=listaPersonajesOtros.get(idPersonaje);
+                }
+                if(joshua.getNombre().equals(p.getNombre())){
+                    PersonajeSelec();
+                }
             }
 
             @Override
@@ -224,10 +282,29 @@ public class JuegoActivity extends AppCompatActivity {
         drkim.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                kim.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
+                kim.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
+                kim.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
+                kim.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
+                kim.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
                 kim.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                kim.level[0]= (int) dataSnapshot.child("level0").getValue();
+                kim.level[1]= (int) dataSnapshot.child("level1").getValue();
+                kim.level[2]= (int) dataSnapshot.child("level2").getValue();
+                kim.level[3]= (int) dataSnapshot.child("level3").getValue();
+                kim.level[4]= (int) dataSnapshot.child("level4").getValue();
+                kim.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
+                kim.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
                 kim.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
+                Personaje p;
+                if(miPersonaje) {
+                    p = listaPersonajes.get(idPersonaje);
+                }else{
+                    p=listaPersonajesOtros.get(idPersonaje);
+                }
+                if(kim.getNombre().equals(p.getNombre())){
+                    PersonajeSelec();
+                }
             }
 
             @Override
@@ -238,10 +315,29 @@ public class JuegoActivity extends AppCompatActivity {
         drshannon.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                shannon.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
+                shannon.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
+                shannon.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
+                shannon.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
+                shannon.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
                 shannon.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                shannon.level[0]= (int) dataSnapshot.child("level0").getValue();
+                shannon.level[1]= (int) dataSnapshot.child("level1").getValue();
+                shannon.level[2]= (int) dataSnapshot.child("level2").getValue();
+                shannon.level[3]= (int) dataSnapshot.child("level3").getValue();
+                shannon.level[4]= (int) dataSnapshot.child("level4").getValue();
+                shannon.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
+                shannon.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
                 shannon.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
+                Personaje p;
+                if(miPersonaje) {
+                    p = listaPersonajes.get(idPersonaje);
+                }else{
+                    p=listaPersonajesOtros.get(idPersonaje);
+                }
+                if(shannon.getNombre().equals(p.getNombre())){
+                    PersonajeSelec();
+                }
             }
 
             @Override
@@ -269,6 +365,8 @@ public class JuegoActivity extends AppCompatActivity {
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("puntuacion").setValue(listaPersonajes.get(i).getPuntuacion());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("selected").setValue(listaPersonajes.get(i).isSelected());
         }
+        adapterPersonajesOtros.notifyDataSetChanged();
+        adapterPersonajes.notifyDataSetChanged();
     }
     private void ListenerHabilidades() {
         habNaranja1.setOnClickListener(new View.OnClickListener() {
@@ -282,6 +380,7 @@ public class JuegoActivity extends AppCompatActivity {
                             p.level[1]=0;
                         }
                     }
+                    ModificarFireBase();
                     PersonajeSelec();
                 }
 
@@ -298,6 +397,7 @@ public class JuegoActivity extends AppCompatActivity {
                             p.level[0]=0;
                         }
                     }
+                    ModificarFireBase();
                     PersonajeSelec();
                 }
 
@@ -317,6 +417,7 @@ public class JuegoActivity extends AppCompatActivity {
                             p.level[4]=0;
                         }
                     }
+                    ModificarFireBase();
                     PersonajeSelec();
                 }
 
@@ -336,6 +437,7 @@ public class JuegoActivity extends AppCompatActivity {
                             p.level[4]=0;
                         }
                     }
+                    ModificarFireBase();
                     PersonajeSelec();
                 }
 
@@ -355,6 +457,7 @@ public class JuegoActivity extends AppCompatActivity {
                             p.level[3]=0;
                         }
                     }
+                    ModificarFireBase();
                     PersonajeSelec();
                 }
 
@@ -407,6 +510,7 @@ public class JuegoActivity extends AppCompatActivity {
                                 }
                             }
                         }
+                        ModificarFireBase();
                         PersonajeSelec();
                     }
                 }
@@ -435,6 +539,7 @@ public class JuegoActivity extends AppCompatActivity {
                             p.level[3] = 0;
                             p.level[4] = 0;
                         }
+                        ModificarFireBase();
                         PersonajeSelec();
                     }
                 }
@@ -503,6 +608,7 @@ public class JuegoActivity extends AppCompatActivity {
                         p.level[4]=1;
 
                     }
+                    ModificarFireBase();
                     PersonajeSelec();
                     adapterPersonajes.notifyDataSetChanged();
                 }
@@ -1012,10 +1118,12 @@ public class JuegoActivity extends AppCompatActivity {
             if (!intercambiar){
                 viewPersonajes.setBackgroundColor(getColor(android.R.color.holo_green_dark));
                 viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.holo_green_dark));
+                modozombie.setBackgroundColor(getColor(android.R.color.holo_red_dark));
                 intercambiar=true;
             }else {
                 viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
                 viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
+                modozombie.setBackgroundColor(getColor(android.R.color.transparent));
                 intercambiar=false;
             }
         }

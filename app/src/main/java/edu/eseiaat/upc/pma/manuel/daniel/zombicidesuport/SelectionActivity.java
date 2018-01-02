@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class SelectionActivity extends AppCompatActivity{
     private String textSala;
     private int Nusuariosint;
     private ListView viewUsuarios;
+    private List<Personaje> listaPersonajesOtros;
 
 
     @Override
@@ -93,6 +95,7 @@ public class SelectionActivity extends AppCompatActivity{
         adapterPersonajes =new PersonajesInvisiblesAdapter(this,listaPersonajes);
         viewPersonajes.setAdapter(adapterPersonajes);
 
+        listaPersonajesOtros=new ArrayList<>();
         listaPersonajesSelec =new ArrayList<>();
         viewPersonajesSelec =(RecyclerView)findViewById(R.id.ListaSeleccionados);
         linlayoutmanager=new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
@@ -109,12 +112,12 @@ public class SelectionActivity extends AppCompatActivity{
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference drNusuario=database.getReference().child(textSala).child("Nusuarios");
         final DatabaseReference drusuario=database.getReference().child(textSala).child("Usuarios");
-        final DatabaseReference drwatts = database.getReference().child(textSala).child("watts").child("invisible");
-        final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle").child("invisible");
-        final DatabaseReference drgrindlock = database.getReference().child(textSala).child("Grindlock").child("invisible");
-        final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua").child("invisible");
-        final DatabaseReference drkim = database.getReference().child(textSala).child("Kim").child("invisible");
-        final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon").child("invisible");
+        final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
+        final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
+        final DatabaseReference drgrindlock = database.getReference().child(textSala).child("Grindlock");
+        final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
+        final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
+        final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
         drNusuario.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,7 +149,8 @@ public class SelectionActivity extends AppCompatActivity{
         drwatts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                watts.setInvisible((Boolean) dataSnapshot.getValue());
+                watts.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                watts.setSelected((Boolean) dataSnapshot.child("selected").getValue());
                 adapterPersonajes.notifyDataSetChanged();
                 adapterPersonajesSelec.notifyDataSetChanged();
             }
@@ -159,7 +163,8 @@ public class SelectionActivity extends AppCompatActivity{
         drbelle.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                belle.setInvisible((Boolean) dataSnapshot.getValue());
+                belle.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                belle.setSelected((Boolean) dataSnapshot.child("selected").getValue());
                 adapterPersonajes.notifyDataSetChanged();
                 adapterPersonajesSelec.notifyDataSetChanged();
             }
@@ -172,7 +177,8 @@ public class SelectionActivity extends AppCompatActivity{
         drgrindlock.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                grindlock.setInvisible((Boolean) dataSnapshot.getValue());
+                grindlock.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                grindlock.setSelected((Boolean) dataSnapshot.child("selected").getValue());
                 adapterPersonajes.notifyDataSetChanged();
                 adapterPersonajesSelec.notifyDataSetChanged();
             }
@@ -185,7 +191,8 @@ public class SelectionActivity extends AppCompatActivity{
         drjoshua.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                joshua.setInvisible((Boolean) dataSnapshot.getValue());
+                joshua.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                joshua.setSelected((Boolean) dataSnapshot.child("selected").getValue());
                 adapterPersonajes.notifyDataSetChanged();
                 adapterPersonajesSelec.notifyDataSetChanged();
             }
@@ -198,7 +205,8 @@ public class SelectionActivity extends AppCompatActivity{
         drkim.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                kim.setInvisible((Boolean) dataSnapshot.getValue());
+                kim.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                kim.setSelected((Boolean) dataSnapshot.child("selected").getValue());
                 adapterPersonajes.notifyDataSetChanged();
                 adapterPersonajesSelec.notifyDataSetChanged();
             }
@@ -211,7 +219,8 @@ public class SelectionActivity extends AppCompatActivity{
         drshannon.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                shannon.setInvisible((Boolean) dataSnapshot.getValue());
+                shannon.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                shannon.setSelected((Boolean) dataSnapshot.child("selected").getValue());
                 adapterPersonajes.notifyDataSetChanged();
                 adapterPersonajesSelec.notifyDataSetChanged();
             }
@@ -222,7 +231,6 @@ public class SelectionActivity extends AppCompatActivity{
             }
         });
     }
-
     private void ListenerPantalla() {
         borrar.setOnDragListener(new View.OnDragListener() {
             @Override
@@ -242,11 +250,13 @@ public class SelectionActivity extends AppCompatActivity{
                         if (personajeSelecDrop){
                             Personaje p=listaPersonajesSelec.get(idPersonajeSelec);
                             p.setInvisible(false);
+                            p.setSelected(false);
                             listaPersonajesSelec.remove(idPersonajeSelec);
                         }
                         if (personajeDrop){
                             Personaje p=listaPersonajes.get(idPersonaje);
                             p.setInvisible(false);
+                            p.setSelected(false);
                         }
                         ModificarFireBase();
                         adapterPersonajes.notifyDataSetChanged();
@@ -279,6 +289,7 @@ public class SelectionActivity extends AppCompatActivity{
                         if (personajeDrop==true){
                             Personaje p=listaPersonajes.get(idPersonaje);
                             p.setInvisible(true);
+                            p.setSelected(true);
                             adapterPersonajes.notifyDataSetChanged();
                             listaPersonajesSelec.add(p);
                             adapterPersonajesSelec.notifyDataSetChanged();
@@ -653,7 +664,6 @@ public class SelectionActivity extends AppCompatActivity{
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("selected").setValue(listaPersonajes.get(i).isSelected());
         }
     }
-
     private void PersonajeSeleccionado() {
         Personaje p = listaPersonajes.get(idPersonaje);
         if (modoZombie.isChecked()) {
@@ -688,7 +698,9 @@ public class SelectionActivity extends AppCompatActivity{
             Personaje p=listaPersonajes.get(i);
             p.modozombie=false;
         }
+        PersonajesDeOtros();
         Intent intent=new Intent(this,JuegoActivity.class);
+        intent.putExtra(JuegoActivity.KeyListaPersonajesOtros, (Serializable) listaPersonajesOtros);
         intent.putExtra(JuegoActivity.KeyListaPersonajes, listaPersonajesSelec);
         intent.putExtra(JuegoActivity.KeyListaCartasDistancia,CartasDistancia );
         intent.putExtra(JuegoActivity.KeyListaCartasCuerpo, CartasCuerpo);
@@ -696,6 +708,26 @@ public class SelectionActivity extends AppCompatActivity{
         intent.putExtra(JuegoActivity.KeyListaCartasOtras, CartasOtras);
         startActivity(intent);
         finish();
+    }
+
+    private void PersonajesDeOtros() {
+        boolean iguales=false;
+
+        for (int i=0;i<listaPersonajes.size();i++){
+            Personaje p=listaPersonajes.get(i);
+            if (p.isSelected()){
+                for (int t=0;t<listaPersonajesSelec.size();t++){
+                    Personaje q=listaPersonajesSelec.get(t);
+                    if (p.getNombre().equals(q.getNombre())){
+                        iguales=true;
+                    }
+                }
+                if (!iguales){
+                    listaPersonajesOtros.add(p);
+                }
+                iguales=false;
+            }
+        }
     }
 }
 

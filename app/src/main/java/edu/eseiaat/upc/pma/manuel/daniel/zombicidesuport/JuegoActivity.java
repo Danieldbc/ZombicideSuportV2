@@ -35,10 +35,11 @@ public class JuegoActivity extends AppCompatActivity {
     public static String KeyListaCartasCuerpo="key_cartasCuerpo";
     public static String KeyListaCartasEspeciales="key_cartasEspeciales";
     public static String KeyListaCartasOtras="key_cartasOtras";
+    public static String KeyListaPersonajesOtros="kee_listapersonakesotros";
 
     private TextView habAzul,habAmarilla, habNaranja1, habNaranja2, habRoja1, habRoja2,habRoja3,nombre;
     private ImageView foto;
-    private ArrayList<Personaje> listaPersonajes;
+    private ArrayList<Personaje> listaPersonajes,listaPersonajesOtros;
     private RecyclerView viewPersonajes;
     private LinearLayoutManager linlayoutmanager;
     private PersonajesAdapter adapterPersonajes;
@@ -55,8 +56,10 @@ public class JuegoActivity extends AppCompatActivity {
     private Button btn_plus, btn_less;
     private AdaptadorBarra adaptarBarra;
     private boolean cargar;
-
-
+    private RecyclerView viewPersonajesOtros;
+    private PersonajesAdapter adapterPersonajesOtros;
+    private LinearLayoutManager linlayoutmanagerOtros;
+    private boolean miPersonaje=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,8 @@ public class JuegoActivity extends AppCompatActivity {
 
         listaPersonajes=new ArrayList<>();
         listaPersonajes= (ArrayList<Personaje>) getIntent().getSerializableExtra(KeyListaPersonajes);
+        listaPersonajesOtros=new ArrayList<>();
+        listaPersonajesOtros= (ArrayList<Personaje>) getIntent().getSerializableExtra(KeyListaPersonajesOtros);
         CartasDistancia=new ArrayList<>();
         CartasDistancia=(ArrayList<Carta>)getIntent().getSerializableExtra(KeyListaCartasDistancia);
         CartasCuerpo=new ArrayList<>();
@@ -96,6 +101,12 @@ public class JuegoActivity extends AppCompatActivity {
         adapterPersonajes =new PersonajesAdapter(this,listaPersonajes);
         viewPersonajes.setAdapter(adapterPersonajes);
         idPersonaje=0;
+
+        viewPersonajesOtros =(RecyclerView)findViewById(R.id.ViewUsuarios);
+        linlayoutmanagerOtros =new LinearLayoutManager(this);
+        viewPersonajesOtros.setLayoutManager(linlayoutmanagerOtros);
+        adapterPersonajesOtros =new PersonajesAdapter(this,listaPersonajesOtros);
+        viewPersonajesOtros.setAdapter(adapterPersonajesOtros);
 
         lista =new ArrayList<>();
         lista_Draw = new ArrayList<>();
@@ -121,125 +132,143 @@ public class JuegoActivity extends AppCompatActivity {
         habNaranja1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Personaje p=listaPersonajes.get(idPersonaje);
-                if (p.level[0]==1){
-                    p.level[0]=2;
-                    if (p.level[1]==1){
-                        p.level[1]=0;
+                if (miPersonaje){
+                    Personaje p=listaPersonajes.get(idPersonaje);
+                    if (p.level[0]==1){
+                        p.level[0]=2;
+                        if (p.level[1]==1){
+                            p.level[1]=0;
+                        }
                     }
+                    PersonajeSelec();
                 }
-                PersonajeSelec();
+
             }
         });
         habNaranja2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Personaje p=listaPersonajes.get(idPersonaje);
-                if (p.level[1]==1){
-                    p.level[1]=2;
-                    if (p.level[0]==1){
-                        p.level[0]=0;
+                if (miPersonaje){
+                    Personaje p=listaPersonajes.get(idPersonaje);
+                    if (p.level[1]==1){
+                        p.level[1]=2;
+                        if (p.level[0]==1){
+                            p.level[0]=0;
+                        }
                     }
+                    PersonajeSelec();
                 }
-                PersonajeSelec();
+
             }
         });
         habRoja1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Personaje p=listaPersonajes.get(idPersonaje);
-                if (p.level[2]==1){
-                    p.level[2]=2;
-                    if (p.level[3]==1){
-                        p.level[3]=0;
+                if (miPersonaje){
+                    Personaje p=listaPersonajes.get(idPersonaje);
+                    if (p.level[2]==1){
+                        p.level[2]=2;
+                        if (p.level[3]==1){
+                            p.level[3]=0;
+                        }
+                        if (p.level[4]==1){
+                            p.level[4]=0;
+                        }
                     }
-                    if (p.level[4]==1){
-                        p.level[4]=0;
-                    }
+                    PersonajeSelec();
                 }
-                PersonajeSelec();
+
             }
         });
         habRoja2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Personaje p=listaPersonajes.get(idPersonaje);
-                if (p.level[3]==1){
-                    p.level[3]=2;
-                    if (p.level[2]==1){
-                        p.level[2]=0;
+                if (miPersonaje){
+                    Personaje p=listaPersonajes.get(idPersonaje);
+                    if (p.level[3]==1){
+                        p.level[3]=2;
+                        if (p.level[2]==1){
+                            p.level[2]=0;
+                        }
+                        if (p.level[4]==1){
+                            p.level[4]=0;
+                        }
                     }
-                    if (p.level[4]==1){
-                        p.level[4]=0;
-                    }
+                    PersonajeSelec();
                 }
-                PersonajeSelec();
+
             }
         });
         habRoja3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Personaje p=listaPersonajes.get(idPersonaje);
-                if (p.level[4]==1){
-                    p.level[4]=2;
-                    if (p.level[2]==1){
-                        p.level[2]=0;
+                if (miPersonaje){
+                    Personaje p=listaPersonajes.get(idPersonaje);
+                    if (p.level[4]==1){
+                        p.level[4]=2;
+                        if (p.level[2]==1){
+                            p.level[2]=0;
+                        }
+                        if (p.level[3]==1){
+                            p.level[3]=0;
+                        }
                     }
-                    if (p.level[3]==1){
-                        p.level[3]=0;
-                    }
+                    PersonajeSelec();
                 }
-                PersonajeSelec();
+
             }
         });
         btn_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Personaje p=listaPersonajes.get(idPersonaje);
-                if (p.puntuacion != 43) {
-                    p.puntuacion++;
-                    if (p.puntuacion==19){
-                        if (p.vuelta==1){
-                            p.level[0]=1;
-                            p.level[1]=1;
-                        }else if (p.vuelta==2){
-                            if (p.level[0] == 0) {
-                                p.level[0]=2;
-                            }
-                            if (p.level[1] == 0) {
-                                p.level[1]=2;
+                if (miPersonaje){
+                    Personaje p=listaPersonajes.get(idPersonaje);
+                    if (p.puntuacion != 43) {
+                        p.puntuacion++;
+                        if (p.puntuacion==19){
+                            if (p.vuelta==1){
+                                p.level[0]=1;
+                                p.level[1]=1;
+                            }else if (p.vuelta==2){
+                                if (p.level[0] == 0) {
+                                    p.level[0]=2;
+                                }
+                                if (p.level[1] == 0) {
+                                    p.level[1]=2;
+                                }
                             }
                         }
-                    }
-                    if (p.puntuacion==43){
-                        if (p.vuelta==1){
-                            p.level[2]=1;
-                            p.level[3]=1;
-                            p.level[4]=1;
-                        }else if (p.vuelta==2){
-                            if (p.level[2] == 0) {
+                        if (p.puntuacion==43){
+                            if (p.vuelta==1){
                                 p.level[2]=1;
-                            }
-                            if (p.level[3] == 0) {
                                 p.level[3]=1;
-                            }
-                            if (p.level[4] == 0) {
                                 p.level[4]=1;
-                            }
-                        }else if (p.vuelta==3) {
-                            if (p.level[2] == 0) {
-                                p.level[2] = 2;
-                            }
-                            if (p.level[3] == 0) {
-                                p.level[3] = 2;
-                            }
-                            if (p.level[4] == 0) {
-                                p.level[4] = 2;
+                            }else if (p.vuelta==2){
+                                if (p.level[2] == 0) {
+                                    p.level[2]=1;
+                                }
+                                if (p.level[3] == 0) {
+                                    p.level[3]=1;
+                                }
+                                if (p.level[4] == 0) {
+                                    p.level[4]=1;
+                                }
+                            }else if (p.vuelta==3) {
+                                if (p.level[2] == 0) {
+                                    p.level[2] = 2;
+                                }
+                                if (p.level[3] == 0) {
+                                    p.level[3] = 2;
+                                }
+                                if (p.level[4] == 0) {
+                                    p.level[4] = 2;
+                                }
                             }
                         }
+                        PersonajeSelec();
                     }
-                    PersonajeSelec();
                 }
+
 
             }
         });
@@ -248,23 +277,26 @@ public class JuegoActivity extends AppCompatActivity {
         btn_less.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Personaje p=listaPersonajes.get(idPersonaje);
-                if (p.puntuacion!=0) {
-                    if (p.puntuacion == 0) {
-                        p.puntuacion = 1;
+                if (miPersonaje){
+                    Personaje p=listaPersonajes.get(idPersonaje);
+                    if (p.puntuacion!=0) {
+                        if (p.puntuacion == 0) {
+                            p.puntuacion = 1;
+                        }
+                        p.puntuacion--;
+                        if (p.puntuacion == 18) {
+                            p.level[0] = 0;
+                            p.level[1] = 0;
+                        }
+                        if (p.puntuacion == 42) {
+                            p.level[2] = 0;
+                            p.level[3] = 0;
+                            p.level[4] = 0;
+                        }
+                        PersonajeSelec();
                     }
-                    p.puntuacion--;
-                    if (p.puntuacion == 18) {
-                        p.level[0] = 0;
-                        p.level[1] = 0;
-                    }
-                    if (p.puntuacion == 42) {
-                        p.level[2] = 0;
-                        p.level[3] = 0;
-                        p.level[4] = 0;
-                    }
-                    PersonajeSelec();
                 }
+
             }
         });
 
@@ -275,12 +307,38 @@ public class JuegoActivity extends AppCompatActivity {
                     intercambiar=false;
                     idPersonajeInt=viewPersonajes.getChildAdapterPosition(view);
                     viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
-                    if (idPersonaje!=idPersonajeInt){
+                    viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
+                    Personaje p=listaPersonajes.get(idPersonaje);
+                    Personaje q=listaPersonajes.get(idPersonajeInt);
+                    if (!p.getNombre().equals(q.getNombre())){
                         IntercambiarCartas();
                     }
 
                 }else{
                     idPersonaje=viewPersonajes.getChildAdapterPosition(view);
+                    miPersonaje=true;
+                    PersonajeSelec();
+                }
+
+            }
+        });
+        adapterPersonajesOtros.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (intercambiar){
+                    intercambiar=false;
+                    idPersonajeInt=viewPersonajesOtros.getChildAdapterPosition(view);
+                    viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
+                    viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
+                    Personaje p=listaPersonajes.get(idPersonaje);
+                    Personaje q=listaPersonajesOtros.get(idPersonajeInt);
+                    if (!p.getNombre().equals(q.getNombre())){
+                        IntercambiarCartas();
+                    }
+
+                }else{
+                    idPersonaje=viewPersonajes.getChildAdapterPosition(view);
+                    miPersonaje=false;
                     PersonajeSelec();
                 }
 
@@ -290,20 +348,23 @@ public class JuegoActivity extends AppCompatActivity {
         modozombie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Personaje p=listaPersonajes.get(idPersonaje);
-                p.modozombie=!p.modozombie;
-                if (p.puntuacion>18){
-                    p.level[0]=1;
-                    p.level[1]=1;
-                }
-                if (p.puntuacion==43){
-                    p.level[2]=1;
-                    p.level[3]=1;
-                    p.level[4]=1;
+                if (miPersonaje){
+                    Personaje p=listaPersonajes.get(idPersonaje);
+                    p.modozombie=!p.modozombie;
+                    if (p.puntuacion>18){
+                        p.level[0]=1;
+                        p.level[1]=1;
+                    }
+                    if (p.puntuacion==43){
+                        p.level[2]=1;
+                        p.level[3]=1;
+                        p.level[4]=1;
 
+                    }
+                    PersonajeSelec();
+                    adapterPersonajes.notifyDataSetChanged();
                 }
-                PersonajeSelec();
-                adapterPersonajes.notifyDataSetChanged();
+
             }
         });
     }
@@ -342,13 +403,15 @@ public class JuegoActivity extends AppCompatActivity {
         carta1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                c1=0;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
-                //view.startDragAndDrop(data,shadowBuilder,view,0);
-                return true;
-
+                if (miPersonaje){
+                    c1=0;
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                    view.startDrag(data, shadowBuilder, view, 0);
+                    //view.startDragAndDrop(data,shadowBuilder,view,0);
+                    return true;
+                }
+                return false;
             }
         });
         carta1.setOnDragListener(new View.OnDragListener() {
@@ -368,12 +431,15 @@ public class JuegoActivity extends AppCompatActivity {
         carta2.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                c1=1;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
-                //view.startDragAndDrop(data,shadowBuilder,view,0);
-                return true;
+                if (miPersonaje){
+                    c1=1;
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                    view.startDrag(data, shadowBuilder, view, 0);
+                    //view.startDragAndDrop(data,shadowBuilder,view,0);
+                    return true;
+                }
+                return false;
 
             }
         });
@@ -394,12 +460,16 @@ public class JuegoActivity extends AppCompatActivity {
         carta3.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                c1=2;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
-                //view.startDragAndDrop(data,shadowBuilder,view,0);
-                return true;
+                if (miPersonaje){
+                    c1=2;
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                    view.startDrag(data, shadowBuilder, view, 0);
+                    //view.startDragAndDrop(data,shadowBuilder,view,0);
+                    return true;
+                }
+                return false;
+
 
             }
         });
@@ -420,12 +490,16 @@ public class JuegoActivity extends AppCompatActivity {
         carta4.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                c1=3;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
-                //view.startDragAndDrop(data,shadowBuilder,view,0);
-                return true;
+                if (miPersonaje){
+                    c1=3;
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                    view.startDrag(data, shadowBuilder, view, 0);
+                    //view.startDragAndDrop(data,shadowBuilder,view,0);
+                    return true;
+                }
+                return false;
+
 
             }
         });
@@ -446,12 +520,16 @@ public class JuegoActivity extends AppCompatActivity {
         carta5.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                c1=4;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
-                //view.startDragAndDrop(data,shadowBuilder,view,0);
-                return true;
+                if (miPersonaje){
+                    c1=4;
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                    view.startDrag(data, shadowBuilder, view, 0);
+                    //view.startDragAndDrop(data,shadowBuilder,view,0);
+                    return true;
+                }
+                return false;
+
 
             }
         });
@@ -489,19 +567,29 @@ public class JuegoActivity extends AppCompatActivity {
     }
 
     private void SeleccionarCarta() {
-        Intent intent=new Intent(JuegoActivity.this,CardsActivity.class);
-        Personaje p=listaPersonajes.get(idPersonaje);
-        intent.putExtra(CardsActivity.KeyPersonaje,p);
-        intent.putExtra(CardsActivity.KeyListaCartasDistancia,CartasDistancia );
-        intent.putExtra(CardsActivity.KeyListaCartasCuerpo, CartasCuerpo);
-        intent.putExtra(CardsActivity.KeyListaCartasEspeciales,CartasEspeciales);
-        intent.putExtra(CardsActivity.KeyListaCartasOtras, CartasOtras);
-        startActivityForResult(intent,CardsActivity.pasarcartas);
+        if (miPersonaje){
+            Intent intent=new Intent(JuegoActivity.this,CardsActivity.class);
+            Personaje p=listaPersonajes.get(idPersonaje);
+            intent.putExtra(CardsActivity.KeyPersonaje,p);
+            intent.putExtra(CardsActivity.KeyListaCartasDistancia,CartasDistancia );
+            intent.putExtra(CardsActivity.KeyListaCartasCuerpo, CartasCuerpo);
+            intent.putExtra(CardsActivity.KeyListaCartasEspeciales,CartasEspeciales);
+            intent.putExtra(CardsActivity.KeyListaCartasOtras, CartasOtras);
+            startActivityForResult(intent,CardsActivity.pasarcartas);
+        }
+
     }
 
 
     private void PersonajeSelec() {
-        Personaje p = listaPersonajes.get(idPersonaje);
+        Personaje p;
+        if(miPersonaje){
+            p = listaPersonajes.get(idPersonaje);
+        }else{
+            p = listaPersonajesOtros.get(idPersonaje);
+        }
+
+
         nombre.setText(p.getNombre());
         if (p.modozombie) {
             habAzul.setText(p.getHabAzulZ());
@@ -767,7 +855,17 @@ public class JuegoActivity extends AppCompatActivity {
     }
 
    public void Intercambiar(View view) {
-        viewPersonajes.setBackgroundColor(getColor(android.R.color.holo_green_dark));
-        intercambiar=true;
+        if (miPersonaje){
+            if (!intercambiar){
+                viewPersonajes.setBackgroundColor(getColor(android.R.color.holo_green_dark));
+                viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.holo_green_dark));
+                intercambiar=true;
+            }else {
+                viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
+                viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
+                intercambiar=false;
+            }
+        }
+
     }
 }

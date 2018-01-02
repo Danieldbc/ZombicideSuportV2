@@ -451,6 +451,7 @@ public class SelectionActivity extends AppCompatActivity{
         Carta carta5=cartamano;
         boolean invisible=false;
         boolean modozombie=false;
+        boolean selected=false;
         int[] level=new int[5];
         for (int i=0;i<level.length;i++){
             level[i]=0;
@@ -459,7 +460,7 @@ public class SelectionActivity extends AppCompatActivity{
         int vuelta=1;
         watts=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
                 habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
-                invisible,modozombie,level,puntuacion,vuelta);
+                invisible,modozombie,selected,level,puntuacion,vuelta);
 
         nombre="Joshua";
         habazul=getString(R.string.Socorrista);
@@ -487,7 +488,7 @@ public class SelectionActivity extends AppCompatActivity{
         carta5=cartamano;
         joshua=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
                 habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
-                invisible,modozombie,level,puntuacion,vuelta);
+                invisible,modozombie,selected,level,puntuacion,vuelta);
 
         nombre="Shannon";
         habazul=getString(R.string.DisparoABocajarro);
@@ -515,7 +516,7 @@ public class SelectionActivity extends AppCompatActivity{
         carta5=cartamano;
         shannon=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
                 habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
-                invisible,modozombie,level,puntuacion,vuelta);
+                invisible,modozombie,selected,level,puntuacion,vuelta);
 
         nombre="Grindlock";
         habazul=getString(R.string.Provocacion);
@@ -543,7 +544,7 @@ public class SelectionActivity extends AppCompatActivity{
         carta5=cartamano;
         grindlock=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
                 habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
-                invisible,modozombie,level,puntuacion,vuelta);
+                invisible,modozombie,selected,level,puntuacion,vuelta);
 
         nombre="Belle";
         habazul=getString(R.string.mas1accionDeMovimientoGratuita);
@@ -571,7 +572,7 @@ public class SelectionActivity extends AppCompatActivity{
         carta5=cartamano;
         belle=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
                 habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
-                invisible,modozombie,level,puntuacion,vuelta);
+                invisible,modozombie,selected,level,puntuacion,vuelta);
 
         nombre="Kim";
         habazul=getString(R.string.Afortunada);
@@ -599,7 +600,7 @@ public class SelectionActivity extends AppCompatActivity{
         carta5=cartamano;
         kim=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
                 habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
-                invisible,modozombie,level,puntuacion,vuelta);
+                invisible,modozombie,selected,level,puntuacion,vuelta);
     }
     private void CrearListaPersonajes() {
         listaPersonajes=new ArrayList<>();
@@ -649,6 +650,7 @@ public class SelectionActivity extends AppCompatActivity{
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level3").setValue(listaPersonajes.get(i).level[3]);
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level4").setValue(listaPersonajes.get(i).level[4]);
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("puntuacion").setValue(listaPersonajes.get(i).getPuntuacion());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("selected").setValue(listaPersonajes.get(i).isSelected());
         }
     }
 

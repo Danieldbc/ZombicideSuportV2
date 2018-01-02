@@ -57,35 +57,7 @@ public class JuegoActivity extends AppCompatActivity {
     private boolean cargar;
 
 
-    private void Writedata(){
-        try {
-            ObjectOutputStream salida=new ObjectOutputStream(new FileOutputStream("media.obj"));
-            salida.writeObject(listaPersonajes);
-            salida.close();
-        } catch (FileNotFoundException e) {
-            Toast.makeText(this, R.string.NoFile, Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            Toast.makeText(this, R.string.NoWrite, Toast.LENGTH_SHORT).show();
-        }
-    }
-    private void Readdata(){
-        try {
-            ObjectInputStream entrada=new ObjectInputStream(new FileInputStream("media.obj"));
-            listaPersonajes=((ArrayList<Personaje>) entrada.readObject());
-            entrada.close();
-        } catch (FileNotFoundException e) {
-        } catch (IOException e) {
-            Toast.makeText(this, R.string.NoRead, Toast.LENGTH_SHORT).show();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Writedata();
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,13 +78,9 @@ public class JuegoActivity extends AppCompatActivity {
         nombre=(TextView)findViewById(R.id.nombre);
         modozombie = (Switch) findViewById(R.id.ModoZombie);
         cargar=getIntent().getBooleanExtra(KeyCargar,false);
-        listaPersonajes=new ArrayList<>();
-        if (!cargar){
-            listaPersonajes= (ArrayList<Personaje>) getIntent().getSerializableExtra(KeyListaPersonajes);
-        }else{
-            Readdata();
-        }
 
+        listaPersonajes=new ArrayList<>();
+        listaPersonajes= (ArrayList<Personaje>) getIntent().getSerializableExtra(KeyListaPersonajes);
         CartasDistancia=new ArrayList<>();
         CartasDistancia=(ArrayList<Carta>)getIntent().getSerializableExtra(KeyListaCartasDistancia);
         CartasCuerpo=new ArrayList<>();
@@ -143,6 +111,13 @@ public class JuegoActivity extends AppCompatActivity {
         recy.setAdapter(adaptarBarra);
 
         PersonajeSelec();
+        ListenerCartas();
+        ListenerHabilidades();
+
+
+    }
+
+    private void ListenerHabilidades() {
         habNaranja1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -311,6 +286,59 @@ public class JuegoActivity extends AppCompatActivity {
 
             }
         });
+
+        modozombie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Personaje p=listaPersonajes.get(idPersonaje);
+                p.modozombie=!p.modozombie;
+                if (p.puntuacion>18){
+                    p.level[0]=1;
+                    p.level[1]=1;
+                }
+                if (p.puntuacion==43){
+                    p.level[2]=1;
+                    p.level[3]=1;
+                    p.level[4]=1;
+
+                }
+                PersonajeSelec();
+                adapterPersonajes.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void ListenerCartas() {
+        carta1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SeleccionarCarta();
+            }
+        });
+        carta2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SeleccionarCarta();
+            }
+        });
+        carta3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SeleccionarCarta();
+            }
+        });
+        carta4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SeleccionarCarta();
+            }
+        });
+        carta5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SeleccionarCarta();
+            }
+        });
         carta1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -441,55 +469,7 @@ public class JuegoActivity extends AppCompatActivity {
                 return true;
             }
         });
-        modozombie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Personaje p=listaPersonajes.get(idPersonaje);
-                p.modozombie=!p.modozombie;
-                if (p.puntuacion>18){
-                    p.level[0]=1;
-                    p.level[1]=1;
-                }
-                if (p.puntuacion==43){
-                    p.level[2]=1;
-                    p.level[3]=1;
-                    p.level[4]=1;
 
-                }
-                PersonajeSelec();
-                adapterPersonajes.notifyDataSetChanged();
-            }
-        });
-        carta1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SeleccionarCarta();
-            }
-        });
-        carta2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SeleccionarCarta();
-            }
-        });
-        carta3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SeleccionarCarta();
-            }
-        });
-        carta4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SeleccionarCarta();
-            }
-        });
-        carta5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SeleccionarCarta();
-            }
-        });
     }
 
     private void MovimientoCarta() {

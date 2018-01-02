@@ -15,6 +15,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,6 +42,7 @@ public class JuegoActivity extends AppCompatActivity {
     public static String KeyListaCartasEspeciales="key_cartasEspeciales";
     public static String KeyListaCartasOtras="key_cartasOtras";
     public static String KeyListaPersonajesOtros="kee_listapersonakesotros";
+    public static String KeyNombreSala="key_nombresala";
 
     private TextView habAzul,habAmarilla, habNaranja1, habNaranja2, habRoja1, habRoja2,habRoja3,nombre;
     private ImageView foto;
@@ -47,6 +54,7 @@ public class JuegoActivity extends AppCompatActivity {
     private int c1,c2;
     private ImageView carta1,carta2,carta3,carta4,carta5;
     private ArrayList<Carta> CartasDistancia,CartasCuerpo,CartasEspeciales,CartasOtras;
+    private Personaje watts,joshua,shannon,grindlock,belle,kim;
     private Switch modozombie;
     private boolean intercambiar;
     private ArrayList<BARRA> lista;
@@ -60,6 +68,7 @@ public class JuegoActivity extends AppCompatActivity {
     private PersonajesAdapter adapterPersonajesOtros;
     private LinearLayoutManager linlayoutmanagerOtros;
     private boolean miPersonaje=true;
+    private String textSala;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +90,7 @@ public class JuegoActivity extends AppCompatActivity {
         nombre=(TextView)findViewById(R.id.nombre);
         modozombie = (Switch) findViewById(R.id.ModoZombie);
         cargar=getIntent().getBooleanExtra(KeyCargar,false);
-
+        textSala=getIntent().getExtras().getString(KeyNombreSala);
         listaPersonajes=new ArrayList<>();
         listaPersonajes= (ArrayList<Personaje>) getIntent().getSerializableExtra(KeyListaPersonajes);
         listaPersonajesOtros=new ArrayList<>();
@@ -128,6 +137,139 @@ public class JuegoActivity extends AppCompatActivity {
 
     }
 
+    private void ListenerFireBase() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
+        final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
+        final DatabaseReference drgrindlock = database.getReference().child(textSala).child("Grindlock");
+        final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
+        final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
+        final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
+
+        drwatts.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                watts.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
+                watts.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
+                watts.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
+                watts.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
+                watts.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
+                watts.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                watts.level[0]= (int) dataSnapshot.child("level0").getValue();
+                watts.level[1]= (int) dataSnapshot.child("level1").getValue();
+                watts.level[2]= (int) dataSnapshot.child("level2").getValue();
+                watts.level[3]= (int) dataSnapshot.child("level3").getValue();
+                watts.level[4]= (int) dataSnapshot.child("level4").getValue();
+                watts.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
+                watts.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
+                watts.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                Personaje p;
+                if(miPersonaje) {
+                    p = listaPersonajes.get(idPersonaje);
+                }else{
+                    p=listaPersonajesOtros.get(idPersonaje);
+                }
+                if(watts.getNombre().equals(p.getNombre())){
+                    PersonajeSelec();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drbelle.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                belle.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                belle.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drgrindlock.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                grindlock.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                grindlock.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drjoshua.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                joshua.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                joshua.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drkim.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                kim.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                kim.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drshannon.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                shannon.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                shannon.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void ModificarFireBase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myref = database.getReference();
+        for (int i=0;i<listaPersonajes.size();i++){
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta1").setValue(listaPersonajes.get(i).getCarta1());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta2").setValue(listaPersonajes.get(i).getCarta2());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta3").setValue(listaPersonajes.get(i).getCarta3());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta4").setValue(listaPersonajes.get(i).getCarta4());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta5").setValue(listaPersonajes.get(i).getCarta5());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("invisible").setValue(listaPersonajes.get(i).isInvisible());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("modozombie").setValue(listaPersonajes.get(i).isModozombie());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level0").setValue(listaPersonajes.get(i).level[0]);
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level1").setValue(listaPersonajes.get(i).level[1]);
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level2").setValue(listaPersonajes.get(i).level[2]);
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level3").setValue(listaPersonajes.get(i).level[3]);
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level4").setValue(listaPersonajes.get(i).level[4]);
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("puntuacion").setValue(listaPersonajes.get(i).getPuntuacion());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("selected").setValue(listaPersonajes.get(i).isSelected());
+        }
+    }
     private void ListenerHabilidades() {
         habNaranja1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -559,7 +701,13 @@ public class JuegoActivity extends AppCompatActivity {
     private void IntercambiarCartas() {
         Intent intent=new Intent(JuegoActivity.this,IntercambioActivity.class);
         Personaje p=listaPersonajes.get(idPersonaje);
-        Personaje q=listaPersonajes.get(idPersonajeInt);
+        Personaje q;
+        if(miPersonaje){
+            q=listaPersonajes.get(idPersonajeInt);
+        }else {
+            q=listaPersonajesOtros.get(idPersonajeInt);
+        }
+
 
         intent.putExtra(IntercambioActivity.Keycartas,p);
         intent.putExtra(IntercambioActivity.Keycartas2,q);
@@ -840,7 +988,12 @@ public class JuegoActivity extends AppCompatActivity {
                 p1.setCarta3(pcard1.getCarta3());
                 p1.setCarta4(pcard1.getCarta4());
                 p1.setCarta5(pcard1.getCarta5());
-                Personaje p2=listaPersonajes.get(idPersonajeInt);
+                Personaje p2;
+                if (miPersonaje) {
+                    p2 = listaPersonajes.get(idPersonajeInt);
+                }else{
+                    p2 = listaPersonajesOtros.get(idPersonajeInt);
+                }
                 Personaje pcard2= (Personaje) data.getExtras().getSerializable(IntercambioActivity.Keycartas2);
                 p2.setCarta1(pcard2.getCarta1());
                 p2.setCarta2(pcard2.getCarta2());

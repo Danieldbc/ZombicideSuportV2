@@ -629,25 +629,6 @@ public class SelectionActivity extends AppCompatActivity{
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();
         for (int i=0;i<listaPersonajes.size();i++){
-            /*myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("nombre").setValue(listaPersonajes.get(i).getNombre());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habazul").setValue(listaPersonajes.get(i).getHabAzul());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habamarilla").setValue(listaPersonajes.get(i).getHabAmarilla());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habnaranja1").setValue(listaPersonajes.get(i).getHabNaranja1());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habnaranja2").setValue(listaPersonajes.get(i).getHabNaranja2());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja1").setValue(listaPersonajes.get(i).getHabRoja1());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja2").setValue(listaPersonajes.get(i).getHabRoja2());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja3").setValue(listaPersonajes.get(i).getHabRoja3());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("foto").setValue(listaPersonajes.get(i).getFoto());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("cara").setValue(listaPersonajes.get(i).getCara());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habazulz").setValue(listaPersonajes.get(i).getHabAzulZ());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habamarillaz").setValue(listaPersonajes.get(i).getHabAmarillaZ());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habnaranja1z").setValue(listaPersonajes.get(i).getHabNaranja1Z());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habnaranja2z").setValue(listaPersonajes.get(i).getHabNaranja2Z());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja1z").setValue(listaPersonajes.get(i).getHabRoja1Z());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja2z").setValue(listaPersonajes.get(i).getHabRoja2Z());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja3z").setValue(listaPersonajes.get(i).getHabRoja3Z());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("fotoz").setValue(listaPersonajes.get(i).getFotoZ());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("caraz").setValue(listaPersonajes.get(i).getCaraZ());*/
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta1").setValue(listaPersonajes.get(i).getCarta1());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta2").setValue(listaPersonajes.get(i).getCarta2());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta3").setValue(listaPersonajes.get(i).getCarta3());
@@ -694,20 +675,26 @@ public class SelectionActivity extends AppCompatActivity{
         finish();
     }
     public void Aceptar(View view) {
-        for (int i=0;i<listaPersonajes.size();i++){
-            Personaje p=listaPersonajes.get(i);
-            p.modozombie=false;
+        if (listaPersonajesSelec.size()!=0){
+            for (int i=0;i<listaPersonajes.size();i++){
+                Personaje p=listaPersonajes.get(i);
+                p.modozombie=false;
+            }
+            PersonajesDeOtros();
+            Intent intent=new Intent(this,JuegoActivity.class);
+            intent.putExtra(JuegoActivity.KeyNombreSala,textSala);
+            intent.putExtra(JuegoActivity.KeyListaPersonajesOtros, (Serializable) listaPersonajesOtros);
+            intent.putExtra(JuegoActivity.KeyListaPersonajes, listaPersonajesSelec);
+            intent.putExtra(JuegoActivity.KeyListaCartasDistancia,CartasDistancia );
+            intent.putExtra(JuegoActivity.KeyListaCartasCuerpo, CartasCuerpo);
+            intent.putExtra(JuegoActivity.KeyListaCartasEspeciales,CartasEspeciales);
+            intent.putExtra(JuegoActivity.KeyListaCartasOtras, CartasOtras);
+            startActivity(intent);
+            finish();
+        }else{
+            Toast.makeText(SelectionActivity.this, R.string.NoPersonajeSelec, Toast.LENGTH_SHORT).show();
         }
-        PersonajesDeOtros();
-        Intent intent=new Intent(this,JuegoActivity.class);
-        intent.putExtra(JuegoActivity.KeyListaPersonajesOtros, (Serializable) listaPersonajesOtros);
-        intent.putExtra(JuegoActivity.KeyListaPersonajes, listaPersonajesSelec);
-        intent.putExtra(JuegoActivity.KeyListaCartasDistancia,CartasDistancia );
-        intent.putExtra(JuegoActivity.KeyListaCartasCuerpo, CartasCuerpo);
-        intent.putExtra(JuegoActivity.KeyListaCartasEspeciales,CartasEspeciales);
-        intent.putExtra(JuegoActivity.KeyListaCartasOtras, CartasOtras);
-        startActivity(intent);
-        finish();
+
     }
 
     private void PersonajesDeOtros() {

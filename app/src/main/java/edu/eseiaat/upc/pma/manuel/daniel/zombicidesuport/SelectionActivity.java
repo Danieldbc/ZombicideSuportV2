@@ -52,16 +52,13 @@ public class SelectionActivity extends AppCompatActivity{
             goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano;
     private TextView sala;
     private String textSala;
-    private String Nusuarios;
-    private int Nusuariosint;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection);
-
-
 
         descripcionPersonaje =(ImageView)findViewById(R.id.DescripcionPersonaje);
         habAzul=(TextView) findViewById(R.id.HabAzul);
@@ -102,10 +99,101 @@ public class SelectionActivity extends AppCompatActivity{
         adapterPersonajesSelec =new PersonajesAdapter(this,listaPersonajesSelec);
         viewPersonajesSelec.setAdapter(adapterPersonajesSelec);
 
+        ListenerFireBase();
+        ListenerPantalla();
+
+    }
+
+    private void ListenerFireBase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference Refusu = database.getReference(textSala+"/Nusuarios");
+        final DatabaseReference drwatts = database.getReference().child(textSala).child("watts").child("invisible");
+        final DatabaseReference drbelle = database.getReference().child(textSala).child("watts").child("invisible");
+        final DatabaseReference drgrindlock = database.getReference().child(textSala).child("watts").child("invisible");
+        final DatabaseReference drjoshua = database.getReference().child(textSala).child("watts").child("invisible");
+        final DatabaseReference drkim = database.getReference().child(textSala).child("watts").child("invisible");
+        final DatabaseReference drshannon = database.getReference().child(textSala).child("watts").child("invisible");
 
+        drwatts.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                watts.setInvisible((Boolean) dataSnapshot.getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drbelle.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                belle.setInvisible((Boolean) dataSnapshot.getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drgrindlock.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                grindlock.setInvisible((Boolean) dataSnapshot.getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drjoshua.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                joshua.setInvisible((Boolean) dataSnapshot.getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drkim.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                kim.setInvisible((Boolean) dataSnapshot.getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drshannon.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                shannon.setInvisible((Boolean) dataSnapshot.getValue());
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void ListenerPantalla() {
         borrar.setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {
@@ -130,7 +218,7 @@ public class SelectionActivity extends AppCompatActivity{
                             Personaje p=listaPersonajes.get(idPersonaje);
                             p.setInvisible(false);
                         }
-
+                        ModificarFireBase();
                         adapterPersonajes.notifyDataSetChanged();
                         adapterPersonajesSelec.notifyDataSetChanged();
                         personajeDrop=false;
@@ -167,6 +255,7 @@ public class SelectionActivity extends AppCompatActivity{
                             viewPersonajesSelec.smoothScrollToPosition(listaPersonajesSelec.size()-1);
 
                         }
+                        ModificarFireBase();
                         personajeDrop=false;
                         personajeSelecDrop=false;
                         break;
@@ -185,10 +274,11 @@ public class SelectionActivity extends AppCompatActivity{
                     Personaje p=listaPersonajes.get(i);
                     p.modozombie=!p.modozombie;
                 }
+                ModificarFireBase();
                 PersonajeSeleccionado();
                 adapterPersonajes.notifyDataSetChanged();
                 adapterPersonajesSelec.notifyDataSetChanged();
-             }
+            }
         });
         adapterPersonajes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,7 +304,7 @@ public class SelectionActivity extends AppCompatActivity{
                     Toast.makeText(SelectionActivity.this, R.string.PersonajeYaSeleccionado, Toast.LENGTH_SHORT).show();
                 }
                 return false;
-           }
+            }
         });
         adapterPersonajesSelec.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -229,6 +319,7 @@ public class SelectionActivity extends AppCompatActivity{
             }
         });
     }
+
     private void CrearCartas() {
         //Distancia
         mashotgun=new Carta((R.drawable.cmashotgun),"cmashotgun");
@@ -488,10 +579,15 @@ public class SelectionActivity extends AppCompatActivity{
         listaPersonajes.add(grindlock);
         listaPersonajes.add(belle);
         listaPersonajes.add(kim);
+        ModificarFireBase();
+
+    }
+
+    private void ModificarFireBase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();
         for (int i=0;i<listaPersonajes.size();i++){
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("nombre").setValue(listaPersonajes.get(i).getNombre());
+            /*myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("nombre").setValue(listaPersonajes.get(i).getNombre());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habazul").setValue(listaPersonajes.get(i).getHabAzul());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habamarilla").setValue(listaPersonajes.get(i).getHabAmarilla());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habnaranja1").setValue(listaPersonajes.get(i).getHabNaranja1());
@@ -509,7 +605,7 @@ public class SelectionActivity extends AppCompatActivity{
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja2z").setValue(listaPersonajes.get(i).getHabRoja2Z());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja3z").setValue(listaPersonajes.get(i).getHabRoja3Z());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("fotoz").setValue(listaPersonajes.get(i).getFotoZ());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("caraz").setValue(listaPersonajes.get(i).getCaraZ());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("caraz").setValue(listaPersonajes.get(i).getCaraZ());*/
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta1").setValue(listaPersonajes.get(i).getCarta1());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta2").setValue(listaPersonajes.get(i).getCarta2());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta3").setValue(listaPersonajes.get(i).getCarta3());
@@ -524,7 +620,6 @@ public class SelectionActivity extends AppCompatActivity{
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level4").setValue(listaPersonajes.get(i).level[4]);
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("puntuacion").setValue(listaPersonajes.get(i).getPuntuacion());
         }
-
     }
 
     private void PersonajeSeleccionado() {

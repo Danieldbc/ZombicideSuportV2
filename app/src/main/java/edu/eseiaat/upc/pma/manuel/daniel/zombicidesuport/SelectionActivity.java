@@ -52,7 +52,7 @@ public class SelectionActivity extends AppCompatActivity{
             goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano;
     private TextView sala;
     private String textSala;
-
+    private int Nusuariosint;
 
 
     @Override
@@ -105,14 +105,30 @@ public class SelectionActivity extends AppCompatActivity{
     }
 
     private void ListenerFireBase() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference drusuario=database.getReference().child(textSala).child("Usuarios");
         final DatabaseReference drwatts = database.getReference().child(textSala).child("watts").child("invisible");
-        final DatabaseReference drbelle = database.getReference().child(textSala).child("watts").child("invisible");
-        final DatabaseReference drgrindlock = database.getReference().child(textSala).child("watts").child("invisible");
-        final DatabaseReference drjoshua = database.getReference().child(textSala).child("watts").child("invisible");
-        final DatabaseReference drkim = database.getReference().child(textSala).child("watts").child("invisible");
-        final DatabaseReference drshannon = database.getReference().child(textSala).child("watts").child("invisible");
+        final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle").child("invisible");
+        final DatabaseReference drgrindlock = database.getReference().child(textSala).child("Grindlock").child("invisible");
+        final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua").child("invisible");
+        final DatabaseReference drkim = database.getReference().child(textSala).child("Kim").child("invisible");
+        final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon").child("invisible");
+        drusuario.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listaUsuarios.clear();
+                listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario1").getValue()));
+                listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario2").getValue()));
+                listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario3").getValue()));
+                adapterUsuarios.notifyDataSetChanged();
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         drwatts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

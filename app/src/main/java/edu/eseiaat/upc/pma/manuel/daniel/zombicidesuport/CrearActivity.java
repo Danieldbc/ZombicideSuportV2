@@ -44,7 +44,9 @@ public class CrearActivity extends AppCompatActivity {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myref = database.getReference();
             myref.child(textSala).child("nombre").setValue(textSala);
-            myref.child(textSala).child("Usuario1").setValue(textNombre);
+            myref.child(textSala).child("Usuarios").child("Usuario1").setValue(textNombre);
+            myref.child(textSala).child("Usuarios").child("Usuario2").setValue("");
+            myref.child(textSala).child("Usuarios").child("Usuario3").setValue("");
             myref.child(textSala).child("Nusuarios").setValue("1");
             startActivity(intent);
             finish();
@@ -80,7 +82,8 @@ public class CrearActivity extends AppCompatActivity {
                         Nusuariosint++;
                         Nusuarios= String.valueOf(Nusuariosint);
                         myref.child(textSala).child("Nusuarios").setValue(Nusuarios);
-                        myref.child(textSala).child("Usuario"+Nusuarios).setValue(textNombre);
+                        myref.child(textSala).child("Usuarios").child("Usuario"+Nusuarios).setValue(textNombre);
+
 
 
                         startActivity(intent);

@@ -58,7 +58,6 @@ public class CrearActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Nusuarios = dataSnapshot.getValue(String.class);
-                    Nusuariosint= Integer.parseInt(Nusuarios);
                 }
 
                 @Override
@@ -77,6 +76,7 @@ public class CrearActivity extends AppCompatActivity {
                     if(textSala.equals(value)){
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myref = database.getReference();
+                        Nusuariosint= Integer.parseInt(Nusuarios);
                         Nusuariosint++;
                         Nusuarios= String.valueOf(Nusuariosint);
                         myref.child(textSala).child("Nusuarios").setValue(Nusuarios);

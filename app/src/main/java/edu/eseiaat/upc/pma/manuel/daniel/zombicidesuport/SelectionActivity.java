@@ -53,6 +53,7 @@ public class SelectionActivity extends AppCompatActivity{
     private TextView sala;
     private String textSala;
     private int Nusuariosint;
+    private ListView viewUsuarios;
 
 
     @Override
@@ -72,7 +73,7 @@ public class SelectionActivity extends AppCompatActivity{
         borrar=(ImageView)findViewById(R.id.Borrar);
 
         sala =(TextView)findViewById(R.id.Sala);
-        ListView viewUsuarios=(ListView)findViewById(R.id.ViewUsuarios);
+        viewUsuarios=(ListView)findViewById(R.id.ViewUsuarios);
         textSala=getIntent().getExtras().getString(keysala);
         sala.setText(textSala);
         listaUsuarios=new ArrayList<>();
@@ -106,6 +107,7 @@ public class SelectionActivity extends AppCompatActivity{
 
     private void ListenerFireBase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference drNusuario=database.getReference().child(textSala).child("Nusuarios");
         final DatabaseReference drusuario=database.getReference().child(textSala).child("Usuarios");
         final DatabaseReference drwatts = database.getReference().child(textSala).child("watts").child("invisible");
         final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle").child("invisible");
@@ -113,16 +115,26 @@ public class SelectionActivity extends AppCompatActivity{
         final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua").child("invisible");
         final DatabaseReference drkim = database.getReference().child(textSala).child("Kim").child("invisible");
         final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon").child("invisible");
+        drNusuario.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Nusuariosint= Integer.parseInt((String) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         drusuario.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listaUsuarios.clear();
                 for (int i=1;i<Nusuariosint+1;i++){
-                    if (String.valueOf(dataSnapshot.child("Usuario"+i).getValue())!=null){
-                        listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario1"+i).getValue()));
-                    }
+                    listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario"+i).getValue()));
                 }
                 adapterUsuarios.notifyDataSetChanged();
+                viewUsuarios.smoothScrollToPosition(listaUsuarios.size()-1);
 
             }
 

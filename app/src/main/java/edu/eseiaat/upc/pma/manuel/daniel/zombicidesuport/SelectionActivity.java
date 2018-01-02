@@ -117,9 +117,11 @@ public class SelectionActivity extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listaUsuarios.clear();
-                listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario1").getValue()));
-                listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario2").getValue()));
-                listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario3").getValue()));
+                for (int i=1;i<Nusuariosint+1;i++){
+                    if (String.valueOf(dataSnapshot.child("Usuario"+i).getValue())!=null){
+                        listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario1"+i).getValue()));
+                    }
+                }
                 adapterUsuarios.notifyDataSetChanged();
 
             }

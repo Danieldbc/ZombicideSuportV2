@@ -45,8 +45,6 @@ public class CrearActivity extends AppCompatActivity {
             DatabaseReference myref = database.getReference();
             myref.child(textSala).child("nombre").setValue(textSala);
             myref.child(textSala).child("Usuarios").child("Usuario1").setValue(textNombre);
-            myref.child(textSala).child("Usuarios").child("Usuario2").setValue("");
-            myref.child(textSala).child("Usuarios").child("Usuario3").setValue("");
             myref.child(textSala).child("Nusuarios").setValue("1");
             startActivity(intent);
             finish();

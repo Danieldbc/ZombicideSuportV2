@@ -51,6 +51,9 @@ public class SelectionActivity extends AppCompatActivity{
     private Carta mashotgun,eviltwins,pistol,rifle,sawedoff,shotgun,submg,baseballbat,chainsaw,crowbar,fireaxe,katana,machete,pan,
             goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano;
     private TextView sala;
+    private String textSala;
+    private String Nusuarios;
+    private int Nusuariosint;
 
 
     @Override
@@ -73,9 +76,9 @@ public class SelectionActivity extends AppCompatActivity{
 
         sala =(TextView)findViewById(R.id.Sala);
         ListView viewUsuarios=(ListView)findViewById(R.id.ViewUsuarios);
-        //sala.setText(getIntent().getExtras().getString(keysala));
+        textSala=getIntent().getExtras().getString(keysala);
+        sala.setText(textSala);
         listaUsuarios=new ArrayList<>();
-        listaUsuarios.add(getIntent().getExtras().getString(keynombre));
         adapterUsuarios=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,listaUsuarios);
         viewUsuarios.setAdapter(adapterUsuarios);
 
@@ -100,23 +103,9 @@ public class SelectionActivity extends AppCompatActivity{
         viewPersonajesSelec.setAdapter(adapterPersonajesSelec);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
+        final DatabaseReference Refusu = database.getReference(textSala+"/Nusuarios");
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                //String value = dataSnapshot.getValue(String.class);
-                //sala.setText(value);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-
-            }
-        });
         borrar.setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {
@@ -499,6 +488,43 @@ public class SelectionActivity extends AppCompatActivity{
         listaPersonajes.add(grindlock);
         listaPersonajes.add(belle);
         listaPersonajes.add(kim);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myref = database.getReference();
+        for (int i=0;i<listaPersonajes.size();i++){
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("nombre").setValue(listaPersonajes.get(i).getNombre());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habazul").setValue(listaPersonajes.get(i).getHabAzul());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habamarilla").setValue(listaPersonajes.get(i).getHabAmarilla());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habnaranja1").setValue(listaPersonajes.get(i).getHabNaranja1());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habnaranja2").setValue(listaPersonajes.get(i).getHabNaranja2());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja1").setValue(listaPersonajes.get(i).getHabRoja1());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja2").setValue(listaPersonajes.get(i).getHabRoja2());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja3").setValue(listaPersonajes.get(i).getHabRoja3());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("foto").setValue(listaPersonajes.get(i).getFoto());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("cara").setValue(listaPersonajes.get(i).getCara());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habazulz").setValue(listaPersonajes.get(i).getHabAzulZ());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habamarillaz").setValue(listaPersonajes.get(i).getHabAmarillaZ());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habnaranja1z").setValue(listaPersonajes.get(i).getHabNaranja1Z());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habnaranja2z").setValue(listaPersonajes.get(i).getHabNaranja2Z());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja1z").setValue(listaPersonajes.get(i).getHabRoja1Z());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja2z").setValue(listaPersonajes.get(i).getHabRoja2Z());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("habroja3z").setValue(listaPersonajes.get(i).getHabRoja3Z());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("fotoz").setValue(listaPersonajes.get(i).getFotoZ());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("caraz").setValue(listaPersonajes.get(i).getCaraZ());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta1").setValue(listaPersonajes.get(i).getCarta1());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta2").setValue(listaPersonajes.get(i).getCarta2());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta3").setValue(listaPersonajes.get(i).getCarta3());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta4").setValue(listaPersonajes.get(i).getCarta4());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta5").setValue(listaPersonajes.get(i).getCarta5());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("invisible").setValue(listaPersonajes.get(i).isInvisible());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("modozombie").setValue(listaPersonajes.get(i).isModozombie());
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level0").setValue(listaPersonajes.get(i).level[0]);
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level1").setValue(listaPersonajes.get(i).level[1]);
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level2").setValue(listaPersonajes.get(i).level[2]);
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level3").setValue(listaPersonajes.get(i).level[3]);
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level4").setValue(listaPersonajes.get(i).level[4]);
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("puntuacion").setValue(listaPersonajes.get(i).getPuntuacion());
+        }
+
     }
 
     private void PersonajeSeleccionado() {

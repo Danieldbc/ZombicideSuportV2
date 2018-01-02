@@ -20,6 +20,8 @@ public class CrearActivity extends AppCompatActivity {
     private EditText Sala;
     private EditText Nombre;
     private boolean crear;
+    private String Nusuarios;
+    private int Nusuariosint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class CrearActivity extends AppCompatActivity {
     }
 
     public void Aceptar(View view) {
+
         final Intent intent=new Intent(this,SelectionActivity.class);
         final String textSala=Sala.getText().toString();
         final String textNombre=Nombre.getText().toString();
@@ -41,14 +44,31 @@ public class CrearActivity extends AppCompatActivity {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myref = database.getReference();
             myref.child(textSala).child("nombre").setValue(textSala);
-            myref.child(textSala).child(textNombre).setValue(textNombre);
+            myref.child(textSala).child("Usuario1").setValue(textNombre);
+            myref.child(textSala).child("Nusuarios").setValue("1");
             startActivity(intent);
             finish();
         }else {
+
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             final DatabaseReference myRef = database.getReference(textSala+"/nombre");
+            final DatabaseReference Refusu = database.getReference(textSala+"/Nusuarios");
+
+            Refusu.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Nusuarios = dataSnapshot.getValue(String.class);
+                    Nusuariosint= Integer.parseInt(Nusuarios);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
             myRef.addValueEventListener(new ValueEventListener() {
+
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // This method is called once with the initial value and again
@@ -57,7 +77,12 @@ public class CrearActivity extends AppCompatActivity {
                     if(textSala.equals(value)){
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myref = database.getReference();
-                        myref.child(textSala).child(textNombre).setValue(textNombre);
+                        Nusuariosint++;
+                        Nusuarios= String.valueOf(Nusuariosint);
+                        myref.child(textSala).child("Nusuarios").setValue(Nusuarios);
+                        myref.child(textSala).child("Usuario"+Nusuarios).setValue(textNombre);
+
+
                         startActivity(intent);
                         finish();
                     }else{
@@ -68,7 +93,7 @@ public class CrearActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(DatabaseError error) {
-                    // Failed to read value
+
 
                 }
             });

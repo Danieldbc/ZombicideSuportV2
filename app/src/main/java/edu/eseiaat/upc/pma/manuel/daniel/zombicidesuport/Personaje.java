@@ -223,31 +223,31 @@ public class Personaje implements Serializable {
     }
 
     public void setCarta1(int i,String s){
-        Carta c = null;
+        Carta c = new Carta();
         c.setCarta(i);
         c.setNombre(s);
         this.setCarta1(c);
     }
     public void setCarta2(int i,String s){
-        Carta c = null;
+        Carta c = new Carta();
         c.setCarta(i);
         c.setNombre(s);
         this.setCarta2(c);
     }
     public void setCarta3(int i,String s){
-        Carta c = null;
+        Carta c = new Carta();
         c.setCarta(i);
         c.setNombre(s);
         this.setCarta3(c);
     }
     public void setCarta4(int i,String s){
-        Carta c = null;
+        Carta c = new Carta();
         c.setCarta(i);
         c.setNombre(s);
         this.setCarta4(c);
     }
     public void setCarta5(int i,String s){
-        Carta c = null;
+        Carta c = new Carta();
         c.setCarta(i);
         c.setNombre(s);
         this.setCarta5(c);

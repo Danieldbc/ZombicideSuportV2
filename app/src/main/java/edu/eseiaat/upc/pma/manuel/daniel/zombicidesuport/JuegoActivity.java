@@ -150,6 +150,7 @@ public class JuegoActivity extends AppCompatActivity {
         drwatts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                //Cambiar con el servalue.tostring y crear carta1,carta2 en personaje y parsear
                 watts.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
                 watts.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
                 watts.setCarta3((Carta) dataSnapshot.child("carta3").getValue());

@@ -46,6 +46,7 @@ public class CrearActivity extends AppCompatActivity {
             myref.child(textSala).child("nombre").setValue(textSala);
             myref.child(textSala).child("Usuarios").child("Usuario1").setValue(textNombre);
             myref.child(textSala).child("Nusuarios").setValue("1");
+            myref.child(textSala).child("Naceptados").setValue("0");
             startActivity(intent);
             finish();
         }else {

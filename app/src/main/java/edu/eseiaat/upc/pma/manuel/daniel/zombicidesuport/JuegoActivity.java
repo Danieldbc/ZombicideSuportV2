@@ -120,12 +120,20 @@ public class JuegoActivity extends AppCompatActivity {
         adaptarBarra = new AdaptadorBarra(lista);
         recy.setAdapter(adaptarBarra);
 
+        QuitarSelected();
         PersonajeSelec();
         ListenerCartas();
         ListenerHabilidades();
         ListenerFireBase();
 
 
+    }
+
+    private void QuitarSelected() {
+        for (int i=0;i<listaPersonajes.size();i++){
+            Personaje p=listaPersonajes.get(i);
+            p.selected=false;
+        }
     }
 
     private void ListenerFireBase() {
@@ -722,6 +730,7 @@ public class JuegoActivity extends AppCompatActivity {
 
     private void IntercambiarCartas(Personaje p,Personaje q) {
         Intent intent=new Intent(JuegoActivity.this,IntercambioActivity.class);
+        q.selected=true;
         intent.putExtra(IntercambioActivity.KeySala,textSala);
         intent.putExtra(IntercambioActivity.Keycartas,p);
         intent.putExtra(IntercambioActivity.Keycartas2,q);
@@ -1014,6 +1023,7 @@ public class JuegoActivity extends AppCompatActivity {
                 p2.setCarta3(pcard2.getCarta3());
                 p2.setCarta4(pcard2.getCarta4());
                 p2.setCarta5(pcard2.getCarta5());
+                p2.selected=false;
                 ModificarFireBase();
 
             }

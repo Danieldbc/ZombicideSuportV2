@@ -57,6 +57,7 @@ public class JuegoActivity extends AppCompatActivity {
     private LinearLayoutManager linlayoutmanagerOtros;
     private boolean miPersonaje=true;
     private String textSala;
+    private Button btIntercambiar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class JuegoActivity extends AppCompatActivity {
         foto=(ImageView)findViewById(R.id.foto);
         nombre=(TextView)findViewById(R.id.nombre);
         modozombie = (Switch) findViewById(R.id.ModoZombie);
+        btIntercambiar=(Button)findViewById(R.id.BTNCambio);
         cargar=getIntent().getBooleanExtra(KeyCargar,false);
         textSala=getIntent().getExtras().getString(KeyNombreSala);
         listaPersonajes=new ArrayList<>();
@@ -467,6 +469,7 @@ public class JuegoActivity extends AppCompatActivity {
                     idPersonajeInt=viewPersonajes.getChildAdapterPosition(view);
                     viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
                     viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
+                    btIntercambiar.setBackgroundColor(getColor(android.R.color.transparent));
                     Personaje p=listaPersonajes.get(idPersonaje);
                     Personaje q=listaPersonajes.get(idPersonajeInt);
                     if (!p.getNombre().equals(q.getNombre())){
@@ -489,6 +492,7 @@ public class JuegoActivity extends AppCompatActivity {
                     idPersonajeInt=viewPersonajesOtros.getChildAdapterPosition(view);
                     viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
                     viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
+                    btIntercambiar.setBackgroundColor(getColor(android.R.color.transparent));
                     Personaje p=listaPersonajes.get(idPersonaje);
                     Personaje q=listaPersonajesOtros.get(idPersonajeInt);
                     if (!p.getNombre().equals(q.getNombre())){
@@ -1030,12 +1034,12 @@ public class JuegoActivity extends AppCompatActivity {
             if (!intercambiar){
                 viewPersonajes.setBackgroundColor(getColor(android.R.color.holo_green_dark));
                 viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.holo_green_dark));
-                modozombie.setBackgroundColor(getColor(android.R.color.holo_red_dark));
+                btIntercambiar.setBackgroundColor(getColor(android.R.color.holo_red_dark));
                 intercambiar=true;
             }else {
                 viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
                 viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
-                modozombie.setBackgroundColor(getColor(android.R.color.transparent));
+                btIntercambiar.setBackgroundColor(getColor(android.R.color.transparent));
                 intercambiar=false;
             }
         }

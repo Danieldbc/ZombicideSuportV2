@@ -1,7 +1,9 @@
 package edu.eseiaat.upc.pma.manuel.daniel.zombicidesuport;
 
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -120,12 +122,13 @@ public class JuegoActivity extends AppCompatActivity {
         adaptarBarra = new AdaptadorBarra(lista);
         recy.setAdapter(adaptarBarra);
 
-        QuitarSelected();
 
+        QuitarSelected();
+        PersonajeSelec();
         ListenerCartas();
         ListenerHabilidades();
         ListenerFireBase();
-        PersonajeSelec();
+
 
 
     }
@@ -139,6 +142,7 @@ public class JuegoActivity extends AppCompatActivity {
 
     private void ListenerFireBase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
         final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
         final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
         final DatabaseReference drgrindlock = database.getReference().child(textSala).child("Grindlock");
@@ -216,26 +220,56 @@ public class JuegoActivity extends AppCompatActivity {
 
     private void ComprobarPersonajeFB(DataSnapshot dataSnapshot) {
         String PersonajeFireBase=dataSnapshot.child("nombre").getValue().toString();
-        Personaje p;
+        Personaje p1;
+        Personaje p = new Personaje();
+        Personaje q = new Personaje();
         for (int i=0;i<listaPersonajes.size();i++){
-            p=listaPersonajes.get(i);
-            if (p.getNombre().equals(PersonajeFireBase)){
-                ActualizarPersonaje(dataSnapshot,p);
+            p1=listaPersonajes.get(i);
+            if (p1.getNombre().equals(PersonajeFireBase)){
+                ActualizarPersonaje(dataSnapshot,p1);
+            }
+            if (p1.selected){
+                q=p1;
+                p1.selected=false;
+            }
+
+        }
+
+        for (int i=0;i<listaPersonajesOtros.size();i++){
+            p1=listaPersonajesOtros.get(i);
+            if (p1.getNombre().equals(PersonajeFireBase)){
+                ActualizarPersonaje(dataSnapshot,p1);
+            }
+            if (p1.intercambiar){
+                p=p1;
+                p1.intercambiar=false;
             }
         }
-        for (int i=0;i<listaPersonajesOtros.size();i++){
-            p=listaPersonajesOtros.get(i);
-            if (p.getNombre().equals(PersonajeFireBase)){
-                ActualizarPersonaje(dataSnapshot,p);
+        if (p.intercambiar){
+            if (q.intercambiar){
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                builder.setTitle(R.string.Intercambio);
+                builder.setMessage(R.string.Intercambiando);
+                final Personaje finalP = p;
+                final Personaje finalQ = q;
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        IRaIntercambiar(finalP, finalQ);
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, null);
+                builder.create().show();
+
             }
         }
 
         if(miPersonaje) {
-            p=listaPersonajes.get(idPersonaje);
+            p1=listaPersonajes.get(idPersonaje);
         }else{
-            p=listaPersonajesOtros.get(idPersonaje);
+            p1=listaPersonajesOtros.get(idPersonaje);
         }
-        if(p.getNombre().equals(PersonajeFireBase)){
+        if(p1.getNombre().equals(PersonajeFireBase)){
             PersonajeSelec();
         }
     }
@@ -729,9 +763,26 @@ public class JuegoActivity extends AppCompatActivity {
         ModificarFireBase();
     }
 
-    private void IntercambiarCartas(Personaje p,Personaje q) {
-        Intent intent=new Intent(JuegoActivity.this,IntercambioActivity.class);
+    private void IntercambiarCartas(final Personaje p, final Personaje q) {
+        p.intercambiar=true;
         q.selected=true;
+        ModificarFireBase();
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle(R.string.Esperando);
+        builder.setMessage(R.string.EsperandoAceptar);
+        builder.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                q.selected=false;
+                p.intercambiar=false;
+            }
+        });
+        builder.create().show();
+
+    }
+
+    private void IRaIntercambiar(Personaje p, Personaje q) {
+        Intent intent=new Intent(JuegoActivity.this,IntercambioActivity.class);
         intent.putExtra(IntercambioActivity.KeySala,textSala);
         intent.putExtra(IntercambioActivity.Keycartas,p);
         intent.putExtra(IntercambioActivity.Keycartas2,q);
@@ -1005,7 +1056,7 @@ public class JuegoActivity extends AppCompatActivity {
         }
         if (requestCode==IntercambioActivity.pasarcartas){
             if (resultCode==RESULT_OK){
-                Personaje p1=listaPersonajes.get(idPersonaje);
+                /*Personaje p1=listaPersonajes.get(idPersonaje);
                 Personaje pcard1= (Personaje) data.getExtras().getSerializable(IntercambioActivity.Keycartas);
                 p1.setCarta1(pcard1.getCarta1());
                 p1.setCarta2(pcard1.getCarta2());
@@ -1024,8 +1075,7 @@ public class JuegoActivity extends AppCompatActivity {
                 p2.setCarta3(pcard2.getCarta3());
                 p2.setCarta4(pcard2.getCarta4());
                 p2.setCarta5(pcard2.getCarta5());
-                p2.selected=false;
-                ModificarFireBase();
+                ModificarFireBase();*/
 
             }
         }

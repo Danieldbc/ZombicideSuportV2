@@ -12,13 +12,13 @@ public class Personaje implements Serializable {
     public String habAzulZ, habAmarillaZ, habNaranja1Z,habNaranja2Z, habRoja1Z,HabRoja2Z,habRoja3Z;
     public int fotoZ,caraZ;
     public Carta[] cartas;
-    public boolean invisible,modozombie,selected;
+    public boolean invisible,modozombie,selected,intercambiar;
     public int[] level;
     public int puntuacion,vuelta;
 
     public Personaje(){};
 
-    public Personaje(String nombre, String habAzul, String habAmarilla, String habNaranja1, String habNaranja2, String habRoja1, String habRoja2, String habRoja3, int foto, int cara, String habAzulZ, String habAmarillaZ, String habNaranja1Z, String habNaranja2Z, String habRoja1Z, String habRoja2Z, String habRoja3Z, int fotoZ, int caraZ, Carta carta1, Carta carta2, Carta carta3, Carta carta4, Carta carta5, boolean invisible, boolean modozombie, boolean selected, int[] level, int puntuacion,int vuelta) {
+    public Personaje(String nombre, String habAzul, String habAmarilla, String habNaranja1, String habNaranja2, String habRoja1, String habRoja2, String habRoja3, int foto, int cara, String habAzulZ, String habAmarillaZ, String habNaranja1Z, String habNaranja2Z, String habRoja1Z, String habRoja2Z, String habRoja3Z, int fotoZ, int caraZ, Carta carta1, Carta carta2, Carta carta3, Carta carta4, Carta carta5, boolean invisible, boolean modozombie, boolean selected,boolean intercambiar, int[] level, int puntuacion,int vuelta) {
         this.nombre = nombre;
         this.habAzul = habAzul;
         this.habAmarilla = habAmarilla;
@@ -47,6 +47,7 @@ public class Personaje implements Serializable {
         this.invisible = invisible;
         this.modozombie = modozombie;
         this.selected = selected;
+        this.intercambiar = intercambiar;
         this.level = level;
         this.puntuacion = puntuacion;
         this.vuelta = vuelta;
@@ -216,7 +217,15 @@ public class Personaje implements Serializable {
         this.level = level;
     }
 
-    public void intercambiar(Personaje p, int c1,int c2){
+    public boolean isIntercambiar() {
+        return intercambiar;
+    }
+
+    public void setIntercambiar(boolean intercambiar) {
+        this.intercambiar = intercambiar;
+    }
+
+    public void intercambiar(Personaje p, int c1, int c2){
         Carta aux=p.getCarta(c1);
         p.setCarta(c1,this.getCarta(c2));
         this.setCarta(c2,aux);

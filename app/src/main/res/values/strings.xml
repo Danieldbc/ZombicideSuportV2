@@ -62,4 +62,8 @@
     <string name="NoPersonajeSelec">No se ha seleccionado ningún personaje</string>
     <string name="Esperando">Esperando</string>
     <string name="EspCompañeros">Esperando al resto de compañeros</string>
+    <string name="ok">Aceptar</string>
+    <string name="EsperandoAceptar">Esperando que el compañero acepte</string>
+    <string name="Intercambio">Intercambio</string>
+    <string name="Intercambiando">Desean intercambiar cartas</string>
 </resources>

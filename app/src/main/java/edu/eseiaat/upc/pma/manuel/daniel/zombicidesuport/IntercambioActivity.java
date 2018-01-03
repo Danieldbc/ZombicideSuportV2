@@ -9,16 +9,24 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class IntercambioActivity extends AppCompatActivity {
     public static String Keycartas="key_cartas";
     public static String Keycartas2="key_cartas2";
     public static int pasarcartas=2;
+    public static String KeySala="key_sala";
     private Personaje p1, p2;
 
     private ImageView carta11,carta12,carta13,carta14,carta15,carta21,carta22,carta23,carta24,carta25;
     private TextView nombrep,nombreq;
     private int c1,c2;
     boolean p1drag,p1drop;
+    private String textSala;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +44,125 @@ public class IntercambioActivity extends AppCompatActivity {
         carta25=(ImageView)findViewById(R.id.carta25);
         nombrep=(TextView)findViewById(R.id.nombre1);
         nombreq=(TextView)findViewById(R.id.nombre2);
+        textSala=getIntent().getExtras().getString(KeySala);
         p1 = (Personaje) getIntent().getSerializableExtra(Keycartas);
         p2 = (Personaje) getIntent().getSerializableExtra(Keycartas2);
-        Mostrar();
 
+        Mostrar();
+        ListenerFireBase();
+        ListenerCartas();
+
+    }
+    private void ListenerFireBase() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
+        final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
+        final DatabaseReference drgrindlock = database.getReference().child(textSala).child("Grindlock");
+        final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
+        final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
+        final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
+
+        drwatts.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drbelle.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drgrindlock.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drjoshua.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drkim.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drshannon.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void ComprobarPersonajeFB(DataSnapshot dataSnapshot) {
+        String PersonajeFireBase=dataSnapshot.child("nombre").getValue().toString();
+
+        if (p1.getNombre().equals(PersonajeFireBase)){
+            ActualizarPersonaje(dataSnapshot,p1);
+        }
+
+        if (p2.getNombre().equals(PersonajeFireBase)){
+            ActualizarPersonaje(dataSnapshot,p2);
+        }
+
+        Mostrar();
+    }
+    private void ActualizarPersonaje(DataSnapshot dataSnapshot,Personaje p) {
+        int i= Integer.parseInt((dataSnapshot.child("carta1").child("carta").getValue().toString()));
+        String s=(dataSnapshot.child("carta1").child("nombre").getValue().toString());
+        p.setCarta1(i,s);
+        i=Integer.parseInt((dataSnapshot.child("carta2").child("carta").getValue().toString()));
+        s=(dataSnapshot.child("carta2").child("nombre").getValue().toString());
+        p.setCarta2(i,s);
+        i=Integer.parseInt((dataSnapshot.child("carta3").child("carta").getValue().toString()));
+        s=(dataSnapshot.child("carta3").child("nombre").getValue().toString());
+        p.setCarta3(i,s);
+        i=Integer.parseInt((dataSnapshot.child("carta4").child("carta").getValue().toString()));
+        s=(dataSnapshot.child("carta4").child("nombre").getValue().toString());
+        p.setCarta4(i,s);
+        i=Integer.parseInt((dataSnapshot.child("carta5").child("carta").getValue().toString()));
+        s=(dataSnapshot.child("carta5").child("nombre").getValue().toString());
+        p.setCarta5(i,s);
+
+
+    }
+
+    private void ListenerCartas() {
         carta11.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -328,9 +451,26 @@ public class IntercambioActivity extends AppCompatActivity {
         }
         p1drop=false;
         p1drag=false;
-        Mostrar();
+        ModificarFireBase();
     }
+    private void ModificarFireBase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myref = database.getReference();
 
+        myref.child(textSala).child(p1.getNombre()).child("carta1").setValue(p1.getCarta1());
+        myref.child(textSala).child(p1.getNombre()).child("carta2").setValue(p1.getCarta2());
+        myref.child(textSala).child(p1.getNombre()).child("carta3").setValue(p1.getCarta3());
+        myref.child(textSala).child(p1.getNombre()).child("carta4").setValue(p1.getCarta4());
+        myref.child(textSala).child(p1.getNombre()).child("carta5").setValue(p1.getCarta5());
+
+        myref.child(textSala).child(p2.getNombre()).child("carta1").setValue(p2.getCarta1());
+        myref.child(textSala).child(p2.getNombre()).child("carta2").setValue(p2.getCarta2());
+        myref.child(textSala).child(p2.getNombre()).child("carta3").setValue(p2.getCarta3());
+        myref.child(textSala).child(p2.getNombre()).child("carta4").setValue(p2.getCarta4());
+        myref.child(textSala).child(p2.getNombre()).child("carta5").setValue(p2.getCarta5());
+
+
+    }
     private void Mostrar() {
         nombrep.setText(p1.getNombre());
         carta11.setImageResource(p1.getCarta1().getCarta());

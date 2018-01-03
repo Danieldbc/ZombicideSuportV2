@@ -469,11 +469,11 @@ public class JuegoActivity extends AppCompatActivity {
                     idPersonajeInt=viewPersonajes.getChildAdapterPosition(view);
                     viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
                     viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
-                    btIntercambiar.setBackgroundColor(getColor(android.R.color.transparent));
+                    btIntercambiar.setBackgroundColor(getColor(R.color.black_overlay));
                     Personaje p=listaPersonajes.get(idPersonaje);
                     Personaje q=listaPersonajes.get(idPersonajeInt);
                     if (!p.getNombre().equals(q.getNombre())){
-                        IntercambiarCartas();
+                        IntercambiarCartas(p,q);
                     }
 
                 }else{
@@ -492,11 +492,11 @@ public class JuegoActivity extends AppCompatActivity {
                     idPersonajeInt=viewPersonajesOtros.getChildAdapterPosition(view);
                     viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
                     viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
-                    btIntercambiar.setBackgroundColor(getColor(android.R.color.transparent));
+                    btIntercambiar.setBackgroundColor(getColor(R.color.black_overlay));
                     Personaje p=listaPersonajes.get(idPersonaje);
                     Personaje q=listaPersonajesOtros.get(idPersonajeInt);
                     if (!p.getNombre().equals(q.getNombre())){
-                        IntercambiarCartas();
+                        IntercambiarCartas(p,q);
                     }
 
                 }else{
@@ -720,17 +720,9 @@ public class JuegoActivity extends AppCompatActivity {
         ModificarFireBase();
     }
 
-    private void IntercambiarCartas() {
+    private void IntercambiarCartas(Personaje p,Personaje q) {
         Intent intent=new Intent(JuegoActivity.this,IntercambioActivity.class);
-        Personaje p=listaPersonajes.get(idPersonaje);
-        Personaje q;
-        if(miPersonaje){
-            q=listaPersonajes.get(idPersonajeInt);
-        }else {
-            q=listaPersonajesOtros.get(idPersonajeInt);
-        }
-
-
+        intent.putExtra(IntercambioActivity.KeySala,textSala);
         intent.putExtra(IntercambioActivity.Keycartas,p);
         intent.putExtra(IntercambioActivity.Keycartas2,q);
         startActivityForResult(intent,IntercambioActivity.pasarcartas);
@@ -1039,7 +1031,7 @@ public class JuegoActivity extends AppCompatActivity {
             }else {
                 viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
                 viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
-                btIntercambiar.setBackgroundColor(getColor(android.R.color.transparent));
+                btIntercambiar.setBackgroundColor(getColor(R.color.black_overlay));
                 intercambiar=false;
             }
         }

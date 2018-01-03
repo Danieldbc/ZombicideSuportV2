@@ -60,4 +60,6 @@
     <string name="NoRead">No se ha podido leer</string>
     <string name="NoSala">No se ha encontrado la sala</string>
     <string name="NoPersonajeSelec">No se ha seleccionado ningún personaje</string>
+    <string name="Esperando">Esperando</string>
+    <string name="EspCompañeros">Esperando al resto de compañeros</string>
 </resources>

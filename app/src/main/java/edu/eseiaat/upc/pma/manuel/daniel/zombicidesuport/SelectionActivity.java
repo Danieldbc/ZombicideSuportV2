@@ -1,7 +1,9 @@
 package edu.eseiaat.upc.pma.manuel.daniel.zombicidesuport;
 
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -56,6 +58,7 @@ public class SelectionActivity extends AppCompatActivity{
     private int Nusuariosint;
     private ListView viewUsuarios;
     private List<Personaje> listaPersonajesOtros;
+    private int Naceptados;
 
 
     @Override
@@ -110,6 +113,7 @@ public class SelectionActivity extends AppCompatActivity{
 
     private void ListenerFireBase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference draceptados=database.getReference().child(textSala).child("Naceptados");
         final DatabaseReference drNusuario=database.getReference().child(textSala).child("Nusuarios");
         final DatabaseReference drusuario=database.getReference().child(textSala).child("Usuarios");
         final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
@@ -118,6 +122,20 @@ public class SelectionActivity extends AppCompatActivity{
         final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
         final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
         final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
+        draceptados.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Naceptados= Integer.parseInt((String) dataSnapshot.getValue());
+                if (Naceptados==Nusuariosint){
+                    Entrar();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         drNusuario.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -677,25 +695,37 @@ public class SelectionActivity extends AppCompatActivity{
     }
     public void Aceptar(View view) {
         if (listaPersonajesSelec.size()!=0){
-            for (int i=0;i<listaPersonajes.size();i++){
-                Personaje p=listaPersonajes.get(i);
-                p.modozombie=false;
-            }
-            PersonajesDeOtros();
-            Intent intent=new Intent(this,JuegoActivity.class);
-            intent.putExtra(JuegoActivity.KeyNombreSala,textSala);
-            intent.putExtra(JuegoActivity.KeyListaPersonajesOtros, (Serializable) listaPersonajesOtros);
-            intent.putExtra(JuegoActivity.KeyListaPersonajes, listaPersonajesSelec);
-            intent.putExtra(JuegoActivity.KeyListaCartasDistancia,CartasDistancia );
-            intent.putExtra(JuegoActivity.KeyListaCartasCuerpo, CartasCuerpo);
-            intent.putExtra(JuegoActivity.KeyListaCartasEspeciales,CartasEspeciales);
-            intent.putExtra(JuegoActivity.KeyListaCartasOtras, CartasOtras);
-            startActivity(intent);
-            finish();
+            Naceptados++;
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myref = database.getReference();
+            myref.child(textSala).child("Naceptados").setValue(Naceptados);
+
+            AlertDialog.Builder builder=new AlertDialog.Builder(this);
+            builder.setTitle(R.string.Esperando);
+            builder.setMessage(R.string.EspCompañeros);
+            builder.create().show();
         }else{
             Toast.makeText(SelectionActivity.this, R.string.NoPersonajeSelec, Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void Entrar() {
+        for (int i=0;i<listaPersonajes.size();i++){
+            Personaje p=listaPersonajes.get(i);
+            p.modozombie=false;
+        }
+        PersonajesDeOtros();
+        Intent intent=new Intent(this,JuegoActivity.class);
+        intent.putExtra(JuegoActivity.KeyNombreSala,textSala);
+        intent.putExtra(JuegoActivity.KeyListaPersonajesOtros, (Serializable) listaPersonajesOtros);
+        intent.putExtra(JuegoActivity.KeyListaPersonajes, listaPersonajesSelec);
+        intent.putExtra(JuegoActivity.KeyListaCartasDistancia,CartasDistancia );
+        intent.putExtra(JuegoActivity.KeyListaCartasCuerpo, CartasCuerpo);
+        intent.putExtra(JuegoActivity.KeyListaCartasEspeciales,CartasEspeciales);
+        intent.putExtra(JuegoActivity.KeyListaCartasOtras, CartasOtras);
+        startActivity(intent);
+        finish();
     }
 
     private void PersonajesDeOtros() {

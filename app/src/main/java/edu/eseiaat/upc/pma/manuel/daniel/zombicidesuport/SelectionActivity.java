@@ -55,7 +55,7 @@ public class SelectionActivity extends AppCompatActivity{
             goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano;
     private TextView sala;
     private String textSala;
-    private int Nusuariosint;
+    private int Nusuariosint=1;
     private ListView viewUsuarios;
     private List<Personaje> listaPersonajesOtros;
     private int Naceptados;
@@ -89,7 +89,7 @@ public class SelectionActivity extends AppCompatActivity{
         CrearListaCartas();
         CrearPersonajes();
         CrearListaPersonajes();
-        PersonajeSeleccionado();
+
         viewPersonajes =(RecyclerView)findViewById(R.id.ListaPersonajes);
         linlayoutmanager =new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         viewPersonajes.setLayoutManager(linlayoutmanager);
@@ -108,7 +108,7 @@ public class SelectionActivity extends AppCompatActivity{
 
         ListenerFireBase();
         ListenerPantalla();
-
+        PersonajeSeleccionado();
     }
 
     private void ListenerFireBase() {
@@ -125,7 +125,7 @@ public class SelectionActivity extends AppCompatActivity{
         draceptados.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Naceptados= Integer.parseInt((String) dataSnapshot.getValue());
+                Naceptados= Integer.parseInt(dataSnapshot.getValue().toString());
                 if (Naceptados==Nusuariosint){
                     Entrar();
                 }

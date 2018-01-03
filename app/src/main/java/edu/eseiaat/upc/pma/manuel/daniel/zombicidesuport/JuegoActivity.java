@@ -121,10 +121,11 @@ public class JuegoActivity extends AppCompatActivity {
         recy.setAdapter(adaptarBarra);
 
         QuitarSelected();
-        PersonajeSelec();
+
         ListenerCartas();
         ListenerHabilidades();
         ListenerFireBase();
+        PersonajeSelec();
 
 
     }

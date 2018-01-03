@@ -58,7 +58,7 @@ public class CrearActivity extends AppCompatActivity {
             Refusu.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Nusuarios = dataSnapshot.getValue(String.class);
+                    Nusuarios =dataSnapshot.getValue().toString();
                 }
 
                 @Override

@@ -1,7 +1,6 @@
 package edu.eseiaat.upc.pma.manuel.daniel.zombicidesuport;
 
 import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,16 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
-import static android.provider.Telephony.Mms.Part.FILENAME;
 
 public class JuegoActivity extends AppCompatActivity {
 
@@ -54,7 +43,6 @@ public class JuegoActivity extends AppCompatActivity {
     private int c1,c2;
     private ImageView carta1,carta2,carta3,carta4,carta5;
     private ArrayList<Carta> CartasDistancia,CartasCuerpo,CartasEspeciales,CartasOtras;
-    private Personaje watts,joshua,shannon,grindlock,belle,kim;
     private Switch modozombie;
     private boolean intercambiar;
     private ArrayList<BARRA> lista;
@@ -150,30 +138,7 @@ public class JuegoActivity extends AppCompatActivity {
         drwatts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Cambiar con el servalue.tostring y crear carta1,carta2 en personaje y parsear
-                watts.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
-                watts.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
-                watts.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
-                watts.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
-                watts.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
-                watts.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                watts.level[0]= (int) dataSnapshot.child("level0").getValue();
-                watts.level[1]= (int) dataSnapshot.child("level1").getValue();
-                watts.level[2]= (int) dataSnapshot.child("level2").getValue();
-                watts.level[3]= (int) dataSnapshot.child("level3").getValue();
-                watts.level[4]= (int) dataSnapshot.child("level4").getValue();
-                watts.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
-                watts.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
-                watts.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                Personaje p;
-                if(miPersonaje) {
-                    p = listaPersonajes.get(idPersonaje);
-                }else{
-                    p=listaPersonajesOtros.get(idPersonaje);
-                }
-                if(watts.getNombre().equals(p.getNombre())){
-                    PersonajeSelec();
-                }
+                ComprobarPersonajeFB(dataSnapshot);
             }
 
             @Override
@@ -184,29 +149,7 @@ public class JuegoActivity extends AppCompatActivity {
         drbelle.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                belle.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
-                belle.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
-                belle.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
-                belle.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
-                belle.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
-                belle.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                belle.level[0]= (int) dataSnapshot.child("level0").getValue();
-                belle.level[1]= (int) dataSnapshot.child("level1").getValue();
-                belle.level[2]= (int) dataSnapshot.child("level2").getValue();
-                belle.level[3]= (int) dataSnapshot.child("level3").getValue();
-                belle.level[4]= (int) dataSnapshot.child("level4").getValue();
-                belle.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
-                belle.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
-                belle.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                Personaje p;
-                if(miPersonaje) {
-                    p = listaPersonajes.get(idPersonaje);
-                }else{
-                    p=listaPersonajesOtros.get(idPersonaje);
-                }
-                if(belle.getNombre().equals(p.getNombre())){
-                    PersonajeSelec();
-                }
+                ComprobarPersonajeFB(dataSnapshot);
             }
 
             @Override
@@ -217,29 +160,7 @@ public class JuegoActivity extends AppCompatActivity {
         drgrindlock.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                grindlock.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
-                grindlock.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
-                grindlock.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
-                grindlock.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
-                grindlock.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
-                grindlock.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                grindlock.level[0]= (int) dataSnapshot.child("level0").getValue();
-                grindlock.level[1]= (int) dataSnapshot.child("level1").getValue();
-                grindlock.level[2]= (int) dataSnapshot.child("level2").getValue();
-                grindlock.level[3]= (int) dataSnapshot.child("level3").getValue();
-                grindlock.level[4]= (int) dataSnapshot.child("level4").getValue();
-                grindlock.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
-                grindlock.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
-                grindlock.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                Personaje p;
-                if(miPersonaje) {
-                    p = listaPersonajes.get(idPersonaje);
-                }else{
-                    p=listaPersonajesOtros.get(idPersonaje);
-                }
-                if(grindlock.getNombre().equals(p.getNombre())){
-                    PersonajeSelec();
-                }
+                 ComprobarPersonajeFB(dataSnapshot);
             }
 
             @Override
@@ -250,29 +171,7 @@ public class JuegoActivity extends AppCompatActivity {
         drjoshua.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                joshua.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
-                joshua.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
-                joshua.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
-                joshua.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
-                joshua.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
-                joshua.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                joshua.level[0]= (int) dataSnapshot.child("level0").getValue();
-                joshua.level[1]= (int) dataSnapshot.child("level1").getValue();
-                joshua.level[2]= (int) dataSnapshot.child("level2").getValue();
-                joshua.level[3]= (int) dataSnapshot.child("level3").getValue();
-                joshua.level[4]= (int) dataSnapshot.child("level4").getValue();
-                joshua.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
-                joshua.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
-                joshua.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                Personaje p;
-                if(miPersonaje) {
-                    p = listaPersonajes.get(idPersonaje);
-                }else{
-                    p=listaPersonajesOtros.get(idPersonaje);
-                }
-                if(joshua.getNombre().equals(p.getNombre())){
-                    PersonajeSelec();
-                }
+                ComprobarPersonajeFB(dataSnapshot);
             }
 
             @Override
@@ -283,29 +182,7 @@ public class JuegoActivity extends AppCompatActivity {
         drkim.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                kim.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
-                kim.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
-                kim.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
-                kim.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
-                kim.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
-                kim.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                kim.level[0]= (int) dataSnapshot.child("level0").getValue();
-                kim.level[1]= (int) dataSnapshot.child("level1").getValue();
-                kim.level[2]= (int) dataSnapshot.child("level2").getValue();
-                kim.level[3]= (int) dataSnapshot.child("level3").getValue();
-                kim.level[4]= (int) dataSnapshot.child("level4").getValue();
-                kim.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
-                kim.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
-                kim.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                Personaje p;
-                if(miPersonaje) {
-                    p = listaPersonajes.get(idPersonaje);
-                }else{
-                    p=listaPersonajesOtros.get(idPersonaje);
-                }
-                if(kim.getNombre().equals(p.getNombre())){
-                    PersonajeSelec();
-                }
+                ComprobarPersonajeFB(dataSnapshot);
             }
 
             @Override
@@ -316,29 +193,7 @@ public class JuegoActivity extends AppCompatActivity {
         drshannon.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                shannon.setCarta1((Carta) dataSnapshot.child("carta1").getValue());
-                shannon.setCarta2((Carta) dataSnapshot.child("carta2").getValue());
-                shannon.setCarta3((Carta) dataSnapshot.child("carta3").getValue());
-                shannon.setCarta4((Carta) dataSnapshot.child("carta4").getValue());
-                shannon.setCarta5((Carta) dataSnapshot.child("carta5").getValue());
-                shannon.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                shannon.level[0]= (int) dataSnapshot.child("level0").getValue();
-                shannon.level[1]= (int) dataSnapshot.child("level1").getValue();
-                shannon.level[2]= (int) dataSnapshot.child("level2").getValue();
-                shannon.level[3]= (int) dataSnapshot.child("level3").getValue();
-                shannon.level[4]= (int) dataSnapshot.child("level4").getValue();
-                shannon.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
-                shannon.puntuacion= (int) dataSnapshot.child("puntuacion").getValue();
-                shannon.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                Personaje p;
-                if(miPersonaje) {
-                    p = listaPersonajes.get(idPersonaje);
-                }else{
-                    p=listaPersonajesOtros.get(idPersonaje);
-                }
-                if(shannon.getNombre().equals(p.getNombre())){
-                    PersonajeSelec();
-                }
+                ComprobarPersonajeFB(dataSnapshot);
             }
 
             @Override
@@ -347,6 +202,64 @@ public class JuegoActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void ComprobarPersonajeFB(DataSnapshot dataSnapshot) {
+        String PersonajeFireBase=dataSnapshot.child("nombre").getValue().toString();
+        Personaje p;
+        for (int i=0;i<listaPersonajes.size();i++){
+            p=listaPersonajes.get(i);
+            if (p.getNombre().equals(PersonajeFireBase)){
+                ActualizarPersonaje(dataSnapshot,p);
+            }
+        }
+        for (int i=0;i<listaPersonajesOtros.size();i++){
+            p=listaPersonajesOtros.get(i);
+            if (p.getNombre().equals(PersonajeFireBase)){
+                ActualizarPersonaje(dataSnapshot,p);
+            }
+        }
+
+        if(miPersonaje) {
+            p=listaPersonajes.get(idPersonaje);
+        }else{
+            p=listaPersonajesOtros.get(idPersonaje);
+        }
+        if(p.getNombre().equals(PersonajeFireBase)){
+            PersonajeSelec();
+        }
+    }
+
+    private void ActualizarPersonaje(DataSnapshot dataSnapshot,Personaje p) {
+        int i= Integer.parseInt((dataSnapshot.child("carta1").child("carta").getValue().toString()));
+        String s=(dataSnapshot.child("carta1").child("nombre").getValue().toString());
+        p.setCarta1(i,s);
+        i=Integer.parseInt((dataSnapshot.child("carta2").child("carta").getValue().toString()));
+        s=(dataSnapshot.child("carta2").child("nombre").getValue().toString());
+        p.setCarta2(i,s);
+        i=Integer.parseInt((dataSnapshot.child("carta3").child("carta").getValue().toString()));
+        s=(dataSnapshot.child("carta3").child("nombre").getValue().toString());
+        p.setCarta3(i,s);
+        i=Integer.parseInt((dataSnapshot.child("carta4").child("carta").getValue().toString()));
+        s=(dataSnapshot.child("carta4").child("nombre").getValue().toString());
+        p.setCarta4(i,s);
+        i=Integer.parseInt((dataSnapshot.child("carta5").child("carta").getValue().toString()));
+        s=(dataSnapshot.child("carta5").child("nombre").getValue().toString());
+        p.setCarta5(i,s);
+
+        p.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+        p.level[0]= Integer.parseInt(dataSnapshot.child("level0").getValue().toString());
+        p.level[1]= Integer.parseInt(dataSnapshot.child("level1").getValue().toString());
+        p.level[2]= Integer.parseInt(dataSnapshot.child("level2").getValue().toString());
+        p.level[3]= Integer.parseInt(dataSnapshot.child("level3").getValue().toString());
+        p.level[4]= Integer.parseInt(dataSnapshot.child("level4").getValue().toString());
+        p.setModozombie((Boolean) dataSnapshot.child("modozombie").getValue());
+        p.puntuacion= Integer.parseInt(dataSnapshot.child("puntuacion").getValue().toString());
+        p.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+
+        adapterPersonajesOtros.notifyDataSetChanged();
+        adapterPersonajes.notifyDataSetChanged();
+    }
+
     private void ModificarFireBase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();
@@ -366,8 +279,6 @@ public class JuegoActivity extends AppCompatActivity {
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("puntuacion").setValue(listaPersonajes.get(i).getPuntuacion());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("selected").setValue(listaPersonajes.get(i).isSelected());
         }
-        adapterPersonajesOtros.notifyDataSetChanged();
-        adapterPersonajes.notifyDataSetChanged();
     }
     private void ListenerHabilidades() {
         habNaranja1.setOnClickListener(new View.OnClickListener() {
@@ -802,7 +713,7 @@ public class JuegoActivity extends AppCompatActivity {
     private void MovimientoCarta() {
         Personaje p=listaPersonajes.get(idPersonaje);
         p.intercambiar(p,c1,c2);
-        PersonajeSelec();
+        ModificarFireBase();
     }
 
     private void IntercambiarCartas() {
@@ -1082,7 +993,7 @@ public class JuegoActivity extends AppCompatActivity {
                 p.setCarta3(pcard.getCarta3());
                 p.setCarta4(pcard.getCarta4());
                 p.setCarta5(pcard.getCarta5());
-                PersonajeSelec();
+                ModificarFireBase();
 
             }
         }
@@ -1107,7 +1018,7 @@ public class JuegoActivity extends AppCompatActivity {
                 p2.setCarta3(pcard2.getCarta3());
                 p2.setCarta4(pcard2.getCarta4());
                 p2.setCarta5(pcard2.getCarta5());
-                PersonajeSelec();
+                ModificarFireBase();
 
             }
         }

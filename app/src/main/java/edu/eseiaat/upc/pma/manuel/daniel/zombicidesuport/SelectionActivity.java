@@ -629,6 +629,7 @@ public class SelectionActivity extends AppCompatActivity{
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();
         for (int i=0;i<listaPersonajes.size();i++){
+            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("nombre").setValue(listaPersonajes.get(i).getNombre());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta1").setValue(listaPersonajes.get(i).getCarta1());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta2").setValue(listaPersonajes.get(i).getCarta2());
             myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta3").setValue(listaPersonajes.get(i).getCarta3());

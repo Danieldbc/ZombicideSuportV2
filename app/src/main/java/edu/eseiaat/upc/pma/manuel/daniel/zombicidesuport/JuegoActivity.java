@@ -338,7 +338,7 @@ public class JuegoActivity extends AppCompatActivity {
                         }
                     }
                     ModificarFireBase();
-                    PersonajeSelec();
+
                 }
 
             }
@@ -355,7 +355,7 @@ public class JuegoActivity extends AppCompatActivity {
                         }
                     }
                     ModificarFireBase();
-                    PersonajeSelec();
+
                 }
 
             }
@@ -375,7 +375,7 @@ public class JuegoActivity extends AppCompatActivity {
                         }
                     }
                     ModificarFireBase();
-                    PersonajeSelec();
+
                 }
 
             }
@@ -395,7 +395,7 @@ public class JuegoActivity extends AppCompatActivity {
                         }
                     }
                     ModificarFireBase();
-                    PersonajeSelec();
+
                 }
 
             }
@@ -415,7 +415,7 @@ public class JuegoActivity extends AppCompatActivity {
                         }
                     }
                     ModificarFireBase();
-                    PersonajeSelec();
+
                 }
 
             }
@@ -468,7 +468,7 @@ public class JuegoActivity extends AppCompatActivity {
                             }
                         }
                         ModificarFireBase();
-                        PersonajeSelec();
+
                     }
                 }
 
@@ -497,7 +497,7 @@ public class JuegoActivity extends AppCompatActivity {
                             p.level[4] = 0;
                         }
                         ModificarFireBase();
-                        PersonajeSelec();
+
                     }
                 }
 

@@ -55,12 +55,30 @@ public class IntercambioActivity extends AppCompatActivity {
     }
     private void ListenerFireBase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference drintercambio = database.getReference().child(textSala).child("intercambio");
         final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
         final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
         final DatabaseReference drgrindlock = database.getReference().child(textSala).child("Grindlock");
         final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
         final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
         final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
+        drintercambio.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean intc= (boolean) dataSnapshot.child("inercambiar").getValue();
+
+                if(!intc){
+                    Intent data=new Intent();
+                    setResult(RESULT_OK,data);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         drwatts.addValueEventListener(new ValueEventListener() {
             @Override
@@ -489,13 +507,8 @@ public class IntercambioActivity extends AppCompatActivity {
 
     public void Aceptar(View view) {
         Intent data=new Intent();
-        data.putExtra(Keycartas,p1);
-        data.putExtra(Keycartas2,p2);
         setResult(RESULT_OK,data);
         finish();
     }
 
-    public void Cancelar(View view) {
-        finish();
-    }
 }

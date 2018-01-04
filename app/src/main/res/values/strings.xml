@@ -66,4 +66,5 @@
     <string name="EsperandoAceptar">Esperando que el compañero acepte</string>
     <string name="Intercambio">Intercambio</string>
     <string name="Intercambiando">Desean intercambiar cartas</string>
+    <string name="HayIntercambio">Hay un intercambio en proceso</string>
 </resources>

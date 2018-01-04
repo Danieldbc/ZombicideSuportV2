@@ -50,27 +50,32 @@ public class CrearActivity extends AppCompatActivity {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
-                    String value = dataSnapshot.getValue(String.class);
-                    if(textSala.equals(value)){
-                        Toast.makeText(CrearActivity.this, R.string.SalaExiste, Toast.LENGTH_SHORT).show();
-                    }else{
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference myref = database.getReference();
-                        myref.child(textSala).child("nombre").setValue(textSala);
-                        myref.child(textSala).child("Usuarios").child("Usuario1").child("nombre").setValue(textNombre);
-                        myref.child(textSala).child("Usuarios").child("Nusuarios").setValue(1);
-                        myref.child(textSala).child("Naceptados").setValue("0");
-                        myref.child(textSala).child("intercambio").child("intercambiar").setValue(false);
-                        myref.child(textSala).child("intercambio").child("aceptar").setValue(false);
-                        myref.child(textSala).child("intercambio").child("personaje1").setValue("");
-                        myref.child(textSala).child("intercambio").child("personaje2").setValue("");
-                        myref.child(textSala).child("cargar").setValue(false);
 
-                        intent.putExtra(SelectionActivity.KeyNumUsuario,1);
-                        startActivity(intent);
-                        finish();
+                    if (!noRepetir) {
+                        String value = dataSnapshot.getValue(String.class);
+                        if(textSala.equals(value)){
+                            Toast.makeText(CrearActivity.this, R.string.SalaExiste, Toast.LENGTH_SHORT).show();
+                        }else{
+                            noRepetir=true;
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference myref = database.getReference();
+                            myref.child(textSala).child("nombre").setValue(textSala);
+                            myref.child(textSala).child("Usuarios").child("Usuario1").child("nombre").setValue(textNombre);
+                            myref.child(textSala).child("Usuarios").child("Nusuarios").setValue(1);
+                            myref.child(textSala).child("Naceptados").setValue("0");
+                            myref.child(textSala).child("intercambio").child("intercambiar").setValue(false);
+                            myref.child(textSala).child("intercambio").child("aceptar").setValue(false);
+                            myref.child(textSala).child("intercambio").child("personaje1").setValue("");
+                            myref.child(textSala).child("intercambio").child("personaje2").setValue("");
+                            myref.child(textSala).child("cargar").setValue(false);
+
+                            intent.putExtra(SelectionActivity.KeyNumUsuario,1);
+                            startActivity(intent);
+                            finish();
+                        }
+
+
+
                     }
 
                 }
@@ -129,16 +134,27 @@ public class CrearActivity extends AppCompatActivity {
             drcargar.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    int nusuarios= Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
-                    for (int i=1;i<nusuarios+1;i++){
-                        String Nombre=dataSnapshot.child("Usuarios").child("Usuario"+i).child("nombre").getValue().toString();
-                        if (textNombre.equals(Nombre)){
-                            intent.putExtra(SelectionActivity.KeyCargar,true);
-                            intent.putExtra(SelectionActivity.KeyNumUsuario,i);
-                            startActivity(intent);
-                            finish();
+                    String value = dataSnapshot.child("nombre").getValue(String.class);
+                    if(textSala.equals(value)){
+                        if (!noRepetir){
+                            noRepetir=true;
+                            int nusuarios= Integer.parseInt(dataSnapshot.child("Usuarios").child("Nusuarios").getValue().toString());
+                            for (int i=1;i<nusuarios+1;i++){
+                                String Nombre=dataSnapshot.child("Usuarios").child("Usuario"+i).child("nombre").getValue().toString();
+                                if (textNombre.equals(Nombre)){
+                                    intent.putExtra(SelectionActivity.KeyCargar,true);
+                                    intent.putExtra(SelectionActivity.KeyNumUsuario,i);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
                         }
+
+                    }else{
+                        Toast.makeText(CrearActivity.this, R.string.NoSala, Toast.LENGTH_SHORT).show();
                     }
+
+
 
                 }
 

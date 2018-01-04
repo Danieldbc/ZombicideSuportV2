@@ -129,17 +129,18 @@ public class SelectionActivity extends AppCompatActivity{
         drcargar.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 int nPersonajes= Integer.parseInt(dataSnapshot.child("Usuarios").child("Usuario"+nusuario).child("Npersonajes").getValue().toString());
                 for (int i=1;i<nPersonajes+1;i++){
                     String nombre=dataSnapshot.child("Usuarios").child("Usuario"+nusuario).child("p"+i).getValue().toString();
-                    for (int t=0;t<listaPersonajes.size();i++){
+                    for (int t=0;t<listaPersonajes.size();t++){
                         Personaje p=listaPersonajes.get(t);
-                        if (nombre.equals(p.getNombre())){
+                       if (nombre.equals(p.getNombre())){
                             listaPersonajesSelec.add(p);
-                        }
+                       }
                     }
                 }
-                int nUsuarios=Integer.parseInt(dataSnapshot.child("Nusuarios").child("numero").getValue().toString());
+               /* int nUsuarios=Integer.parseInt(dataSnapshot.child("Usuarios").child("Nusuarios").getValue().toString());
                 for (int i=1;i<nUsuarios+1;i++){
                     if (i!=nusuario){
                         nPersonajes= Integer.parseInt(dataSnapshot.child("Usuarios").child("Usuario"+i).child("Npersonajes").getValue().toString());
@@ -155,7 +156,9 @@ public class SelectionActivity extends AppCompatActivity{
                     }
 
 
-                }
+                }*/
+
+
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myref = database.getReference();
                 myref.child(textSala).child("cargar").setValue(true);
@@ -199,10 +202,13 @@ public class SelectionActivity extends AppCompatActivity{
         draceptados.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Naceptados= Integer.parseInt(dataSnapshot.getValue().toString());
-                if (Naceptados== nUsuarios){
-                    Entrar();
+                if(!cargar){
+                    Naceptados= Integer.parseInt(dataSnapshot.getValue().toString());
+                    if (Naceptados== nUsuarios){
+                        Entrar();
+                    }
                 }
+
             }
 
             @Override
@@ -794,11 +800,16 @@ public class SelectionActivity extends AppCompatActivity{
         DatabaseReference myref = database.getReference();
         for (int i=0;i<listaPersonajesSelec.size();i++){
             Personaje p=listaPersonajesSelec.get(i);
-            p.modozombie=false;
             int t=i+1;
             myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("p"+t).setValue(p.getNombre());
         }
         myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("Npersonajes").setValue(listaPersonajesSelec.size());
+
+        for (int i=0;i<listaPersonajes.size();i++){
+            Personaje p=listaPersonajes.get(i);
+            p.modozombie=false;
+        }
+
 
 
         PersonajesDeOtros();
@@ -810,6 +821,7 @@ public class SelectionActivity extends AppCompatActivity{
         intent.putExtra(JuegoActivity.KeyListaCartasCuerpo, CartasCuerpo);
         intent.putExtra(JuegoActivity.KeyListaCartasEspeciales,CartasEspeciales);
         intent.putExtra(JuegoActivity.KeyListaCartasOtras, CartasOtras);
+        myref.child(textSala).child("cargar").setValue(false);
         startActivity(intent);
         finish();
     }

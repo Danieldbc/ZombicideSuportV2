@@ -62,6 +62,7 @@ public class CrearActivity extends AppCompatActivity {
                         myref.child(textSala).child("Usuarios").child("Usuario1").setValue(textNombre);
                         myref.child(textSala).child("Nusuarios").setValue("1");
                         myref.child(textSala).child("Naceptados").setValue("0");
+                        intent.putExtra(SelectionActivity.KeyNumUsuario,1);
                         startActivity(intent);
                         finish();
                     }
@@ -109,9 +110,7 @@ public class CrearActivity extends AppCompatActivity {
                         Nusuarios= String.valueOf(Nusuariosint);
                         myref.child(textSala).child("Nusuarios").setValue(Nusuarios);
                         myref.child(textSala).child("Usuarios").child("Usuario"+Nusuarios).setValue(textNombre);
-
-
-
+                        intent.putExtra(SelectionActivity.KeyNumUsuario,Nusuarios);
                         startActivity(intent);
                         finish();
                     }else{
@@ -127,6 +126,31 @@ public class CrearActivity extends AppCompatActivity {
                 }
             });
 
+        }else if (estado.equals("Cargar")){
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference drcargar = database.getReference().child(textSala);
+
+            drcargar.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int nusuarios= Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
+                    for (int i=1;i<nusuarios+1;i++){
+                        String Nombre=dataSnapshot.child("Usuario"+i).getValue().toString();
+                        if (textNombre.equals(Nombre)){
+                            intent.putExtra(SelectionActivity.KeyCargar,true);
+                            intent.putExtra(SelectionActivity.KeyNumUsuario,i);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
     }

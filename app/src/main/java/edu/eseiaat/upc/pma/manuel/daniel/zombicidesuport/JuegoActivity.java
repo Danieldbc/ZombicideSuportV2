@@ -35,6 +35,8 @@ public class JuegoActivity extends AppCompatActivity {
     public static String KeyListaCartasOtras="key_cartasOtras";
     public static String KeyListaPersonajesOtros="kee_listapersonakesotros";
     public static String KeyNombreSala="key_nombresala";
+    public static String KeyUsuario="key_nombre_usuario";
+
 
     private TextView habAzul,habAmarilla, habNaranja1, habNaranja2, habRoja1, habRoja2,habRoja3,nombre;
     private ImageView foto;
@@ -63,6 +65,7 @@ public class JuegoActivity extends AppCompatActivity {
     private Button btIntercambiar;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,7 @@ public class JuegoActivity extends AppCompatActivity {
         btIntercambiar=(Button)findViewById(R.id.BTNCambio);
         cargar=getIntent().getBooleanExtra(KeyCargar,false);
         textSala=getIntent().getExtras().getString(KeyNombreSala);
+
         listaPersonajes=new ArrayList<>();
         listaPersonajes= (ArrayList<Personaje>) getIntent().getSerializableExtra(KeyListaPersonajes);
         listaPersonajesOtros=new ArrayList<>();

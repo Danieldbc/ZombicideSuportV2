@@ -27,10 +27,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static edu.eseiaat.upc.pma.manuel.daniel.zombicidesuport.JuegoActivity.KeyNumUsuario;
+
 public class SelectionActivity extends AppCompatActivity{
 
     public static String keysala="key_sala";
     public static String keynombre="key_nombre";
+    public static String KeyNumUsuario="key_numeroUsuario";
+    public static String KeyCargar="key_cargar";
 
     private RecyclerView viewPersonajes;
     private List<Personaje> listaPersonajes;
@@ -60,6 +64,8 @@ public class SelectionActivity extends AppCompatActivity{
     private List<Personaje> listaPersonajesOtros;
     private int Naceptados;
     private String nombreUsuario;
+    private int nusuario;
+    private boolean cargar;
 
 
     @Override
@@ -77,7 +83,8 @@ public class SelectionActivity extends AppCompatActivity{
         habRoja3=(TextView) findViewById(R.id.HabRoja3);
         modoZombie=(CheckBox)findViewById(R.id.ModoZombie);
         borrar=(ImageView)findViewById(R.id.Borrar);
-
+        cargar=getIntent().getExtras().getBoolean(KeyCargar,false);
+        nusuario=getIntent().getExtras().getInt(KeyNumUsuario);
         sala =(TextView)findViewById(R.id.Sala);
         viewUsuarios=(ListView)findViewById(R.id.ViewUsuarios);
         textSala=getIntent().getExtras().getString(keysala);
@@ -111,6 +118,55 @@ public class SelectionActivity extends AppCompatActivity{
         ListenerFireBase();
         ListenerPantalla();
         PersonajeSeleccionado();
+        if (cargar){
+            Cargar();
+        }
+    }
+
+    private void Cargar() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference drcargar = database.getReference().child(textSala);
+
+        drcargar.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int nPersonajes= Integer.parseInt(dataSnapshot.child("Usuario"+nusuario).child("Npersonajes").getValue().toString());
+                for (int i=1;i<nPersonajes+1;i++){
+                    String nombre=dataSnapshot.child("Usuario"+nusuario).child("p"+i).getValue().toString();
+                    for (int t=0;t<listaPersonajes.size();i++){
+                        Personaje p=listaPersonajes.get(i);
+                        if (nombre.equals(p.getNombre())){
+                            listaPersonajesSelec.add(p);
+                        }
+                    }
+                }
+                int nUsuarios=Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
+                for (int i=1;i<nUsuarios+1;i++){
+                    if (i!=nusuario){
+                        nPersonajes= Integer.parseInt(dataSnapshot.child("Usuario"+i).child("Npersonajes").getValue().toString());
+                        for (int t=1;t<nPersonajes+1;t++){
+                            String nombre=dataSnapshot.child("Usuario"+nusuario).child("p"+i).getValue().toString();
+                            for (int r=0;r<listaPersonajes.size();r++){
+                                Personaje p=listaPersonajes.get(r);
+                                if (nombre.equals(p.getNombre())){
+                                    listaPersonajesOtros.add(p);
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        Entrar();
     }
 
     private void ListenerFireBase() {
@@ -647,26 +703,30 @@ public class SelectionActivity extends AppCompatActivity{
     }
 
     private void ModificarFireBase() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myref = database.getReference();
-        for (int i=0;i<listaPersonajes.size();i++){
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("nombre").setValue(listaPersonajes.get(i).getNombre());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta1").setValue(listaPersonajes.get(i).getCarta1());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta2").setValue(listaPersonajes.get(i).getCarta2());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta3").setValue(listaPersonajes.get(i).getCarta3());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta4").setValue(listaPersonajes.get(i).getCarta4());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta5").setValue(listaPersonajes.get(i).getCarta5());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("invisible").setValue(listaPersonajes.get(i).isInvisible());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("modozombie").setValue(listaPersonajes.get(i).isModozombie());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level0").setValue(listaPersonajes.get(i).level[0]);
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level1").setValue(listaPersonajes.get(i).level[1]);
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level2").setValue(listaPersonajes.get(i).level[2]);
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level3").setValue(listaPersonajes.get(i).level[3]);
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level4").setValue(listaPersonajes.get(i).level[4]);
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("puntuacion").setValue(listaPersonajes.get(i).getPuntuacion());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("selected").setValue(listaPersonajes.get(i).isSelected());
-            myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("intercambiar").setValue(listaPersonajes.get(i).isIntercambiar());
+        if (!cargar){
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myref = database.getReference();
+            for (int i=0;i<listaPersonajes.size();i++){
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("nombre").setValue(listaPersonajes.get(i).getNombre());
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta1").setValue(listaPersonajes.get(i).getCarta1());
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta2").setValue(listaPersonajes.get(i).getCarta2());
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta3").setValue(listaPersonajes.get(i).getCarta3());
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta4").setValue(listaPersonajes.get(i).getCarta4());
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("carta5").setValue(listaPersonajes.get(i).getCarta5());
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("invisible").setValue(listaPersonajes.get(i).isInvisible());
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("modozombie").setValue(listaPersonajes.get(i).isModozombie());
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level0").setValue(listaPersonajes.get(i).level[0]);
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level1").setValue(listaPersonajes.get(i).level[1]);
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level2").setValue(listaPersonajes.get(i).level[2]);
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level3").setValue(listaPersonajes.get(i).level[3]);
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("level4").setValue(listaPersonajes.get(i).level[4]);
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("puntuacion").setValue(listaPersonajes.get(i).getPuntuacion());
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("selected").setValue(listaPersonajes.get(i).isSelected());
+                myref.child(textSala).child(listaPersonajes.get(i).getNombre()).child("intercambiar").setValue(listaPersonajes.get(i).isIntercambiar());
+            }
         }
+
+
     }
     private void PersonajeSeleccionado() {
         Personaje p = listaPersonajes.get(idPersonaje);
@@ -719,10 +779,11 @@ public class SelectionActivity extends AppCompatActivity{
         for (int i=0;i<listaPersonajes.size();i++){
             Personaje p=listaPersonajes.get(i);
             p.modozombie=false;
-
-            myref.child(textSala).child("Guardar").child(nombreUsuario).child("p"+i).setValue(p.getNombre());
-
+            myref.child(textSala).child("Usuario"+nusuario).child("p"+i).setValue(p.getNombre());
         }
+        myref.child(textSala).child("Usuario"+nusuario).child("Npersonajes").setValue(listaPersonajes.size());
+
+
         PersonajesDeOtros();
         Intent intent=new Intent(this,JuegoActivity.class);
         intent.putExtra(JuegoActivity.KeyNombreSala,textSala);

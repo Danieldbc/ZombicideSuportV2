@@ -32,13 +32,12 @@
         android:id="@+id/Nombre"
         android:layout_width="300dp"
         android:layout_height="40dp"
+        android:layout_below="@+id/Sala"
+        android:layout_toEndOf="@+id/textView12"
         android:background="@android:color/white"
-        android:textColor="@android:color/black"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Pedro"
-        android:layout_below="@+id/Sala"
-        android:layout_toEndOf="@+id/textView12" />
+        android:textColor="@android:color/black" />
 
     <EditText
         android:id="@+id/Sala"
@@ -50,7 +49,6 @@
         android:background="@android:color/white"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Sala 3"
         android:textColor="@android:color/black" />
 
     <TextView
@@ -76,5 +74,16 @@
         android:text="@string/Sala"
         android:textAlignment="center"
         android:textColor="@android:color/black"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/Estado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/textView"
+        android:text="TextView"
+        android:textColor="@color/colorAccent"
         android:textSize="30sp" />
 </RelativeLayout>

@@ -59,6 +59,7 @@ public class SelectionActivity extends AppCompatActivity{
     private ListView viewUsuarios;
     private List<Personaje> listaPersonajesOtros;
     private int Naceptados;
+    private String nombreUsuario;
 
 
     @Override
@@ -80,6 +81,7 @@ public class SelectionActivity extends AppCompatActivity{
         sala =(TextView)findViewById(R.id.Sala);
         viewUsuarios=(ListView)findViewById(R.id.ViewUsuarios);
         textSala=getIntent().getExtras().getString(keysala);
+        nombreUsuario=getIntent().getExtras().getString(keynombre);
         sala.setText(textSala);
         listaUsuarios=new ArrayList<>();
         adapterUsuarios=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,listaUsuarios);
@@ -701,7 +703,6 @@ public class SelectionActivity extends AppCompatActivity{
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myref = database.getReference();
             myref.child(textSala).child("Naceptados").setValue(Naceptados);
-
             AlertDialog.Builder builder=new AlertDialog.Builder(this);
             builder.setTitle(R.string.Esperando);
             builder.setMessage(R.string.EspCompañeros);
@@ -713,9 +714,14 @@ public class SelectionActivity extends AppCompatActivity{
     }
 
     private void Entrar() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myref = database.getReference();
         for (int i=0;i<listaPersonajes.size();i++){
             Personaje p=listaPersonajes.get(i);
             p.modozombie=false;
+
+            myref.child(textSala).child("Guardar").child(nombreUsuario).child("p"+i).setValue(p.getNombre());
+
         }
         PersonajesDeOtros();
         Intent intent=new Intent(this,JuegoActivity.class);

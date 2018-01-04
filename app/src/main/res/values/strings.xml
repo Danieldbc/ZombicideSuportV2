@@ -67,4 +67,5 @@
     <string name="Intercambio">Intercambio</string>
     <string name="Intercambiando">Desean intercambiar cartas</string>
     <string name="HayIntercambio">Hay un intercambio en proceso</string>
+    <string name="SalaExiste">Esta sala ya existe</string>
 </resources>

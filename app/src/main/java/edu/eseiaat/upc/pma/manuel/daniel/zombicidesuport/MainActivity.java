@@ -5,10 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 public class MainActivity extends AppCompatActivity {
+    private String estado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,24 +16,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void Crear(View view) {
         Intent intent=new Intent(this,CrearActivity.class);
-        boolean crear=true;
-        intent.putExtra(CrearActivity.KeyCrear,crear);
+        estado ="Crear";
+        intent.putExtra(CrearActivity.Keyestado, estado);
         startActivity(intent);
         finish();
     }
 
     public void Cargar(View view) {
-        Intent intent=new Intent(this,JuegoActivity.class);
-        boolean cargar=true;
-        intent.putExtra(JuegoActivity.KeyCargar,cargar);
+        Intent intent=new Intent(this,CrearActivity.class);
+        estado ="Cargar";
+        intent.putExtra(CrearActivity.Keyestado,estado);
         startActivity(intent);
         finish();
     }
 
     public void Entrar(View view) {
         Intent intent=new Intent(this,CrearActivity.class);
-        boolean crear=false;
-        intent.putExtra(CrearActivity.KeyCrear,crear);
+        estado ="Entrar";
+        intent.putExtra(CrearActivity.Keyestado, estado);
         startActivity(intent);
         finish();
     }

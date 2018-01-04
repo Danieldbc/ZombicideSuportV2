@@ -158,37 +158,62 @@ public class JuegoActivity extends AppCompatActivity {
         drintercambio.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                intercambio= (boolean) dataSnapshot.child("inercambiar").getValue();
+                intercambio= (boolean) dataSnapshot.child("intercambiar").getValue();
                 String pers1=dataSnapshot.child("personaje1").getValue().toString();
                 String pers2=dataSnapshot.child("personaje2").getValue().toString();
                 int persp = 0,persq=0;
                 boolean hayInt = false;
+                boolean IntIndividual = false;
+                boolean IntMaster=false;
                 if(intercambio){
-                    for (int i=0;i<listaPersonajes.size();i++){
-                        Personaje p=listaPersonajes.get(i);
-                        if (p.getNombre().equals(pers1)){
-                            hayInt=true;
-                            persp=i;
-                        }else if (p.getNombre().equals(pers2)){
-                            hayInt=true;
-                            persq=i;
+                    if (!pers1.equals("")){
+                        if (!pers2.equals("")){
+                            for (int i=0;i<listaPersonajes.size();i++){
+                                Personaje p=listaPersonajes.get(i);
+                                if (p.getNombre().equals(pers1)){
+                                    hayInt=true;
+                                    persp=i;
+                                    IntMaster=true;
+                                }else if (p.getNombre().equals(pers2)){
+                                    hayInt=true;
+                                    persq=i;
+                                    IntIndividual=true;
+                                }
+
+                            }
+                            for (int i=0;i<listaPersonajesOtros.size();i++){
+                                Personaje p=listaPersonajesOtros.get(i);
+                                if (p.getNombre().equals(pers1)){
+                                    persp=i;
+                                }else if (p.getNombre().equals(pers2)){
+                                    persq=i;
+                                }
+
+                            }
+                            if (hayInt){
+                                Personaje p;
+                                Personaje q;
+                                if (IntIndividual){
+                                   p=listaPersonajes.get(persp);
+                                   q=listaPersonajes.get(persq);
+                                }else{
+                                    if (IntMaster){
+                                        p=listaPersonajes.get(persp);
+                                        q=listaPersonajesOtros.get(persq);
+                                    }else{
+                                        q=listaPersonajes.get(persq);
+                                        p=listaPersonajesOtros.get(persp);
+                                    }
+
+
+                                }
+
+                                IRaIntercambiar(p,q);
+                            }
                         }
 
                     }
-                    for (int i=0;i<listaPersonajesOtros.size();i++){
-                        Personaje p=listaPersonajesOtros.get(i);
-                        if (p.getNombre().equals(pers1)){
-                            persq=i;
-                        }else if (p.getNombre().equals(pers2)){
-                            persp=i;
-                        }
 
-                    }
-                    if (hayInt){
-                        Personaje p=listaPersonajes.get(persp);
-                        Personaje q=listaPersonajesOtros.get(persq);
-                        IRaIntercambiar(p,q);
-                    }
 
                 }
             }
@@ -821,24 +846,15 @@ public class JuegoActivity extends AppCompatActivity {
         myref.child(textSala).child("intercambio").child("personaje2").setValue(q.getNombre());
 
         ModificarFireBase();
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setTitle(R.string.Esperando);
-        builder.setMessage(R.string.EsperandoAceptar);
-        builder.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                myref.child(textSala).child("intercambio").child("intercambiar").setValue(false);
-            }
-        });
-        builder.create().show();
+        Toast.makeText(JuegoActivity.this, R.string.EsperandoAceptar, Toast.LENGTH_SHORT).show();
 
     }
 
     private void IRaIntercambiar(final Personaje p, final Personaje q) {
 
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setTitle(R.string.Esperando);
-        builder.setMessage(R.string.EsperandoAceptar);
+        builder.setTitle(R.string.Intercambio);
+        builder.setMessage(p.getNombre()+" "+getString(R.string.QuiereIntercambiar)+" "+q.getNombre());
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -857,6 +873,9 @@ public class JuegoActivity extends AppCompatActivity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference myref = database.getReference();
                 myref.child(textSala).child("intercambio").child("intercambiar").setValue(false);
+                myref.child(textSala).child("intercambio").child("personaje1").setValue("");
+                myref.child(textSala).child("intercambio").child("personaje2").setValue("");
+
             }
         });
         builder.create().show();
@@ -1132,6 +1151,8 @@ public class JuegoActivity extends AppCompatActivity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference myref = database.getReference();
                 myref.child(textSala).child("intercambio").child("intercambiar").setValue(false);
+                myref.child(textSala).child("intercambio").child("personaje1").setValue("");
+                myref.child(textSala).child("intercambio").child("personaje2").setValue("");
 
             }
         }

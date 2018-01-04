@@ -46,6 +46,7 @@ public class CrearActivity extends AppCompatActivity {
         if (estado.equals("Crear")){
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             final DatabaseReference myRef = database.getReference(textSala+"/nombre");
+
             myRef.addValueEventListener(new ValueEventListener() {
 
                 @Override
@@ -59,9 +60,15 @@ public class CrearActivity extends AppCompatActivity {
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myref = database.getReference();
                         myref.child(textSala).child("nombre").setValue(textSala);
-                        myref.child(textSala).child("Usuarios").child("Usuario1").setValue(textNombre);
-                        myref.child(textSala).child("Nusuarios").setValue("1");
+                        myref.child(textSala).child("Usuarios").child("Usuario1").child("nombre").setValue(textNombre);
+                        myref.child(textSala).child("Nusuarios").child("numero").setValue("1");
+                        myref.child(textSala).child("Nusuarios").child("act").setValue("0");
                         myref.child(textSala).child("Naceptados").setValue("0");
+                        myref.child(textSala).child("intercambio").child("intercambiar").setValue(false);
+                        myref.child(textSala).child("intercambio").child("personaje1").setValue("");
+                        myref.child(textSala).child("intercambio").child("personaje2").setValue("");
+                        myref.child(textSala).child("cargar").setValue(false);
+
                         intent.putExtra(SelectionActivity.KeyNumUsuario,1);
                         startActivity(intent);
                         finish();
@@ -80,13 +87,16 @@ public class CrearActivity extends AppCompatActivity {
         }else if (estado.equals("Entrar")) {
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference myRef = database.getReference(textSala+"/nombre");
             final DatabaseReference Refusu = database.getReference(textSala+"/Nusuarios");
+            DatabaseReference myref = database.getReference();
+            myref.child(textSala).child("Nusuarios").child("act").setValue(textNombre);
+            final DatabaseReference myRef = database.getReference(textSala+"/nombre");
+
 
             Refusu.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Nusuarios =dataSnapshot.getValue().toString();
+                    Nusuarios =dataSnapshot.child("numero").getValue().toString();
                 }
 
                 @Override
@@ -108,8 +118,8 @@ public class CrearActivity extends AppCompatActivity {
                         Nusuariosint= Integer.parseInt(Nusuarios);
                         Nusuariosint++;
                         Nusuarios= String.valueOf(Nusuariosint);
-                        myref.child(textSala).child("Nusuarios").setValue(Nusuarios);
-                        myref.child(textSala).child("Usuarios").child("Usuario"+Nusuarios).setValue(textNombre);
+                        myref.child(textSala).child("Nusuarios").child("numero").setValue(Nusuarios);
+                        myref.child(textSala).child("Usuarios").child("Usuario"+Nusuarios).child("nombre").setValue(textNombre);
                         intent.putExtra(SelectionActivity.KeyNumUsuario,Nusuarios);
                         startActivity(intent);
                         finish();
@@ -135,7 +145,7 @@ public class CrearActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     int nusuarios= Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
                     for (int i=1;i<nusuarios+1;i++){
-                        String Nombre=dataSnapshot.child("Usuario"+i).getValue().toString();
+                        String Nombre=dataSnapshot.child("Usuarios").child("Usuario"+i).child("nombre").getValue().toString();
                         if (textNombre.equals(Nombre)){
                             intent.putExtra(SelectionActivity.KeyCargar,true);
                             intent.putExtra(SelectionActivity.KeyNumUsuario,i);

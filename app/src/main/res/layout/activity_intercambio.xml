@@ -8,21 +8,11 @@
     tools:context="edu.eseiaat.upc.pma.manuel.daniel.zombicidesuport.IntercambioActivity">
 
     <Button
-        android:id="@+id/button11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button10"
-        android:layout_toStartOf="@+id/carta21"
-        android:onClick="Cancelar"
-        android:text="Cancelar" />
-
-    <Button
         android:id="@+id/button10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/button11"
-        android:layout_below="@+id/nombre1"
-        android:layout_marginTop="17dp"
+        android:layout_alignBottom="@+id/nombre1"
+        android:layout_toStartOf="@+id/carta23"
         android:onClick="Aceptar"
         android:text="Aceptar" />
 

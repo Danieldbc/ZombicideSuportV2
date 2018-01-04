@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static edu.eseiaat.upc.pma.manuel.daniel.zombicidesuport.JuegoActivity.KeyNumUsuario;
+
 
 public class SelectionActivity extends AppCompatActivity{
 
@@ -130,22 +130,22 @@ public class SelectionActivity extends AppCompatActivity{
         drcargar.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int nPersonajes= Integer.parseInt(dataSnapshot.child("Usuario"+nusuario).child("Npersonajes").getValue().toString());
+                int nPersonajes= Integer.parseInt(dataSnapshot.child("Usuarios").child("Usuario"+nusuario).child("Npersonajes").getValue().toString());
                 for (int i=1;i<nPersonajes+1;i++){
-                    String nombre=dataSnapshot.child("Usuario"+nusuario).child("p"+i).getValue().toString();
+                    String nombre=dataSnapshot.child("Usuarios").child("Usuario"+nusuario).child("p"+i).getValue().toString();
                     for (int t=0;t<listaPersonajes.size();i++){
-                        Personaje p=listaPersonajes.get(i);
+                        Personaje p=listaPersonajes.get(t);
                         if (nombre.equals(p.getNombre())){
                             listaPersonajesSelec.add(p);
                         }
                     }
                 }
-                int nUsuarios=Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
+                int nUsuarios=Integer.parseInt(dataSnapshot.child("Nusuarios").child("numero").getValue().toString());
                 for (int i=1;i<nUsuarios+1;i++){
                     if (i!=nusuario){
-                        nPersonajes= Integer.parseInt(dataSnapshot.child("Usuario"+i).child("Npersonajes").getValue().toString());
+                        nPersonajes= Integer.parseInt(dataSnapshot.child("Usuarios").child("Usuario"+i).child("Npersonajes").getValue().toString());
                         for (int t=1;t<nPersonajes+1;t++){
-                            String nombre=dataSnapshot.child("Usuario"+nusuario).child("p"+i).getValue().toString();
+                            String nombre=dataSnapshot.child("Usuarios").child("Usuario"+nusuario).child("p"+i).getValue().toString();
                             for (int r=0;r<listaPersonajes.size();r++){
                                 Personaje p=listaPersonajes.get(r);
                                 if (nombre.equals(p.getNombre())){
@@ -157,6 +157,9 @@ public class SelectionActivity extends AppCompatActivity{
 
 
                 }
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myref = database.getReference();
+                myref.child(textSala).child("cargar").setValue(true);
 
             }
 
@@ -166,13 +169,13 @@ public class SelectionActivity extends AppCompatActivity{
 
             }
         });
-        Entrar();
     }
 
     private void ListenerFireBase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference drcargar=database.getReference().child(textSala).child("cargar");
         final DatabaseReference draceptados=database.getReference().child(textSala).child("Naceptados");
-        final DatabaseReference drNusuario=database.getReference().child(textSala).child("Nusuarios");
+        final DatabaseReference drNusuario=database.getReference().child(textSala).child("Nusuarios").child("numero");
         final DatabaseReference drusuario=database.getReference().child(textSala).child("Usuarios");
         final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
         final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
@@ -180,6 +183,20 @@ public class SelectionActivity extends AppCompatActivity{
         final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
         final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
         final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
+        drcargar.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean carga= (boolean) dataSnapshot.getValue();
+                if (carga){
+                    Entrar();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         draceptados.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -210,7 +227,7 @@ public class SelectionActivity extends AppCompatActivity{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listaUsuarios.clear();
                 for (int i=1;i<Nusuariosint+1;i++){
-                    listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario"+i).getValue()));
+                    listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario"+i).child("nombre").getValue()));
                 }
                 adapterUsuarios.notifyDataSetChanged();
                 viewUsuarios.smoothScrollToPosition(listaUsuarios.size()-1);
@@ -776,12 +793,13 @@ public class SelectionActivity extends AppCompatActivity{
     private void Entrar() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();
-        for (int i=0;i<listaPersonajes.size();i++){
-            Personaje p=listaPersonajes.get(i);
+        for (int i=0;i<listaPersonajesSelec.size();i++){
+            Personaje p=listaPersonajesSelec.get(i);
             p.modozombie=false;
-            myref.child(textSala).child("Usuario"+nusuario).child("p"+i).setValue(p.getNombre());
+            int t=i+1;
+            myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("p"+t).setValue(p.getNombre());
         }
-        myref.child(textSala).child("Usuario"+nusuario).child("Npersonajes").setValue(listaPersonajes.size());
+        myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("Npersonajes").setValue(listaPersonajesSelec.size());
 
 
         PersonajesDeOtros();

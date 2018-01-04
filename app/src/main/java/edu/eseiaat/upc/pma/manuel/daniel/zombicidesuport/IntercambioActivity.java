@@ -65,7 +65,7 @@ public class IntercambioActivity extends AppCompatActivity {
         drintercambio.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean intc= (boolean) dataSnapshot.child("inercambiar").getValue();
+                boolean intc= (boolean) dataSnapshot.child("intercambiar").getValue();
 
                 if(!intc){
                     Intent data=new Intent();

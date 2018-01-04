@@ -1,7 +1,6 @@
 package edu.eseiaat.upc.pma.manuel.daniel.zombicidesuport;
 
 import android.content.ClipData;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -59,7 +58,7 @@ public class SelectionActivity extends AppCompatActivity{
             goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano;
     private TextView sala;
     private String textSala;
-    private int Nusuariosint=1;
+    private int nUsuarios =1;
     private ListView viewUsuarios;
     private List<Personaje> listaPersonajesOtros;
     private int Naceptados;
@@ -175,7 +174,7 @@ public class SelectionActivity extends AppCompatActivity{
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference drcargar=database.getReference().child(textSala).child("cargar");
         final DatabaseReference draceptados=database.getReference().child(textSala).child("Naceptados");
-        final DatabaseReference drNusuario=database.getReference().child(textSala).child("Nusuarios").child("numero");
+        final DatabaseReference drNusuario=database.getReference().child(textSala).child("Usuarios");
         final DatabaseReference drusuario=database.getReference().child(textSala).child("Usuarios");
         final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
         final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
@@ -201,7 +200,7 @@ public class SelectionActivity extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Naceptados= Integer.parseInt(dataSnapshot.getValue().toString());
-                if (Naceptados==Nusuariosint){
+                if (Naceptados== nUsuarios){
                     Entrar();
                 }
             }
@@ -214,7 +213,7 @@ public class SelectionActivity extends AppCompatActivity{
         drNusuario.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Nusuariosint= Integer.parseInt((String) dataSnapshot.getValue());
+                nUsuarios = Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
             }
 
             @Override
@@ -226,7 +225,7 @@ public class SelectionActivity extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listaUsuarios.clear();
-                for (int i=1;i<Nusuariosint+1;i++){
+                for (int i = 1; i< nUsuarios +1; i++){
                     listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario"+i).child("nombre").getValue()));
                 }
                 adapterUsuarios.notifyDataSetChanged();

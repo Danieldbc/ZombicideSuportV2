@@ -69,4 +69,5 @@
     <string name="HayIntercambio">Hay un intercambio en proceso</string>
     <string name="SalaExiste">Esta sala ya existe</string>
     <string name="QuiereIntercambiar">quiere intercambiar con</string>
+    <string name="ModoHumano">Modo Humano</string>
 </resources>

@@ -62,24 +62,27 @@
         android:layout_toStartOf="@+id/ViewUsuarios"
         android:text="+" />
 
-    <Switch
-        android:id="@+id/ModoZombie"
-        android:layout_width="100dp"
-        android:layout_height="20dp"
-        android:text="modozombie"
-        android:textSize="8sp"
-        android:layout_alignTop="@+id/nombre"
-        android:layout_toStartOf="@+id/ViewUsuarios" />
-
     <Button
         android:id="@+id/BTNCambio"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_alignStart="@+id/ModoZombie"
-        android:layout_below="@+id/ModoZombie"
+        android:layout_above="@+id/Carta4"
+        android:layout_alignEnd="@+id/Carta5"
         android:background="@color/black_overlay"
         android:onClick="Intercambiar"
         android:text="intercambiar"
+        android:textSize="8sp" />
+
+    <Button
+        android:id="@+id/ModoZombie"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignBaseline="@+id/nombre"
+        android:layout_alignBottom="@+id/nombre"
+        android:layout_alignStart="@+id/BTNCambio"
+        android:background="@color/black_overlay"
+        android:onClick="ModoZombie"
+        android:text="@string/ModoZombie"
         android:textSize="8sp" />
 
     <android.support.v7.widget.RecyclerView

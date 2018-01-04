@@ -21,8 +21,7 @@ public class CrearActivity extends AppCompatActivity {
     private EditText Sala;
     private EditText Nombre;
     private String estado;
-    private String Nusuarios;
-    private int Nusuariosint;
+    private boolean noRepetir=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +60,10 @@ public class CrearActivity extends AppCompatActivity {
                         DatabaseReference myref = database.getReference();
                         myref.child(textSala).child("nombre").setValue(textSala);
                         myref.child(textSala).child("Usuarios").child("Usuario1").child("nombre").setValue(textNombre);
-                        myref.child(textSala).child("Nusuarios").child("numero").setValue("1");
-                        myref.child(textSala).child("Nusuarios").child("act").setValue("0");
+                        myref.child(textSala).child("Usuarios").child("Nusuarios").setValue(1);
                         myref.child(textSala).child("Naceptados").setValue("0");
                         myref.child(textSala).child("intercambio").child("intercambiar").setValue(false);
+                        myref.child(textSala).child("intercambio").child("aceptar").setValue(false);
                         myref.child(textSala).child("intercambio").child("personaje1").setValue("");
                         myref.child(textSala).child("intercambio").child("personaje2").setValue("");
                         myref.child(textSala).child("cargar").setValue(false);
@@ -87,44 +86,31 @@ public class CrearActivity extends AppCompatActivity {
         }else if (estado.equals("Entrar")) {
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference Refusu = database.getReference(textSala+"/Nusuarios");
-            DatabaseReference myref = database.getReference();
-            myref.child(textSala).child("Nusuarios").child("act").setValue(textNombre);
-            final DatabaseReference myRef = database.getReference(textSala+"/nombre");
-
-
-            Refusu.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Nusuarios =dataSnapshot.child("numero").getValue().toString();
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+            final DatabaseReference myRef = database.getReference(textSala);
 
             myRef.addValueEventListener(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
-                    String value = dataSnapshot.getValue(String.class);
-                    if(textSala.equals(value)){
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference myref = database.getReference();
-                        Nusuariosint= Integer.parseInt(Nusuarios);
-                        Nusuariosint++;
-                        Nusuarios= String.valueOf(Nusuariosint);
-                        myref.child(textSala).child("Nusuarios").child("numero").setValue(Nusuarios);
-                        myref.child(textSala).child("Usuarios").child("Usuario"+Nusuarios).child("nombre").setValue(textNombre);
-                        intent.putExtra(SelectionActivity.KeyNumUsuario,Nusuarios);
-                        startActivity(intent);
-                        finish();
-                    }else{
-                        Toast.makeText(CrearActivity.this, R.string.NoSala, Toast.LENGTH_SHORT).show();
+                    if (!noRepetir){
+
+                        String value = dataSnapshot.child("nombre").getValue(String.class);
+                        if(textSala.equals(value)){
+                            noRepetir=true;
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference myref = database.getReference().child(textSala).child("Usuarios");
+                            int Nusuarios= Integer.parseInt(dataSnapshot.child("Usuarios").child("Nusuarios").getValue().toString());
+                            Nusuarios++;
+                            myref.child("Nusuarios").setValue(Nusuarios);
+                            myref.child("Usuario"+Nusuarios).child("nombre").setValue(textNombre);
+                            intent.putExtra(SelectionActivity.KeyNumUsuario,Nusuarios);
+                            startActivity(intent);
+                            finish();
+
+
+                        }else{
+                            Toast.makeText(CrearActivity.this, R.string.NoSala, Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                 }

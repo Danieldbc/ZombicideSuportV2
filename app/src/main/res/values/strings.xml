@@ -70,4 +70,8 @@
     <string name="SalaExiste">Esta sala ya existe</string>
     <string name="QuiereIntercambiar">quiere intercambiar con</string>
     <string name="ModoHumano">Modo Humano</string>
+    <string name="NOEscritoSala">No se ha escrito ninguna sala</string>
+    <string name="NOEscritonombre">No se ha escrito ningún nombre</string>
+    <string name="NombreEnUso">Este nombre ya se está usando</string>
+    <string name="PartidaEmpezada">La partida ya ha empezado</string>
 </resources>

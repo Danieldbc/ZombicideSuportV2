@@ -34,6 +34,7 @@ public class SelectionActivity extends AppCompatActivity{
     public static String keynombre="key_nombre";
     public static String KeyNumUsuario="key_numeroUsuario";
     public static String KeyCargar="key_cargar";
+    public static String Keyestado ="key_estado";
 
     private RecyclerView viewPersonajes;
     private List<Personaje> listaPersonajes;
@@ -65,6 +66,7 @@ public class SelectionActivity extends AppCompatActivity{
     private String nombreUsuario;
     private int nusuario;
     private boolean cargar;
+    private String estado;
 
 
     @Override
@@ -89,6 +91,7 @@ public class SelectionActivity extends AppCompatActivity{
         textSala=getIntent().getExtras().getString(keysala);
         nombreUsuario=getIntent().getExtras().getString(keynombre);
         sala.setText(textSala);
+        estado=getIntent().getExtras().getString(Keyestado);
         listaUsuarios=new ArrayList<>();
         adapterUsuarios=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,listaUsuarios);
         viewUsuarios.setAdapter(adapterUsuarios);
@@ -232,7 +235,11 @@ public class SelectionActivity extends AppCompatActivity{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listaUsuarios.clear();
                 for (int i = 1; i< nUsuarios +1; i++){
-                    listaUsuarios.add(String.valueOf(dataSnapshot.child("Usuario"+i).child("nombre").getValue()));
+                    String nombre=String.valueOf(dataSnapshot.child("Usuario"+i).child("nombre").getValue());
+                    if (!nombre.equals("")&!nombre.equals("null")){
+                        listaUsuarios.add(nombre);
+                    }
+
                 }
                 adapterUsuarios.notifyDataSetChanged();
                 viewUsuarios.smoothScrollToPosition(listaUsuarios.size()-1);
@@ -775,7 +782,18 @@ public class SelectionActivity extends AppCompatActivity{
     }
 
     public void Atras(View view) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myref = database.getReference();
+        for (int i=0;i<listaPersonajesSelec.size();i++){
+            Personaje p=listaPersonajesSelec.get(i);
+            p.setInvisible(false);
+        }
+        myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("nombre").setValue("");
+        Naceptados++;
+        myref.child(textSala).child("Naceptados").setValue(Naceptados);
+        ModificarFireBase();
         Intent intent=new Intent(this,CrearActivity.class);
+        intent.putExtra(CrearActivity.Keyestado,estado);
         startActivity(intent);
         finish();
     }
@@ -804,11 +822,14 @@ public class SelectionActivity extends AppCompatActivity{
             myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("p"+t).setValue(p.getNombre());
         }
         myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("Npersonajes").setValue(listaPersonajesSelec.size());
+        myref.child(textSala).child("Pempezada").setValue(true);
+
 
         for (int i=0;i<listaPersonajes.size();i++){
             Personaje p=listaPersonajes.get(i);
             p.modozombie=false;
         }
+        ModificarFireBase();
 
 
 

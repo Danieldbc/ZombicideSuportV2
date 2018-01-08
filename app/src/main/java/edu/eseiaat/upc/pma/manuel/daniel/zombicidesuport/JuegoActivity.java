@@ -1118,6 +1118,7 @@ public class JuegoActivity extends AppCompatActivity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference myref = database.getReference();
                 myref.child(textSala).child("intercambio").child("intercambiar").setValue(false);
+                myref.child(textSala).child("intercambio").child("aceptar").setValue(false);
                 myref.child(textSala).child("intercambio").child("personaje1").setValue("");
                 myref.child(textSala).child("intercambio").child("personaje2").setValue("");
 

@@ -74,4 +74,7 @@
     <string name="NOEscritonombre">No se ha escrito ningún nombre</string>
     <string name="NombreEnUso">Este nombre ya se está usando</string>
     <string name="PartidaEmpezada">La partida ya ha empezado</string>
+    <string name="AcabarPartida">Finalizar partida</string>
+    <string name="AcabarPartidaSeguro">Está seguro que desea acabar la partida?</string>
+    <string name="PartidaFinalizada">La partida se a acabado</string>
 </resources>

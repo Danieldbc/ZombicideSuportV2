@@ -27,6 +27,7 @@ public class IntercambioActivity extends AppCompatActivity {
     private int c1,c2;
     boolean p1drag,p1drop;
     private String textSala;
+    private boolean finalizar=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +63,19 @@ public class IntercambioActivity extends AppCompatActivity {
         final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
         final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
         final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
-        drintercambio.addValueEventListener(new ValueEventListener() {
+        final DatabaseReference drfinal = database.getReference().child(textSala);
+
+        drfinal.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean intc= (boolean) dataSnapshot.child("intercambiar").getValue();
-
-                if(!intc){
-                    Intent data=new Intent();
-                    setResult(RESULT_OK,data);
-                    finish();
+                if(!finalizar){
+                    finalizar= (boolean) dataSnapshot.child("finalizar").getValue();
+                    if (finalizar){
+                        drfinal.removeValue();
+                        finish();
+                    }
                 }
+
             }
 
             @Override
@@ -79,7 +83,26 @@ public class IntercambioActivity extends AppCompatActivity {
 
             }
         });
+        drintercambio.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    boolean intc= (boolean) dataSnapshot.child("intercambiar").getValue();
 
+                    if(!intc){
+                        Intent data=new Intent();
+                        setResult(RESULT_OK,data);
+                        finish();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         drwatts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -148,17 +171,20 @@ public class IntercambioActivity extends AppCompatActivity {
         });
     }
     private void ComprobarPersonajeFB(DataSnapshot dataSnapshot) {
-        String PersonajeFireBase=dataSnapshot.child("nombre").getValue().toString();
+        if (!finalizar){
+            String PersonajeFireBase=dataSnapshot.child("nombre").getValue().toString();
 
-        if (p1.getNombre().equals(PersonajeFireBase)){
-            ActualizarPersonaje(dataSnapshot,p1);
+            if (p1.getNombre().equals(PersonajeFireBase)){
+                ActualizarPersonaje(dataSnapshot,p1);
+            }
+
+            if (p2.getNombre().equals(PersonajeFireBase)){
+                ActualizarPersonaje(dataSnapshot,p2);
+            }
+
+            Mostrar();
         }
 
-        if (p2.getNombre().equals(PersonajeFireBase)){
-            ActualizarPersonaje(dataSnapshot,p2);
-        }
-
-        Mostrar();
     }
     private void ActualizarPersonaje(DataSnapshot dataSnapshot,Personaje p) {
         int i= Integer.parseInt((dataSnapshot.child("carta1").child("carta").getValue().toString()));

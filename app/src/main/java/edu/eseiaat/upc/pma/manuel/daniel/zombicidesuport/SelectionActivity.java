@@ -67,6 +67,7 @@ public class SelectionActivity extends AppCompatActivity{
     private int nusuario;
     private boolean cargar;
     private String estado;
+    private boolean finalizar=false;
 
 
     @Override
@@ -188,13 +189,19 @@ public class SelectionActivity extends AppCompatActivity{
         final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
         final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
         final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
-        drcargar.addValueEventListener(new ValueEventListener() {
+        final DatabaseReference drfinal = database.getReference().child(textSala);
+
+        drfinal.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean carga= (boolean) dataSnapshot.getValue();
-                if (carga){
-                    Entrar();
+                if(!finalizar){
+                    finalizar= (boolean) dataSnapshot.child("finalizar").getValue();
+                    if (finalizar){
+                        drfinal.removeValue();
+                        finish();
+                    }
                 }
+
             }
 
             @Override
@@ -202,12 +209,12 @@ public class SelectionActivity extends AppCompatActivity{
 
             }
         });
-        draceptados.addValueEventListener(new ValueEventListener() {
+        drcargar.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!cargar){
-                    Naceptados= Integer.parseInt(dataSnapshot.getValue().toString());
-                    if (Naceptados== nUsuarios){
+                if (!finalizar){
+                    boolean carga= (boolean) dataSnapshot.getValue();
+                    if (carga){
                         Entrar();
                     }
                 }
@@ -219,10 +226,34 @@ public class SelectionActivity extends AppCompatActivity{
 
             }
         });
+        draceptados.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar) {
+                    if(!cargar){
+                        Naceptados= Integer.parseInt(dataSnapshot.getValue().toString());
+                        if (Naceptados== nUsuarios){
+                            Entrar();
+                        }
+                    }
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         drNusuario.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                nUsuarios = Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
+                if(!finalizar){
+                    nUsuarios = Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
+                }
+
             }
 
             @Override
@@ -233,16 +264,19 @@ public class SelectionActivity extends AppCompatActivity{
         drusuario.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                listaUsuarios.clear();
-                for (int i = 1; i< nUsuarios +1; i++){
-                    String nombre=String.valueOf(dataSnapshot.child("Usuario"+i).child("nombre").getValue());
-                    if (!nombre.equals("")&!nombre.equals("null")){
-                        listaUsuarios.add(nombre);
-                    }
+                if (!finalizar){
+                    listaUsuarios.clear();
+                    for (int i = 1; i< nUsuarios +1; i++){
+                        String nombre=String.valueOf(dataSnapshot.child("Usuario"+i).child("nombre").getValue());
+                        if (!nombre.equals("")&!nombre.equals("null")){
+                            listaUsuarios.add(nombre);
+                        }
 
+                    }
+                    adapterUsuarios.notifyDataSetChanged();
+                    viewUsuarios.smoothScrollToPosition(listaUsuarios.size()-1);
                 }
-                adapterUsuarios.notifyDataSetChanged();
-                viewUsuarios.smoothScrollToPosition(listaUsuarios.size()-1);
+
 
             }
 
@@ -254,10 +288,13 @@ public class SelectionActivity extends AppCompatActivity{
         drwatts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                watts.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                watts.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
+                if(!finalizar){
+                    watts.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    watts.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+
             }
 
             @Override
@@ -268,10 +305,14 @@ public class SelectionActivity extends AppCompatActivity{
         drbelle.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                belle.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                belle.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
+                if (!finalizar){
+                    belle.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    belle.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+
+
             }
 
             @Override
@@ -282,10 +323,12 @@ public class SelectionActivity extends AppCompatActivity{
         drgrindlock.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                grindlock.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                grindlock.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
+                if (!finalizar){
+                    grindlock.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    grindlock.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -296,10 +339,12 @@ public class SelectionActivity extends AppCompatActivity{
         drjoshua.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                joshua.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                joshua.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
+                if(!finalizar){
+                    joshua.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    joshua.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -310,10 +355,12 @@ public class SelectionActivity extends AppCompatActivity{
         drkim.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                kim.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                kim.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
+                if (!finalizar){
+                    kim.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    kim.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -322,19 +369,23 @@ public class SelectionActivity extends AppCompatActivity{
             }
         });
         drshannon.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                shannon.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                shannon.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
-            }
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!finalizar){
+                        shannon.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                        shannon.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                        adapterPersonajes.notifyDataSetChanged();
+                        adapterPersonajesSelec.notifyDataSetChanged();
+                    }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+
+
     }
     private void ListenerPantalla() {
         borrar.setOnDragListener(new View.OnDragListener() {
@@ -727,7 +778,10 @@ public class SelectionActivity extends AppCompatActivity{
         listaPersonajes.add(grindlock);
         listaPersonajes.add(belle);
         listaPersonajes.add(kim);
-        ModificarFireBase();
+        if (estado.equals("Crear")){
+            ModificarFireBase();
+        }
+
 
     }
 

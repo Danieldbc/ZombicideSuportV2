@@ -11,21 +11,23 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ViewLevel"
-        android:layout_width="460dp"
+        android:layout_width="500dp"
         android:layout_height="40dp"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/BTNmas" />
+        android:layout_toEndOf="@+id/ViewPersonajes" />
+
     <TextView
         android:id="@+id/nombre"
         android:layout_width="70dp"
         android:layout_height="20dp"
+        android:layout_below="@+id/BTNmenos"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@+id/ViewPersonajes"
         android:background="@drawable/tabla"
         android:text="TextView"
-        android:textSize="15dp"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:layout_above="@+id/Carta2"
-        android:layout_toStartOf="@+id/Carta4" />
+        android:textSize="15dp" />
 
     <ImageView
         android:id="@+id/foto"
@@ -47,27 +49,26 @@
 
     <Button
         android:id="@+id/BTNmenos"
-        android:layout_width="30dp"
+        android:layout_width="60dp"
         android:layout_height="40dp"
-        android:text="-"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/ViewPersonajes" />
+        android:layout_below="@+id/ViewLevel"
+        android:layout_toEndOf="@+id/ViewPersonajes"
+        android:text="-" />
 
     <Button
         android:id="@+id/BTNmas"
-        android:layout_width="30dp"
+        android:layout_width="70dp"
         android:layout_height="40dp"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/ViewUsuarios"
-        android:layout_toStartOf="@+id/ViewUsuarios"
+        android:layout_alignEnd="@+id/ViewLevel"
+        android:layout_below="@+id/ViewLevel"
         android:text="+" />
 
     <Button
         android:id="@+id/BTNCambio"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_above="@+id/Carta4"
-        android:layout_alignEnd="@+id/Carta5"
+        android:layout_below="@+id/ViewLevel"
+        android:layout_toEndOf="@+id/ModoZombie"
         android:background="@color/black_overlay"
         android:onClick="Intercambiar"
         android:text="intercambiar"
@@ -77,12 +78,22 @@
         android:id="@+id/ModoZombie"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_alignBaseline="@+id/nombre"
-        android:layout_alignBottom="@+id/nombre"
-        android:layout_alignStart="@+id/BTNCambio"
-        android:background="@color/black_overlay"
+        android:layout_below="@+id/ViewLevel"
+        android:layout_toEndOf="@+id/BTNmenos"
+        android:background="@color/colorAccent"
         android:onClick="ModoZombie"
         android:text="@string/ModoZombie"
+        android:textSize="8sp" />
+
+    <Button
+        android:id="@+id/modoZombie"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/nombre"
+        android:layout_toEndOf="@+id/Carta1"
+        android:background="@color/colorPrimary"
+        android:onClick="Finalizar"
+        android:text="@string/AcabarPartida"
         android:textSize="8sp" />
 
     <android.support.v7.widget.RecyclerView
@@ -142,96 +153,92 @@
         android:id="@+id/HabAzul"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/HabAmarilla"
+        android:layout_toEndOf="@+id/BTNCambio"
         android:background="@android:color/holo_blue_dark"
         android:text="+1 acción"
         android:textAlignment="center"
-        android:textSize="11dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
         android:textColor="@android:color/black"
-        android:layout_below="@+id/ViewLevel"
-        android:layout_toEndOf="@+id/ViewPersonajes" />
+        android:textSize="11dp" />
 
     <TextView
         android:id="@+id/HabAmarilla"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/HabNaranja1"
+        android:layout_alignStart="@+id/HabNaranja1"
         android:background="#FFEE58"
+        android:layout_marginBottom="10dp"
         android:text="+1 acción"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="11dp"
-        android:layout_marginStart="10dp"
-        android:layout_alignBaseline="@+id/HabAzul"
-        android:layout_alignBottom="@+id/HabAzul"
-        android:layout_toEndOf="@+id/HabAzul" />
+        android:textSize="11dp" />
 
     <TextView
         android:id="@+id/HabNaranja1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/HabNaranja2"
+        android:layout_alignStart="@+id/HabNaranja2"
         android:background="@android:color/holo_orange_dark"
         android:text="+1 acción de combate a distancia"
         android:textAlignment="center"
+        android:layout_marginBottom="5dp"
         android:textColor="@android:color/black"
-        android:textSize="11dp"
-        android:layout_marginStart="10dp"
-        android:layout_alignBaseline="@+id/HabAmarilla"
-        android:layout_alignBottom="@+id/HabAmarilla"
-        android:layout_toEndOf="@+id/HabAmarilla" />
+        android:textSize="11dp" />
 
     <TextView
         android:id="@+id/HabNaranja2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/Carta2"
+        android:layout_toEndOf="@+id/Carta2"
         android:background="@android:color/holo_orange_dark"
         android:text="+1 acción de combate a distancia"
         android:textAlignment="center"
+        android:layout_marginBottom="10dp"
         android:textColor="@android:color/black"
-        android:textSize="11dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="10dp"
-        android:layout_below="@+id/HabAmarilla"
-        android:layout_toEndOf="@+id/HabAmarilla" />
+        android:textSize="11dp" />
 
     <TextView
         android:id="@+id/HabRoja1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/HabRoja2"
+        android:layout_toEndOf="@+id/Carta2"
         android:background="@android:color/holo_red_light"
         android:text="+1 acción de combate a distancia"
+        android:layout_marginBottom="5dp"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="11dp"
-        android:layout_marginStart="10dp"
-        android:layout_alignBaseline="@+id/HabNaranja1"
-        android:layout_alignBottom="@+id/HabNaranja1"
-        android:layout_toEndOf="@+id/HabNaranja1" />
+        android:textSize="11dp" />
 
     <TextView
         android:id="@+id/HabRoja2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/HabRoja3"
+        android:layout_toEndOf="@+id/Carta2"
         android:background="@android:color/holo_red_light"
+        android:layout_marginBottom="5dp"
         android:text="+1 acción de combate a distancia"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="11dp"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/HabRoja1"
-        android:layout_alignStart="@+id/HabRoja1" />
+        android:textSize="11dp" />
 
     <TextView
         android:id="@+id/HabRoja3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/Carta4"
+        android:layout_toEndOf="@+id/Carta2"
         android:background="@android:color/holo_red_light"
+        android:layout_marginBottom="5dp"
         android:text="+1 acción de combate a distancia"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="11dp"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/HabRoja2"
-        android:layout_alignStart="@+id/HabRoja2" />
+        android:textSize="11dp" />
 
 
 

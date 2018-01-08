@@ -16,12 +16,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class JuegoActivity extends AppCompatActivity {
@@ -63,7 +65,7 @@ public class JuegoActivity extends AppCompatActivity {
     private boolean miPersonaje=true;
     private String textSala;
     private Button btIntercambiar;
-
+    private boolean finalizar=false;
 
 
     @Override
@@ -138,9 +140,9 @@ public class JuegoActivity extends AppCompatActivity {
 
     }
 
-
     private void ListenerFireBase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference drfinal = database.getReference().child(textSala);
         final DatabaseReference drintercambio = database.getReference().child(textSala).child("intercambio");
         final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
         final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
@@ -148,70 +150,97 @@ public class JuegoActivity extends AppCompatActivity {
         final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
         final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
         final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
+
+        drfinal.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    finalizar= (boolean) dataSnapshot.child("finalizar").getValue();
+                    if (finalizar){
+                        drfinal.removeValue();
+
+                        Intent intent=new Intent(JuegoActivity.this,MainActivity.class);
+                        Toast.makeText(JuegoActivity.this, R.string.PartidaFinalizada, Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         drintercambio.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                intercambio= (boolean) dataSnapshot.child("intercambiar").getValue();
-                boolean aceptar= (boolean) dataSnapshot.child("aceptar").getValue();
-                String pers1=dataSnapshot.child("personaje1").getValue().toString();
-                String pers2=dataSnapshot.child("personaje2").getValue().toString();
-                int persp = 0,persq=0;
-                boolean hayInt = false;
-                boolean IntIndividualA = false;
-                boolean IntIndividualB = false;
-                boolean IntMaster=false;
-                if(intercambio){
-                    if (!pers1.equals("")){
-                        if (!pers2.equals("")){
-                            for (int i=0;i<listaPersonajes.size();i++){
-                                Personaje p=listaPersonajes.get(i);
-                                if (p.getNombre().equals(pers1)){
-                                    hayInt=true;
-                                    persp=i;
-                                    IntMaster=true;
-                                    IntIndividualA=true;
-                                }else if (p.getNombre().equals(pers2)){
-                                    hayInt=true;
-                                    persq=i;
-                                    IntIndividualB=true;
-                                }
-
-                            }
-                            for (int i=0;i<listaPersonajesOtros.size();i++){
-                                Personaje p=listaPersonajesOtros.get(i);
-                                if (p.getNombre().equals(pers1)){
-                                    persp=i;
-                                }else if (p.getNombre().equals(pers2)){
-                                    persq=i;
-                                }
-
-                            }
-                            if (hayInt){
-                                Personaje p;
-                                Personaje q;
-                                if (IntIndividualA&IntIndividualB){
-                                   p=listaPersonajes.get(persp);
-                                   q=listaPersonajes.get(persq);
-                                }else{
-                                    if (IntMaster){
-                                        p=listaPersonajes.get(persp);
-                                        q=listaPersonajesOtros.get(persq);
-                                    }else{
-                                        q=listaPersonajes.get(persq);
-                                        p=listaPersonajesOtros.get(persp);
+                if (!finalizar){
+                    intercambio= (boolean) dataSnapshot.child("intercambiar").getValue();
+                    boolean aceptar= (boolean) dataSnapshot.child("aceptar").getValue();
+                    String pers1=dataSnapshot.child("personaje1").getValue().toString();
+                    String pers2=dataSnapshot.child("personaje2").getValue().toString();
+                    int persp = 0,persq=0;
+                    boolean hayInt = false;
+                    boolean IntIndividualA = false;
+                    boolean IntIndividualB = false;
+                    boolean IntMaster=false;
+                    if(intercambio) {
+                        if (!pers1.equals("")) {
+                            if (!pers2.equals("")) {
+                                for (int i = 0; i < listaPersonajes.size(); i++) {
+                                    Personaje p = listaPersonajes.get(i);
+                                    if (p.getNombre().equals(pers1)) {
+                                        hayInt = true;
+                                        persp = i;
+                                        IntMaster = true;
+                                        IntIndividualA = true;
+                                    } else if (p.getNombre().equals(pers2)) {
+                                        hayInt = true;
+                                        persq = i;
+                                        IntIndividualB = true;
                                     }
 
+                                }
+                                for (int i = 0; i < listaPersonajesOtros.size(); i++) {
+                                    Personaje p = listaPersonajesOtros.get(i);
+                                    if (p.getNombre().equals(pers1)) {
+                                        persp = i;
+                                    } else if (p.getNombre().equals(pers2)) {
+                                        persq = i;
+                                    }
 
                                 }
+                                if (hayInt) {
+                                    Personaje p;
+                                    Personaje q;
+                                    if (IntIndividualA & IntIndividualB) {
+                                        p = listaPersonajes.get(persp);
+                                        q = listaPersonajes.get(persq);
+                                    } else {
+                                        if (IntMaster) {
+                                            p = listaPersonajes.get(persp);
+                                            q = listaPersonajesOtros.get(persq);
+                                        } else {
+                                            q = listaPersonajes.get(persq);
+                                            p = listaPersonajesOtros.get(persp);
+                                        }
 
-                                IRaIntercambiar(p,q,IntIndividualB,aceptar);
+
+                                    }
+
+                                    IRaIntercambiar(p, q, IntIndividualB, aceptar);
+                                }
                             }
+
                         }
-
                     }
-
-
                 }
+
+
+
+
             }
 
             @Override
@@ -288,36 +317,39 @@ public class JuegoActivity extends AppCompatActivity {
     }
 
     private void ComprobarPersonajeFB(DataSnapshot dataSnapshot) {
-        String PersonajeFireBase=dataSnapshot.child("nombre").getValue().toString();
-        Personaje p;
+        if(!finalizar){
+            String PersonajeFireBase=dataSnapshot.child("nombre").getValue().toString();
+            Personaje p;
 
-        for (int i=0;i<listaPersonajes.size();i++){
-            p=listaPersonajes.get(i);
-            if (p.getNombre().equals(PersonajeFireBase)){
-                ActualizarPersonaje(dataSnapshot,p);
+            for (int i=0;i<listaPersonajes.size();i++){
+                p=listaPersonajes.get(i);
+                if (p.getNombre().equals(PersonajeFireBase)){
+                    ActualizarPersonaje(dataSnapshot,p);
+                }
+
             }
 
+            for (int i=0;i<listaPersonajesOtros.size();i++){
+                p=listaPersonajesOtros.get(i);
+                if (p.getNombre().equals(PersonajeFireBase)){
+                    ActualizarPersonaje(dataSnapshot,p);
+                }
+                if (p.intercambiar){
+                    p=p;
+                    p.intercambiar=false;
+                }
+            }
+
+            if(miPersonaje) {
+                p=listaPersonajes.get(idPersonaje);
+            }else{
+                p=listaPersonajesOtros.get(idPersonaje);
+            }
+            if(p.getNombre().equals(PersonajeFireBase)){
+                PersonajeSelec();
+            }
         }
 
-        for (int i=0;i<listaPersonajesOtros.size();i++){
-            p=listaPersonajesOtros.get(i);
-            if (p.getNombre().equals(PersonajeFireBase)){
-                ActualizarPersonaje(dataSnapshot,p);
-            }
-            if (p.intercambiar){
-                p=p;
-                p.intercambiar=false;
-            }
-        }
-
-        if(miPersonaje) {
-            p=listaPersonajes.get(idPersonaje);
-        }else{
-            p=listaPersonajesOtros.get(idPersonaje);
-        }
-        if(p.getNombre().equals(PersonajeFireBase)){
-            PersonajeSelec();
-        }
     }
 
     private void ActualizarPersonaje(DataSnapshot dataSnapshot,Personaje p) {
@@ -1096,7 +1128,6 @@ public class JuegoActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1116,7 +1147,7 @@ public class JuegoActivity extends AppCompatActivity {
         if (requestCode==IntercambioActivity.pasarcartas){
             if (resultCode==RESULT_OK){
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                final DatabaseReference myref = database.getReference();
+                DatabaseReference myref = database.getReference();
                 myref.child(textSala).child("intercambio").child("intercambiar").setValue(false);
                 myref.child(textSala).child("intercambio").child("aceptar").setValue(false);
                 myref.child(textSala).child("intercambio").child("personaje1").setValue("");
@@ -1167,5 +1198,21 @@ public class JuegoActivity extends AppCompatActivity {
             PersonajeSelec();
             adapterPersonajes.notifyDataSetChanged();
         }
+    }
+
+    public void Finalizar(View view) {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle(R.string.AcabarPartida);
+        builder.setMessage(R.string.AcabarPartidaSeguro);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myref = database.getReference();
+                myref.child(textSala).child("finalizar").setValue(true);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.create().show();
     }
 }

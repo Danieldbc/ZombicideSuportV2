@@ -139,7 +139,8 @@ public class JuegoActivity extends AppCompatActivity {
 
 
     }
-
+    /*Los eventos de cuando se modifica algun valor en el firbase se leen y se actualizan en la pantalla
+    * todo RELLENAR PARA AÑADIR PERSONAJES*/
     private void ListenerFireBase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference drfinal = database.getReference().child(textSala);
@@ -315,7 +316,7 @@ public class JuegoActivity extends AppCompatActivity {
             }
         });
     }
-
+    //Se comprueba que personaje se a actualizado
     private void ComprobarPersonajeFB(DataSnapshot dataSnapshot) {
         if(!finalizar){
             String PersonajeFireBase=dataSnapshot.child("nombre").getValue().toString();
@@ -351,7 +352,7 @@ public class JuegoActivity extends AppCompatActivity {
         }
 
     }
-
+    //se actualiza el personaje
     private void ActualizarPersonaje(DataSnapshot dataSnapshot,Personaje p) {
         int i= Integer.parseInt((dataSnapshot.child("carta1").child("carta").getValue().toString()));
         String s=(dataSnapshot.child("carta1").child("nombre").getValue().toString());
@@ -383,6 +384,8 @@ public class JuegoActivity extends AppCompatActivity {
         adapterPersonajes.notifyDataSetChanged();
     }
 
+    /*Cada vez que haya un jugador aplique un cambio a un personaje se notifica al firbase para
+* que el resto de jugadores lo puedan ver*/
     private void ModificarFireBase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();
@@ -404,6 +407,7 @@ public class JuegoActivity extends AppCompatActivity {
         }
     }
 
+    //Los eventos de interactuar las habilidades
     private void ListenerHabilidades() {
         habNaranja1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -632,7 +636,7 @@ public class JuegoActivity extends AppCompatActivity {
 
 
     }
-
+    //Los eventos de interactuar con las cartas
     private void ListenerCartas() {
         carta1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -813,13 +817,13 @@ public class JuegoActivity extends AppCompatActivity {
         });
 
     }
-
+    //Intercambio de una carta de la misma mano
     private void MovimientoCarta() {
         Personaje p=listaPersonajes.get(idPersonaje);
         p.intercambiar(p,c1,c2);
         ModificarFireBase();
     }
-
+    //Se ofrece intercambiar cartas con otro personaje
     private void IntercambiarCartas(final Personaje p, final Personaje q) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myref = database.getReference().child(textSala);
@@ -832,7 +836,7 @@ public class JuegoActivity extends AppCompatActivity {
         Toast.makeText(JuegoActivity.this, R.string.EsperandoAceptar, Toast.LENGTH_SHORT).show();
 
     }
-
+    //Se informa al usuario que alguien quiere intercambiar
     private void IRaIntercambiar(final Personaje p, final Personaje q, boolean IntB,boolean aceptar) {
         if (IntB&!aceptar){
             AlertDialog.Builder builder=new AlertDialog.Builder(this);
@@ -878,7 +882,7 @@ public class JuegoActivity extends AppCompatActivity {
 
 
     }
-
+    //se va a la actividad de seleccion de cartas
     private void SeleccionarCarta() {
         if (miPersonaje){
             Intent intent=new Intent(JuegoActivity.this,CardsActivity.class);
@@ -892,7 +896,7 @@ public class JuegoActivity extends AppCompatActivity {
         }
 
     }
-
+    //se actualiza la visualizacion de la pantalla segun el personaje seleccionado
     private void PersonajeSelec() {
         Personaje p;
         if(miPersonaje){
@@ -989,7 +993,7 @@ public class JuegoActivity extends AppCompatActivity {
             habRoja3.setBackgroundColor(getColor(android.R.color.holo_red_dark));
         }
     }
-
+    //se crean los datos de los niveles
     private void llenar_DATOS(){
 
         lista_Draw.add(R.drawable.level_43);
@@ -1128,6 +1132,69 @@ public class JuegoActivity extends AppCompatActivity {
 
     }
 
+
+    /* al pulsar una vez intercambiar informa al usuario donde puede intercambiar
+    o si se vuelve a pulsar se cancela*/
+    public void Intercambiar(View view) {
+        if (miPersonaje){
+            if (!intercambio){
+                if (!intercambiar){
+                    viewPersonajes.setBackgroundColor(getColor(android.R.color.holo_green_dark));
+                    viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.holo_green_dark));
+                    btIntercambiar.setBackgroundColor(getColor(android.R.color.holo_red_dark));
+                    intercambiar=true;
+                }else {
+                    viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
+                    viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
+                    btIntercambiar.setBackgroundColor(getColor(R.color.black_overlay));
+                    intercambiar=false;
+                }
+            }else{
+                Toast.makeText(JuegoActivity.this, R.string.HayIntercambio, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+    }
+
+    /*inercambia las habilidades del paersonaje al modo zombie*/
+    public void ModoZombie(View view) {
+        if (miPersonaje){
+            Personaje p=listaPersonajes.get(idPersonaje);
+            p.modozombie=!p.modozombie;
+            if (p.puntuacion>18){
+                p.level[0]=1;
+                p.level[1]=1;
+            }
+            if (p.puntuacion==43){
+                p.level[2]=1;
+                p.level[3]=1;
+                p.level[4]=1;
+
+            }
+            ModificarFireBase();
+            PersonajeSelec();
+            adapterPersonajes.notifyDataSetChanged();
+        }
+    }
+
+    //finaliza la partida y borra los datos del firebase
+    public void Finalizar(View view) {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle(R.string.AcabarPartida);
+        builder.setMessage(R.string.AcabarPartidaSeguro);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myref = database.getReference();
+                myref.child(textSala).child("finalizar").setValue(true);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.create().show();
+    }
+    //se lee el resultado tanto si se vuelve de intercambiar cartas como de seleccioarlar
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1158,61 +1225,5 @@ public class JuegoActivity extends AppCompatActivity {
 
     }
 
-   public void Intercambiar(View view) {
-        if (miPersonaje){
-            if (!intercambio){
-                if (!intercambiar){
-                    viewPersonajes.setBackgroundColor(getColor(android.R.color.holo_green_dark));
-                    viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.holo_green_dark));
-                    btIntercambiar.setBackgroundColor(getColor(android.R.color.holo_red_dark));
-                    intercambiar=true;
-                }else {
-                    viewPersonajes.setBackgroundColor(getColor(android.R.color.transparent));
-                    viewPersonajesOtros.setBackgroundColor(getColor(android.R.color.transparent));
-                    btIntercambiar.setBackgroundColor(getColor(R.color.black_overlay));
-                    intercambiar=false;
-                }
-            }else{
-                Toast.makeText(JuegoActivity.this, R.string.HayIntercambio, Toast.LENGTH_SHORT).show();
-            }
 
-        }
-
-    }
-
-    public void ModoZombie(View view) {
-        if (miPersonaje){
-            Personaje p=listaPersonajes.get(idPersonaje);
-            p.modozombie=!p.modozombie;
-            if (p.puntuacion>18){
-                p.level[0]=1;
-                p.level[1]=1;
-            }
-            if (p.puntuacion==43){
-                p.level[2]=1;
-                p.level[3]=1;
-                p.level[4]=1;
-
-            }
-            ModificarFireBase();
-            PersonajeSelec();
-            adapterPersonajes.notifyDataSetChanged();
-        }
-    }
-
-    public void Finalizar(View view) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setTitle(R.string.AcabarPartida);
-        builder.setMessage(R.string.AcabarPartidaSeguro);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myref = database.getReference();
-                myref.child(textSala).child("finalizar").setValue(true);
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        builder.create().show();
-    }
 }

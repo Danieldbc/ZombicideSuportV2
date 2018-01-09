@@ -14,6 +14,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    /*pantalla principal donde se puede crear, cargar o unirse a una partida en función del boton
+    se pasa una variable con el texto para diferenciar el boton que se ha pulsado, ya que abren
+    el mismo layout*/
     public void Crear(View view) {
         Intent intent=new Intent(this,CrearActivity.class);
         estado ="Crear";
@@ -21,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
     public void Cargar(View view) {
         Intent intent=new Intent(this,CrearActivity.class);
         estado ="Cargar";
@@ -29,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
     public void Entrar(View view) {
         Intent intent=new Intent(this,CrearActivity.class);
         estado ="Entrar";

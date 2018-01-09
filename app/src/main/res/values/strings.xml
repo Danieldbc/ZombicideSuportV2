@@ -77,4 +77,6 @@
     <string name="AcabarPartida">Finalizar partida</string>
     <string name="AcabarPartidaSeguro">Está seguro que desea acabar la partida?</string>
     <string name="PartidaFinalizada">La partida se a acabado</string>
+    <string name="NombreNoUso">No hay ningún personaje con ese nombre</string>
+    <string name="PartidaNoEmpezada">La partida no ha empezado</string>
 </resources>

@@ -73,7 +73,6 @@ public class CrearActivity extends AppCompatActivity {
                                 myref.child(textSala).child("intercambio").child("aceptar").setValue(false);
                                 myref.child(textSala).child("intercambio").child("personaje1").setValue("");
                                 myref.child(textSala).child("intercambio").child("personaje2").setValue("");
-                                myref.child(textSala).child("cargar").setValue(false);
                                 myref.child(textSala).child("Pempezada").setValue(false);
                                 myref.child(textSala).child("finalizar").setValue(false);
                                 intent.putExtra(SelectionActivity.KeyNumUsuario,1);

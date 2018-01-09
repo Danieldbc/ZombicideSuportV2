@@ -36,39 +36,27 @@ public class SelectionActivity extends AppCompatActivity{
     public static String KeyCargar="key_cargar";
     public static String Keyestado ="key_estado";
 
-    private RecyclerView viewPersonajes;
-    private List<Personaje> listaPersonajes;
+    private RecyclerView viewPersonajes,viewPersonajesSelec;
+    private List<Personaje> listaPersonajes,listaPersonajesOtros;
     private List<String> listaUsuarios;
     private PersonajesAdapter adapterPersonajes;
+    private PersonajesAdapter adapterPersonajesSelec;
     private ArrayAdapter<String> adapterUsuarios;
     private LinearLayoutManager linlayoutmanager;
-    private ImageView descripcionPersonaje;
-    private TextView habAzul,habAmarilla, habNaranja1, habNaranja2, habRoja1, habRoja2,habRoja3;
+    private ImageView descripcionPersonaje,borrar;
+    private TextView habAzul,habAmarilla, habNaranja1, habNaranja2, habRoja1, habRoja2,habRoja3,sala;
     private CheckBox modoZombie;
-    private int idPersonaje=0;
-    private boolean personajeDrop =false;
-    private int idPersonajeSelec=0;
-    private boolean personajeSelecDrop=false;
+    private ListView viewUsuarios;
     private ArrayList<Personaje> listaPersonajesSelec;
     private ArrayList<Carta> CartasDistancia,CartasCuerpo,CartasEspeciales,CartasOtras;
-    private RecyclerView viewPersonajesSelec;
-    private PersonajesAdapter adapterPersonajesSelec;
-    private ImageView borrar;
+    private int Naceptados,nusuario,nUsuarios =1,idPersonaje=0,idPersonajeSelec=0;
+    private boolean cargar,finalizar=false,personajeDrop =false,personajeSelecDrop=false,noRepetir=false;
+    private String textSala,estado,nombreUsuario;
+    //todo RELLENAR PARA AÑADIR PERSONAJES
     private Personaje watts,joshua,shannon,grindlock,belle,kim;
+    //todo RELLENAR PARA AÑADIR CARTAS
     private Carta mashotgun,eviltwins,pistol,rifle,sawedoff,shotgun,submg,baseballbat,chainsaw,crowbar,fireaxe,katana,machete,pan,
             goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano;
-    private TextView sala;
-    private String textSala;
-    private int nUsuarios =1;
-    private ListView viewUsuarios;
-    private List<Personaje> listaPersonajesOtros;
-    private int Naceptados;
-    private String nombreUsuario;
-    private int nusuario;
-    private boolean cargar;
-    private String estado;
-    private boolean finalizar=false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,397 +114,10 @@ public class SelectionActivity extends AppCompatActivity{
         }
     }
 
-    private void Cargar() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference drcargar = database.getReference().child(textSala);
 
-        drcargar.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                int nPersonajes= Integer.parseInt(dataSnapshot.child("Usuarios").child("Usuario"+nusuario).child("Npersonajes").getValue().toString());
-                for (int i=1;i<nPersonajes+1;i++){
-                    String nombre=dataSnapshot.child("Usuarios").child("Usuario"+nusuario).child("p"+i).getValue().toString();
-                    for (int t=0;t<listaPersonajes.size();t++){
-                        Personaje p=listaPersonajes.get(t);
-                       if (nombre.equals(p.getNombre())){
-                            listaPersonajesSelec.add(p);
-                       }
-                    }
-                }
-               /* int nUsuarios=Integer.parseInt(dataSnapshot.child("Usuarios").child("Nusuarios").getValue().toString());
-                for (int i=1;i<nUsuarios+1;i++){
-                    if (i!=nusuario){
-                        nPersonajes= Integer.parseInt(dataSnapshot.child("Usuarios").child("Usuario"+i).child("Npersonajes").getValue().toString());
-                        for (int t=1;t<nPersonajes+1;t++){
-                            String nombre=dataSnapshot.child("Usuarios").child("Usuario"+nusuario).child("p"+i).getValue().toString();
-                            for (int r=0;r<listaPersonajes.size();r++){
-                                Personaje p=listaPersonajes.get(r);
-                                if (nombre.equals(p.getNombre())){
-                                    listaPersonajesOtros.add(p);
-                                }
-                            }
-                        }
-                    }
-
-
-                }*/
-
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myref = database.getReference();
-                myref.child(textSala).child("cargar").setValue(true);
-
-            }
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void ListenerFireBase() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference drcargar=database.getReference().child(textSala).child("cargar");
-        final DatabaseReference draceptados=database.getReference().child(textSala).child("Naceptados");
-        final DatabaseReference drNusuario=database.getReference().child(textSala).child("Usuarios");
-        final DatabaseReference drusuario=database.getReference().child(textSala).child("Usuarios");
-        final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
-        final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
-        final DatabaseReference drgrindlock = database.getReference().child(textSala).child("Grindlock");
-        final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
-        final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
-        final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
-        final DatabaseReference drfinal = database.getReference().child(textSala);
-
-        drfinal.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!finalizar){
-                    finalizar= (boolean) dataSnapshot.child("finalizar").getValue();
-                    if (finalizar){
-                        drfinal.removeValue();
-                        finish();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        drcargar.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!finalizar){
-                    boolean carga= (boolean) dataSnapshot.getValue();
-                    if (carga){
-                        Entrar();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        draceptados.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!finalizar) {
-                    if(!cargar){
-                        Naceptados= Integer.parseInt(dataSnapshot.getValue().toString());
-                        if (Naceptados== nUsuarios){
-                            Entrar();
-                        }
-                    }
-                }
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        drNusuario.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!finalizar){
-                    nUsuarios = Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        drusuario.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!finalizar){
-                    listaUsuarios.clear();
-                    for (int i = 1; i< nUsuarios +1; i++){
-                        String nombre=String.valueOf(dataSnapshot.child("Usuario"+i).child("nombre").getValue());
-                        if (!nombre.equals("")&!nombre.equals("null")){
-                            listaUsuarios.add(nombre);
-                        }
-
-                    }
-                    adapterUsuarios.notifyDataSetChanged();
-                    viewUsuarios.smoothScrollToPosition(listaUsuarios.size()-1);
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        drwatts.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!finalizar){
-                    watts.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                    watts.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                    adapterPersonajes.notifyDataSetChanged();
-                    adapterPersonajesSelec.notifyDataSetChanged();
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        drbelle.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!finalizar){
-                    belle.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                    belle.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                    adapterPersonajes.notifyDataSetChanged();
-                    adapterPersonajesSelec.notifyDataSetChanged();
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        drgrindlock.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!finalizar){
-                    grindlock.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                    grindlock.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                    adapterPersonajes.notifyDataSetChanged();
-                    adapterPersonajesSelec.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        drjoshua.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!finalizar){
-                    joshua.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                    joshua.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                    adapterPersonajes.notifyDataSetChanged();
-                    adapterPersonajesSelec.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        drkim.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!finalizar){
-                    kim.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                    kim.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                    adapterPersonajes.notifyDataSetChanged();
-                    adapterPersonajesSelec.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        drshannon.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (!finalizar){
-                        shannon.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
-                        shannon.setSelected((Boolean) dataSnapshot.child("selected").getValue());
-                        adapterPersonajes.notifyDataSetChanged();
-                        adapterPersonajesSelec.notifyDataSetChanged();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-    }
-    private void ListenerPantalla() {
-        borrar.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        v.setBackgroundColor(getColor(android.R.color.holo_red_light));
-                        break;
-                    case DragEvent.ACTION_DRAG_ENTERED:
-                        v.setBackgroundColor(getColor(android.R.color.holo_red_dark));
-                        break;
-                    case DragEvent.ACTION_DRAG_EXITED:
-                        v.setBackgroundColor(getColor(android.R.color.holo_red_light));
-                        break;
-                    case DragEvent.ACTION_DROP:
-
-                        if (personajeSelecDrop){
-                            Personaje p=listaPersonajesSelec.get(idPersonajeSelec);
-                            p.setInvisible(false);
-                            p.setSelected(false);
-                            listaPersonajesSelec.remove(idPersonajeSelec);
-                        }
-                        if (personajeDrop){
-                            Personaje p=listaPersonajes.get(idPersonaje);
-                            p.setInvisible(false);
-                            p.setSelected(false);
-                        }
-                        ModificarFireBase();
-                        adapterPersonajes.notifyDataSetChanged();
-                        adapterPersonajesSelec.notifyDataSetChanged();
-                        personajeDrop=false;
-                        personajeSelecDrop=false;
-                        break;
-                    case DragEvent.ACTION_DRAG_ENDED:
-                        v.setBackgroundColor(getColor(android.R.color.transparent));
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
-        viewPersonajesSelec.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        v.setBackgroundColor(getColor(android.R.color.holo_green_light));
-                        break;
-                    case DragEvent.ACTION_DRAG_ENTERED:
-                        v.setBackgroundColor(getColor(android.R.color.holo_green_dark));
-                        break;
-                    case DragEvent.ACTION_DRAG_EXITED:
-                        v.setBackgroundColor(getColor(android.R.color.holo_green_light));
-                        break;
-                    case DragEvent.ACTION_DROP:
-                        if (personajeDrop==true){
-                            Personaje p=listaPersonajes.get(idPersonaje);
-                            p.setInvisible(true);
-                            p.setSelected(true);
-                            adapterPersonajes.notifyDataSetChanged();
-                            listaPersonajesSelec.add(p);
-                            adapterPersonajesSelec.notifyDataSetChanged();
-                            viewPersonajesSelec.smoothScrollToPosition(listaPersonajesSelec.size()-1);
-
-                        }
-                        ModificarFireBase();
-                        personajeDrop=false;
-                        personajeSelecDrop=false;
-                        break;
-                    case DragEvent.ACTION_DRAG_ENDED:
-                        v.setBackgroundColor(getColor(android.R.color.transparent));
-                    default:
-                        break;
-                };
-                return true;
-            }
-        });
-        modoZombie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (int i=0;i<listaPersonajes.size();i++){
-                    Personaje p=listaPersonajes.get(i);
-                    p.modozombie=!p.modozombie;
-                }
-                ModificarFireBase();
-                PersonajeSeleccionado();
-                adapterPersonajes.notifyDataSetChanged();
-                adapterPersonajesSelec.notifyDataSetChanged();
-            }
-        });
-        adapterPersonajes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                idPersonaje=viewPersonajes.getChildAdapterPosition(view);
-                PersonajeSeleccionado();
-            }
-        });
-        adapterPersonajes.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                personajeDrop=true;
-                idPersonaje=viewPersonajes.getChildAdapterPosition(view);
-                Personaje p=listaPersonajes.get(idPersonaje);
-                PersonajeSeleccionado();
-                if (!p.isInvisible()){
-                    ClipData data = ClipData.newPlainText("", "");
-                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                    view.startDrag(data, shadowBuilder, view, 0);
-                    //view.startDragAndDrop(data,shadowBuilder,view,0);
-                    return true;
-                }else{
-                    Toast.makeText(SelectionActivity.this, R.string.PersonajeYaSeleccionado, Toast.LENGTH_SHORT).show();
-                }
-                return false;
-            }
-        });
-        adapterPersonajesSelec.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                idPersonajeSelec=viewPersonajesSelec.getChildAdapterPosition(view);
-                personajeSelecDrop=true;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
-                //view.startDragAndDrop(data,shadowBuilder,view,0);
-                return true;
-            }
-        });
-    }
-
+    /*Se crea la carta con la imagen y el nombre correspondiente y se añade a la lista en funcion
+    del tipo de carta que sea
+     todo RELLENAR PARA AÑADIR CARTAS */
     private void CrearCartas() {
         //Distancia
         mashotgun=new Carta((R.drawable.cmashotgun),"cmashotgun");
@@ -591,6 +192,9 @@ public class SelectionActivity extends AppCompatActivity{
 
     }
 
+    /*Se crean los personajes y se añaden al recyclerview, en el caso de ser la persona que crea
+    la sala tambien lo añades al firbase
+    todo RELLENAR PARA AÑADIR PERSONAJES */
     private void CrearPersonajes() {
         String nombre="watts";
         String habazul=getString(R.string.EmpezarConBateBeisbol);
@@ -785,6 +389,333 @@ public class SelectionActivity extends AppCompatActivity{
 
     }
 
+    /*Los eventos de cuando se modifica algun valor en el firbase se leen y se actualizan en la pantalla
+    * todo RELLENAR PARA AÑADIR PERSONAJES*/
+    private void ListenerFireBase() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference draceptados=database.getReference().child(textSala).child("Naceptados");
+        final DatabaseReference drNusuario=database.getReference().child(textSala).child("Usuarios");
+        final DatabaseReference drusuario=database.getReference().child(textSala).child("Usuarios");
+        final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
+        final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
+        final DatabaseReference drgrindlock = database.getReference().child(textSala).child("Grindlock");
+        final DatabaseReference drjoshua = database.getReference().child(textSala).child("Joshua");
+        final DatabaseReference drkim = database.getReference().child(textSala).child("Kim");
+        final DatabaseReference drshannon = database.getReference().child(textSala).child("Shannon");
+        final DatabaseReference drfinal = database.getReference().child(textSala);
+
+        drfinal.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!finalizar){
+                    finalizar= (boolean) dataSnapshot.child("finalizar").getValue();
+                    if (finalizar){
+                        drfinal.removeValue();
+                        finish();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        draceptados.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar) {
+                    if(!cargar){
+                        Naceptados= Integer.parseInt(dataSnapshot.getValue().toString());
+                        if (Naceptados== nUsuarios){
+                            Entrar();
+                        }
+                    }
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drNusuario.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!finalizar){
+                    nUsuarios = Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drusuario.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    listaUsuarios.clear();
+                    for (int i = 1; i< nUsuarios +1; i++){
+                        String nombre=String.valueOf(dataSnapshot.child("Usuario"+i).child("nombre").getValue());
+                        if (!nombre.equals("")&!nombre.equals("null")){
+                            listaUsuarios.add(nombre);
+                        }
+
+                    }
+                    adapterUsuarios.notifyDataSetChanged();
+                    viewUsuarios.smoothScrollToPosition(listaUsuarios.size()-1);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drwatts.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!finalizar){
+                    watts.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    watts.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drbelle.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    belle.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    belle.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drgrindlock.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    grindlock.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    grindlock.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drjoshua.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!finalizar){
+                    joshua.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    joshua.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drkim.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    kim.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    kim.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drshannon.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!finalizar){
+                        shannon.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                        shannon.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                        adapterPersonajes.notifyDataSetChanged();
+                        adapterPersonajesSelec.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+    }
+    /*Los eventos de ineractuacción con la pantalla al seleccionar o arrastrar personajes*/
+    private void ListenerPantalla() {
+        borrar.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                switch (event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        v.setBackgroundColor(getColor(android.R.color.holo_red_light));
+                        break;
+                    case DragEvent.ACTION_DRAG_ENTERED:
+                        v.setBackgroundColor(getColor(android.R.color.holo_red_dark));
+                        break;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        v.setBackgroundColor(getColor(android.R.color.holo_red_light));
+                        break;
+                    case DragEvent.ACTION_DROP:
+
+                        if (personajeSelecDrop){
+                            Personaje p=listaPersonajesSelec.get(idPersonajeSelec);
+                            p.setInvisible(false);
+                            p.setSelected(false);
+                            listaPersonajesSelec.remove(idPersonajeSelec);
+                        }
+                        if (personajeDrop){
+                            Personaje p=listaPersonajes.get(idPersonaje);
+                            p.setInvisible(false);
+                            p.setSelected(false);
+                        }
+                        ModificarFireBase();
+                        adapterPersonajes.notifyDataSetChanged();
+                        adapterPersonajesSelec.notifyDataSetChanged();
+                        personajeDrop=false;
+                        personajeSelecDrop=false;
+                        break;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        v.setBackgroundColor(getColor(android.R.color.transparent));
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+        viewPersonajesSelec.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                switch (event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        v.setBackgroundColor(getColor(android.R.color.holo_green_light));
+                        break;
+                    case DragEvent.ACTION_DRAG_ENTERED:
+                        v.setBackgroundColor(getColor(android.R.color.holo_green_dark));
+                        break;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        v.setBackgroundColor(getColor(android.R.color.holo_green_light));
+                        break;
+                    case DragEvent.ACTION_DROP:
+                        if (personajeDrop==true){
+                            Personaje p=listaPersonajes.get(idPersonaje);
+                            p.setInvisible(true);
+                            p.setSelected(true);
+                            adapterPersonajes.notifyDataSetChanged();
+                            listaPersonajesSelec.add(p);
+                            adapterPersonajesSelec.notifyDataSetChanged();
+                            viewPersonajesSelec.smoothScrollToPosition(listaPersonajesSelec.size()-1);
+
+                        }
+                        ModificarFireBase();
+                        personajeDrop=false;
+                        personajeSelecDrop=false;
+                        break;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        v.setBackgroundColor(getColor(android.R.color.transparent));
+                    default:
+                        break;
+                };
+                return true;
+            }
+        });
+        modoZombie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i=0;i<listaPersonajes.size();i++){
+                    Personaje p=listaPersonajes.get(i);
+                    p.modozombie=!p.modozombie;
+                }
+                ModificarFireBase();
+                PersonajeSeleccionado();
+                adapterPersonajes.notifyDataSetChanged();
+                adapterPersonajesSelec.notifyDataSetChanged();
+            }
+        });
+        adapterPersonajes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idPersonaje=viewPersonajes.getChildAdapterPosition(view);
+                PersonajeSeleccionado();
+            }
+        });
+        adapterPersonajes.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                personajeDrop=true;
+                idPersonaje=viewPersonajes.getChildAdapterPosition(view);
+                Personaje p=listaPersonajes.get(idPersonaje);
+                PersonajeSeleccionado();
+                if (!p.isInvisible()){
+                    ClipData data = ClipData.newPlainText("", "");
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                    view.startDrag(data, shadowBuilder, view, 0);
+                    //view.startDragAndDrop(data,shadowBuilder,view,0);
+                    return true;
+                }else{
+                    Toast.makeText(SelectionActivity.this, R.string.PersonajeYaSeleccionado, Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+        adapterPersonajesSelec.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                idPersonajeSelec=viewPersonajesSelec.getChildAdapterPosition(view);
+                personajeSelecDrop=true;
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                view.startDrag(data, shadowBuilder, view, 0);
+                //view.startDragAndDrop(data,shadowBuilder,view,0);
+                return true;
+            }
+        });
+    }
+
+    /*Cada vez que haya un jugador aplique un cambio a un personaje se notifica al firbase para
+    * que el resto de jugadores lo puedan ver*/
     private void ModificarFireBase() {
         if (!cargar){
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -811,6 +742,8 @@ public class SelectionActivity extends AppCompatActivity{
 
 
     }
+    /*Cada vez que se cambie la seleccion del personaje se muestra en pantalla el nuevo
+    * personaje seleccionado*/
     private void PersonajeSeleccionado() {
         Personaje p = listaPersonajes.get(idPersonaje);
         if (modoZombie.isChecked()) {
@@ -851,6 +784,9 @@ public class SelectionActivity extends AppCompatActivity{
         startActivity(intent);
         finish();
     }
+
+    /*Al aceptar se activa una variable en el firbase conforme se a aceptado y sale
+    un cuadro de dialogo de espera*/
     public void Aceptar(View view) {
         if (listaPersonajesSelec.size()!=0){
             Naceptados++;
@@ -867,25 +803,26 @@ public class SelectionActivity extends AppCompatActivity{
 
     }
 
+    /*Cuando todos los personajes acepten se ponen en modo normal y se envia la lista de personajes del usuario
+     * y del resto a la siguiente pantalla */
     private void Entrar() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();
-        for (int i=0;i<listaPersonajesSelec.size();i++){
-            Personaje p=listaPersonajesSelec.get(i);
-            int t=i+1;
-            myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("p"+t).setValue(p.getNombre());
+        if (!cargar){
+            for (int i=0;i<listaPersonajesSelec.size();i++){
+                Personaje p=listaPersonajesSelec.get(i);
+                int t=i+1;
+                myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("p"+t).setValue(p.getNombre());
+            }
+            myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("Npersonajes").setValue(listaPersonajesSelec.size());
+            myref.child(textSala).child("Pempezada").setValue(true);
+
+            for (int i=0;i<listaPersonajes.size();i++){
+                Personaje p=listaPersonajes.get(i);
+                p.modozombie=false;
+            }
+            ModificarFireBase();
         }
-        myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("Npersonajes").setValue(listaPersonajesSelec.size());
-        myref.child(textSala).child("Pempezada").setValue(true);
-
-
-        for (int i=0;i<listaPersonajes.size();i++){
-            Personaje p=listaPersonajes.get(i);
-            p.modozombie=false;
-        }
-        ModificarFireBase();
-
-
 
         PersonajesDeOtros();
         Intent intent=new Intent(this,JuegoActivity.class);
@@ -901,9 +838,10 @@ public class SelectionActivity extends AppCompatActivity{
         finish();
     }
 
+    /*Se crea la lista de personajes seleccionado por el resto de jugadores*/
     private void PersonajesDeOtros() {
         boolean iguales=false;
-
+        listaPersonajesOtros.clear();
         for (int i=0;i<listaPersonajes.size();i++){
             Personaje p=listaPersonajes.get(i);
             if (p.isSelected()){
@@ -919,6 +857,35 @@ public class SelectionActivity extends AppCompatActivity{
                 iguales=false;
             }
         }
+    }
+
+    /*Al cargar identifica el usuario y entra a la partida sin modificar ningun parametro*/
+    private void Cargar() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference drcargar = database.getReference().child(textSala);
+        drcargar.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!noRepetir) {
+                    noRepetir=true;
+                    int nPersonajes= Integer.parseInt(dataSnapshot.child("Usuarios").child("Usuario"+nusuario).child("Npersonajes").getValue().toString());
+                    for (int i=1;i<nPersonajes+1;i++){
+                        String nombre=dataSnapshot.child("Usuarios").child("Usuario"+nusuario).child("p"+i).getValue().toString();
+                        for (int t=0;t<listaPersonajes.size();t++){
+                            Personaje p=listaPersonajes.get(t);
+                            if (nombre.equals(p.getNombre())){
+                                listaPersonajesSelec.add(p);
+                            }
+                        }
+                    }
+                    Entrar();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
 

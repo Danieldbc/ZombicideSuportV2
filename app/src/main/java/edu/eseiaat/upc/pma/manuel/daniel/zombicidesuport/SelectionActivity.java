@@ -583,6 +583,8 @@ public class SelectionActivity extends AppCompatActivity{
 
 
     }
+
+
     /*Los eventos de ineractuacción con la pantalla al seleccionar o arrastrar personajes*/
     private void ListenerPantalla() {
         borrar.setOnDragListener(new View.OnDragListener() {
@@ -742,6 +744,7 @@ public class SelectionActivity extends AppCompatActivity{
 
 
     }
+
     /*Cada vez que se cambie la seleccion del personaje se muestra en pantalla el nuevo
     * personaje seleccionado*/
     private void PersonajeSeleccionado() {
@@ -768,6 +771,7 @@ public class SelectionActivity extends AppCompatActivity{
 
     }
 
+    //se cambia el nombre del personaje por "" y se añade un aceptar
     public void Atras(View view) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();

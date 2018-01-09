@@ -40,7 +40,7 @@ public class JuegoActivity extends AppCompatActivity {
     public static String KeyUsuario="key_nombre_usuario";
 
 
-    private TextView habAzul,habAmarilla, habNaranja1, habNaranja2, habRoja1, habRoja2,habRoja3,nombre;
+    private TextView habAzul,habAmarilla, habNaranja1, habNaranja2, habRoja1, habRoja2,habRoja3,nombre,sala;
     private ImageView foto;
     private ArrayList<Personaje> listaPersonajes,listaPersonajesOtros;
     private RecyclerView viewPersonajes;
@@ -86,11 +86,13 @@ public class JuegoActivity extends AppCompatActivity {
         carta5=(ImageView)findViewById(R.id.Carta5);
         foto=(ImageView)findViewById(R.id.foto);
         nombre=(TextView)findViewById(R.id.nombre);
+        sala=(TextView)findViewById(R.id.sala);
         modozombie = (Button) findViewById(R.id.ModoZombie);
         btIntercambiar=(Button)findViewById(R.id.BTNCambio);
         cargar=getIntent().getBooleanExtra(KeyCargar,false);
         textSala=getIntent().getExtras().getString(KeyNombreSala);
 
+        sala.setText(textSala);
         listaPersonajes=new ArrayList<>();
         listaPersonajes= (ArrayList<Personaje>) getIntent().getSerializableExtra(KeyListaPersonajes);
         listaPersonajesOtros=new ArrayList<>();
@@ -139,6 +141,7 @@ public class JuegoActivity extends AppCompatActivity {
 
 
     }
+
     /*Los eventos de cuando se modifica algun valor en el firbase se leen y se actualizan en la pantalla
     * todo RELLENAR PARA AÑADIR PERSONAJES*/
     private void ListenerFireBase() {
@@ -316,6 +319,8 @@ public class JuegoActivity extends AppCompatActivity {
             }
         });
     }
+
+
     //Se comprueba que personaje se a actualizado
     private void ComprobarPersonajeFB(DataSnapshot dataSnapshot) {
         if(!finalizar){
@@ -352,6 +357,7 @@ public class JuegoActivity extends AppCompatActivity {
         }
 
     }
+
     //se actualiza el personaje
     private void ActualizarPersonaje(DataSnapshot dataSnapshot,Personaje p) {
         int i= Integer.parseInt((dataSnapshot.child("carta1").child("carta").getValue().toString()));
@@ -385,7 +391,7 @@ public class JuegoActivity extends AppCompatActivity {
     }
 
     /*Cada vez que haya un jugador aplique un cambio a un personaje se notifica al firbase para
-* que el resto de jugadores lo puedan ver*/
+    * que el resto de jugadores lo puedan ver*/
     private void ModificarFireBase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();
@@ -636,6 +642,7 @@ public class JuegoActivity extends AppCompatActivity {
 
 
     }
+
     //Los eventos de interactuar con las cartas
     private void ListenerCartas() {
         carta1.setOnClickListener(new View.OnClickListener() {
@@ -817,12 +824,14 @@ public class JuegoActivity extends AppCompatActivity {
         });
 
     }
+
     //Intercambio de una carta de la misma mano
     private void MovimientoCarta() {
         Personaje p=listaPersonajes.get(idPersonaje);
         p.intercambiar(p,c1,c2);
         ModificarFireBase();
     }
+
     //Se ofrece intercambiar cartas con otro personaje
     private void IntercambiarCartas(final Personaje p, final Personaje q) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -837,6 +846,7 @@ public class JuegoActivity extends AppCompatActivity {
 
     }
     //Se informa al usuario que alguien quiere intercambiar
+
     private void IRaIntercambiar(final Personaje p, final Personaje q, boolean IntB,boolean aceptar) {
         if (IntB&!aceptar){
             AlertDialog.Builder builder=new AlertDialog.Builder(this);
@@ -883,6 +893,7 @@ public class JuegoActivity extends AppCompatActivity {
 
     }
     //se va a la actividad de seleccion de cartas
+
     private void SeleccionarCarta() {
         if (miPersonaje){
             Intent intent=new Intent(JuegoActivity.this,CardsActivity.class);
@@ -897,6 +908,7 @@ public class JuegoActivity extends AppCompatActivity {
 
     }
     //se actualiza la visualizacion de la pantalla segun el personaje seleccionado
+
     private void PersonajeSelec() {
         Personaje p;
         if(miPersonaje){
@@ -1132,7 +1144,6 @@ public class JuegoActivity extends AppCompatActivity {
 
     }
 
-
     /* al pulsar una vez intercambiar informa al usuario donde puede intercambiar
     o si se vuelve a pulsar se cancela*/
     public void Intercambiar(View view) {
@@ -1194,6 +1205,7 @@ public class JuegoActivity extends AppCompatActivity {
         builder.setNegativeButton(android.R.string.cancel, null);
         builder.create().show();
     }
+
     //se lee el resultado tanto si se vuelve de intercambiar cartas como de seleccioarlar
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -65,8 +65,22 @@ public class CardsActivity extends AppCompatActivity {
 
 
         Mostrar();
+        Listeners();
 
 
+    }
+
+    //se muestran las cartas del personaje
+    private void Mostrar() {
+        carta1.setImageResource(p.getCarta1().getCarta());
+        carta2.setImageResource(p.getCarta2().getCarta());
+        carta3.setImageResource(p.getCarta3().getCarta());
+        carta4.setImageResource(p.getCarta4().getCarta());
+        carta5.setImageResource(p.getCarta5().getCarta());
+    }
+
+    //se crean los listener del drag and drop de las cartas
+    private void Listeners() {
         adaptercartas.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -145,14 +159,7 @@ public class CardsActivity extends AppCompatActivity {
         });
     }
 
-    private void Mostrar() {
-        carta1.setImageResource(p.getCarta1().getCarta());
-        carta2.setImageResource(p.getCarta2().getCarta());
-        carta3.setImageResource(p.getCarta3().getCarta());
-        carta4.setImageResource(p.getCarta4().getCarta());
-        carta5.setImageResource(p.getCarta5().getCarta());
-    }
-
+    //Al soltar la carta se cambia la carta seleccioanda por la que habia anteriormente
     private void Seleccionar(int i) {
         Carta c=listacartas.get(idcarta);
         if (i==1) {
@@ -170,6 +177,9 @@ public class CardsActivity extends AppCompatActivity {
         Mostrar();
 
     }
+
+
+    //se crean las cartas
     private void Crear() {
         OtrosCartas();
         EspecialesCartas();
@@ -177,6 +187,7 @@ public class CardsActivity extends AppCompatActivity {
         DistanciaCartas();
     }
 
+    //se rellenan las cartas segun la seleccion del boton
     private void DistanciaCartas() {
         for (int i=0;i<CartasDistancia.size();i++) {
             listacartas.add(CartasDistancia.get(i));
@@ -198,6 +209,7 @@ public class CardsActivity extends AppCompatActivity {
         }
     }
 
+    //al pulsar el boton se borra la lista y se rellena de las cartas del tipo seleccionado
     public void Todas(View view) {
         listacartas.clear();
         Crear();

@@ -54,6 +54,8 @@ public class IntercambioActivity extends AppCompatActivity {
         ListenerCartas();
 
     }
+    /*Los eventos de cuando se modifica algun valor en el firbase se leen y se actualizan en la pantalla
+    * todo RELLENAR PARA AÑADIR PERSONAJES*/
     private void ListenerFireBase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference drintercambio = database.getReference().child(textSala).child("intercambio");
@@ -170,6 +172,9 @@ public class IntercambioActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    //Se comprueba que personaje se a actualizado
     private void ComprobarPersonajeFB(DataSnapshot dataSnapshot) {
         if (!finalizar){
             String PersonajeFireBase=dataSnapshot.child("nombre").getValue().toString();
@@ -186,6 +191,7 @@ public class IntercambioActivity extends AppCompatActivity {
         }
 
     }
+    //se actualiza el personaje
     private void ActualizarPersonaje(DataSnapshot dataSnapshot,Personaje p) {
         int i= Integer.parseInt((dataSnapshot.child("carta1").child("carta").getValue().toString()));
         String s=(dataSnapshot.child("carta1").child("nombre").getValue().toString());
@@ -478,7 +484,7 @@ public class IntercambioActivity extends AppCompatActivity {
             }
         });
     }
-
+    //Intercambio de una carta de un personaje a otro o del mismo personaje
     private void MovimientoCarta() {
         if (p1drop){
             if (p1drag){
@@ -497,6 +503,8 @@ public class IntercambioActivity extends AppCompatActivity {
         p1drag=false;
         ModificarFireBase();
     }
+    /*Cada vez que haya un jugador aplique un cambio a un personaje se notifica al firbase para
+    * que el resto de jugadores lo puedan ver*/
     private void ModificarFireBase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();
@@ -515,6 +523,7 @@ public class IntercambioActivity extends AppCompatActivity {
 
 
     }
+    //se actualiza la vista de la pantalla
     private void Mostrar() {
         nombrep.setText(p1.getNombre());
         carta11.setImageResource(p1.getCarta1().getCarta());

@@ -422,6 +422,20 @@ public class SelectionActivity extends AppCompatActivity{
 
             }
         });
+        drNusuario.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!finalizar){
+                    nUsuarios = Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         draceptados.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -435,20 +449,6 @@ public class SelectionActivity extends AppCompatActivity{
                 }
 
 
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        drNusuario.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!finalizar){
-                    nUsuarios = Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
-                }
 
             }
 

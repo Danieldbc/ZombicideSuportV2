@@ -79,4 +79,14 @@
     <string name="PartidaFinalizada">La partida se a acabado</string>
     <string name="NombreNoUso">No hay ningún personaje con ese nombre</string>
     <string name="PartidaNoEmpezada">La partida no ha empezado</string>
+    <string name="Medico">Médico</string>
+    <string name="RecargaGratuita">Recarga gratuita</string>
+    <string name="mas1alcancemaximo">+1 al Alcance máximo</string>
+    <string name="AferrarseAlaVida">Aferrarse a la vida</string>
+    <string name="Barbaro">Bárbaro</string>
+    <string name="SeddesangreCuerpoaCuerpo">Sed de sangre: Cuerpo a cuerpo</string>
+    <string name="Pistolero">Pistolero</string>
+    <string name="FuegoAutomatico">Fuego automático</string>
+    <string name="AtaqueyRetirada">Ataque y retirada</string>
+    <string name="SalirSalaEspera">Está seguro que quiere salir de la sala de espera? Se borrarán los personajes seleccionados</string>
 </resources>

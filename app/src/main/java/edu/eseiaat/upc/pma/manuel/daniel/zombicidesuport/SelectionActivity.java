@@ -57,7 +57,8 @@ public class SelectionActivity extends AppCompatActivity{
     private Personaje watts,joshua,shannon,grindlock,belle,kim,cathy,dan,james,jane,joe,laurie,louise,maddie,oso,parker,terry,travis;
     //todo RELLENAR PARA AÑADIR CARTAS
     private Carta mashotgun,eviltwins,pistol,rifle,sawedoff,shotgun,submg,baseballbat,chainsaw,crowbar,fireaxe,katana,machete,pan,
-            goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano;
+            goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano,automaticshotgun,
+            clawhammer,concretesaw,gunblade,hatchet,kukri,meatcleaver,nailbat,nails,nigthstick,riotshield,wakizachi;
     private DatabaseReference draceptados;
     private ValueEventListener ValueAceptados;
 
@@ -151,6 +152,8 @@ public class SelectionActivity extends AppCompatActivity{
         sawedoff=new Carta((R.drawable.csawedoff),"csawedoff");
         shotgun=new Carta((R.drawable.cshotgun),"cshotgun");
         submg=new Carta((R.drawable.csubmg),"csubmg");
+        automaticshotgun=new Carta(R.drawable.cautomaticshotgun,"cautomaticshotgun");
+
 
         //cuerpo a cuerpo
         baseballbat=new Carta((R.drawable.cbaseballbat),"cbaseballbat");
@@ -160,14 +163,25 @@ public class SelectionActivity extends AppCompatActivity{
         katana=new Carta((R.drawable.ckatana),"ckatana");
         machete=new Carta((R.drawable.cmachete),"cmachete");
         pan=new Carta((R.drawable.cpan),"cpan");
+        clawhammer=new Carta(R.drawable.cclawhammer,"cclawhammer");
+        concretesaw=new Carta(R.drawable.cconcretesaw,"cconcretesaw");
+        gunblade=new Carta(R.drawable.cgunblade,"cgunblade");
+        hatchet=new Carta(R.drawable.chatchet,"chatchet");
+        kukri=new Carta(R.drawable.ckukri,"ckukri");
+        meatcleaver=new Carta(R.drawable.cmeatcleaver,"cmeatcleaver");
+        nigthstick=new Carta(R.drawable.cnightstick,"cnightstick");
+        wakizachi=new Carta(R.drawable.cwakizachi,"cwakizachi");
 
         //especiales
         goaliemask=new Carta((R.drawable.cgoaliemask),"cgoaliemask");
         flashligth=new Carta((R.drawable.cflashlight),"cflashlight");
+        riotshield=new Carta((R.drawable.criotshield),"criotshield");
         plentyofammo=new Carta((R.drawable.cplentyofammo),"cplentyofammo");
         plentyofammoshotgun=new Carta((R.drawable.cplentyofammoshotgun),"cplentyofammoshotgun");
-        scope=new Carta((R.drawable.cscope),"cscope");
         molotov=new Carta((R.drawable.cmolotov),"cmolotov");
+        nailbat=new Carta(R.drawable.cnailbat,"cnailbat");
+
+
 
         //otras
         bagorice=new Carta((R.drawable.cbagofrice),"cbagofrice");
@@ -175,6 +189,8 @@ public class SelectionActivity extends AppCompatActivity{
         water=new Carta((R.drawable.cwater),"cwater");
         gasoline=new Carta((R.drawable.cgasoline),"cgasoline");
         glassbottle=new Carta((R.drawable.cglassbottle),"cglassbottle");
+        nails=new Carta(R.drawable.cnails,"cnails");
+        scope=new Carta((R.drawable.cscope),"cscope");
         wound=new Carta((R.drawable.cwound),"cwound");
         cartamano=new Carta((R.drawable.cartamano),"cartamano");
     }
@@ -187,6 +203,8 @@ public class SelectionActivity extends AppCompatActivity{
         CartasDistancia.add(sawedoff);
         CartasDistancia.add(shotgun);
         CartasDistancia.add(submg);
+        CartasDistancia.add(automaticshotgun);
+        CartasDistancia.add(gunblade);
 
         CartasCuerpo=new ArrayList<>();
         CartasCuerpo.add(mashotgun);
@@ -196,21 +214,34 @@ public class SelectionActivity extends AppCompatActivity{
         CartasCuerpo.add(katana);
         CartasCuerpo.add(machete);
         CartasCuerpo.add(pan);
+        CartasCuerpo.add(clawhammer);
+        CartasCuerpo.add(concretesaw);
+        CartasCuerpo.add(gunblade);
+        CartasCuerpo.add(hatchet);
+        CartasCuerpo.add(kukri);
+        CartasCuerpo.add(meatcleaver);
+        CartasCuerpo.add(nigthstick);
+        CartasCuerpo.add(wakizachi);
+
 
         CartasEspeciales=new ArrayList<>();
         CartasEspeciales.add(goaliemask);
+        CartasEspeciales.add(riotshield);
         CartasEspeciales.add(flashligth);
         CartasEspeciales.add(plentyofammo);
         CartasEspeciales.add(plentyofammoshotgun);
-        CartasEspeciales.add(scope);
         CartasEspeciales.add(molotov);
+        CartasEspeciales.add(nailbat);
+
 
         CartasOtras=new ArrayList<>();
         CartasOtras.add(bagorice);
         CartasOtras.add(cannedfood);
         CartasOtras.add(water);
+        CartasOtras.add(nails);
         CartasOtras.add(gasoline);
         CartasOtras.add(glassbottle);
+        CartasOtras.add(scope);
         CartasOtras.add(wound);
         CartasOtras.add(cartamano);
 
@@ -1074,7 +1105,8 @@ public class SelectionActivity extends AppCompatActivity{
                 myref.child(textSala).child("Naceptados").setValue(Naceptados);
                 ModificarFireBase();
 
-                finish();
+                Intent intent=getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+                startActivity(intent);
             }
         });
         builder.setNegativeButton(android.R.string.cancel, null);

@@ -75,7 +75,7 @@
     <string name="NombreEnUso">Este nombre ya se está usando</string>
     <string name="PartidaEmpezada">La partida ya ha empezado</string>
     <string name="AcabarPartida">Finalizar partida</string>
-    <string name="AcabarPartidaSeguro">Está seguro que desea acabar la partida?</string>
+    <string name="AcabarPartidaSeguro">Está seguro que desea acabar la partida? Se acabará la partida para todos los jugadores</string>
     <string name="PartidaFinalizada">La partida se a acabado</string>
     <string name="NombreNoUso">No hay ningún personaje con ese nombre</string>
     <string name="PartidaNoEmpezada">La partida no ha empezado</string>

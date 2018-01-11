@@ -158,6 +158,8 @@ public class JuegoActivity extends AppCompatActivity {
         final DatabaseReference droso = database.getReference().child(textSala).child("Oso");
         final DatabaseReference drjane = database.getReference().child(textSala).child("Jane");
         final DatabaseReference drparker = database.getReference().child(textSala).child("Parker");
+        final DatabaseReference drcathy = database.getReference().child(textSala).child("Cathy");
+        final DatabaseReference drjames = database.getReference().child(textSala).child("James");
 
         drfinal.addValueEventListener(new ValueEventListener() {
             @Override
@@ -366,6 +368,29 @@ public class JuegoActivity extends AppCompatActivity {
 
             }
         });
+        drcathy.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drjames.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 

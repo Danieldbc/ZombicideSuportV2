@@ -89,4 +89,11 @@
     <string name="FuegoAutomatico">Fuego automático</string>
     <string name="AtaqueyRetirada">Ataque y retirada</string>
     <string name="SalirSalaEspera">Está seguro que quiere salir de la sala de espera? Se borrarán los personajes seleccionados</string>
+    <string name="Esprintar">Esprintar</string>
+    <string name="Salto">Salto</string>
+    <string name="SeddesangreCombate">Sed de sangre: Combate</string>
+    <string name="SegadorCuerpoaCuerpo">Segador: Cuerpo a cuerpo</string>
+    <string name="AcorazadoCaminante">Acorazado: Caminante</string>
+    <string name="Francotirador">Francotirador</string>
+    <string name="mas1dañoAdistancia">+1 al Daño: A distancia</string>
 </resources>

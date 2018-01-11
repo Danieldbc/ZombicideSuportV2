@@ -69,6 +69,8 @@ public class IntercambioActivity extends AppCompatActivity {
         final DatabaseReference droso = database.getReference().child(textSala).child("Oso");
         final DatabaseReference drjane = database.getReference().child(textSala).child("Jane");
         final DatabaseReference drparker = database.getReference().child(textSala).child("Parker");
+        final DatabaseReference drcathy = database.getReference().child(textSala).child("Cathy");
+        final DatabaseReference drjames = database.getReference().child(textSala).child("James");
         final DatabaseReference drfinal = database.getReference().child(textSala);
 
         drfinal.addValueEventListener(new ValueEventListener() {
@@ -209,6 +211,28 @@ public class IntercambioActivity extends AppCompatActivity {
             }
         });
         drparker.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drcathy.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drjames.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ComprobarPersonajeFB(dataSnapshot);

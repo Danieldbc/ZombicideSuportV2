@@ -58,7 +58,8 @@ public class SelectionActivity extends AppCompatActivity{
     //todo RELLENAR PARA AÑADIR CARTAS
     private Carta mashotgun,eviltwins,pistol,rifle,sawedoff,shotgun,submg,baseballbat,chainsaw,crowbar,fireaxe,katana,machete,pan,
             goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano,automaticshotgun,
-            clawhammer,concretesaw,gunblade,hatchet,kukri,meatcleaver,nailbat,nails,nigthstick,riotshield,wakizachi;
+            clawhammer,concretesaw,gunblade,hatchet,kukri,meatcleaver,nailbat,nails,nigthstick,riotshield,wakizachi,ak47,booletproofvest,doublebarreredshotgun,guillotine,
+            mac10,mp5,knife,crossbow,saber,sword,urbanmace;
     private DatabaseReference draceptados;
     private ValueEventListener ValueAceptados;
 
@@ -141,25 +142,14 @@ public class SelectionActivity extends AppCompatActivity{
 
     @Override
     protected void onStop() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myref = database.getReference();
-        draceptados.removeEventListener(ValueAceptados);
-        for (int t=0;t<listaPersonajesSelec.size();t++){
-            Personaje p=listaPersonajesSelec.get(t);
-            p.setInvisible(false);
-            p.setSelected(false);
-        }
-        myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("nombre").setValue("");
-        Naceptados++;
-        myref.child(textSala).child("Naceptados").setValue(Naceptados);
-        ModificarFireBase();
+        EliminarPersonaje();
         super.onStop();
 
     }
 
     /*Se crea la carta con la imagen y el nombre correspondiente y se añade a la lista en funcion
-                del tipo de carta que sea
-                 todo RELLENAR PARA AÑADIR CARTAS */
+    del tipo de carta que sea
+    todo RELLENAR PARA AÑADIR CARTAS */
     private void CrearCartas() {
         //Distancia
         mashotgun=new Carta((R.drawable.cmashotgun),"cmashotgun");
@@ -170,6 +160,13 @@ public class SelectionActivity extends AppCompatActivity{
         shotgun=new Carta((R.drawable.cshotgun),"cshotgun");
         submg=new Carta((R.drawable.csubmg),"csubmg");
         automaticshotgun=new Carta(R.drawable.cautomaticshotgun,"cautomaticshotgun");
+        ak47=new Carta(R.drawable.cak47,"cak47");
+        doublebarreredshotgun=new Carta((R.drawable.cdoublebarreledshotgun),"cdoublebarreledshotgun");
+        mac10=new Carta((R.drawable.cmac10),"cmac10");
+        mp5=new Carta((R.drawable.cmp5),"cmp5");
+        crossbow=new Carta((R.drawable.ccrossbow),"ccrossbow");
+
+
 
 
         //cuerpo a cuerpo
@@ -188,6 +185,14 @@ public class SelectionActivity extends AppCompatActivity{
         meatcleaver=new Carta(R.drawable.cmeatcleaver,"cmeatcleaver");
         nigthstick=new Carta(R.drawable.cnightstick,"cnightstick");
         wakizachi=new Carta(R.drawable.cwakizachi,"cwakizachi");
+        guillotine=new Carta((R.drawable.cguillotine),"cguillotine");
+        knife=new Carta((R.drawable.cknife),"cknife");
+        saber=new Carta((R.drawable.csaber),"csaber");
+        sword=new Carta((R.drawable.csword),"csword");
+        urbanmace=new Carta((R.drawable.curbanmace),"curbanmace");
+
+
+
 
         //especiales
         goaliemask=new Carta((R.drawable.cgoaliemask),"cgoaliemask");
@@ -208,6 +213,7 @@ public class SelectionActivity extends AppCompatActivity{
         glassbottle=new Carta((R.drawable.cglassbottle),"cglassbottle");
         nails=new Carta(R.drawable.cnails,"cnails");
         scope=new Carta((R.drawable.cscope),"cscope");
+        booletproofvest=new Carta(R.drawable.cbulletproofvest,"cbulletproofvest");
         wound=new Carta((R.drawable.cwound),"cwound");
         cartamano=new Carta((R.drawable.cartamano),"cartamano");
     }
@@ -222,6 +228,11 @@ public class SelectionActivity extends AppCompatActivity{
         CartasDistancia.add(submg);
         CartasDistancia.add(automaticshotgun);
         CartasDistancia.add(gunblade);
+        CartasDistancia.add(ak47);
+        CartasDistancia.add(doublebarreredshotgun);
+        CartasDistancia.add(mac10);
+        CartasDistancia.add(mp5);
+        CartasDistancia.add(crossbow);
 
         CartasCuerpo=new ArrayList<>();
         CartasCuerpo.add(mashotgun);
@@ -239,6 +250,12 @@ public class SelectionActivity extends AppCompatActivity{
         CartasCuerpo.add(meatcleaver);
         CartasCuerpo.add(nigthstick);
         CartasCuerpo.add(wakizachi);
+        CartasCuerpo.add(guillotine);
+        CartasCuerpo.add(knife);
+        CartasCuerpo.add(saber);
+        CartasCuerpo.add(sword);
+        CartasCuerpo.add(urbanmace);
+
 
 
         CartasEspeciales=new ArrayList<>();
@@ -259,6 +276,7 @@ public class SelectionActivity extends AppCompatActivity{
         CartasOtras.add(gasoline);
         CartasOtras.add(glassbottle);
         CartasOtras.add(scope);
+        CartasOtras.add(booletproofvest);
         CartasOtras.add(wound);
         CartasOtras.add(cartamano);
 
@@ -834,7 +852,6 @@ public class SelectionActivity extends AppCompatActivity{
         final DatabaseReference drlouise = database.getReference().child(textSala).child("Louise");
         final DatabaseReference drterry = database.getReference().child(textSala).child("Terry");
         final DatabaseReference drtravis = database.getReference().child(textSala).child("Travis");
-
         final DatabaseReference drfinal = database.getReference().child(textSala);
 
         drfinal.addValueEventListener(new ValueEventListener() {
@@ -1378,31 +1395,26 @@ public class SelectionActivity extends AppCompatActivity{
 
     //se cambia el nombre del personaje por "" y se añade un aceptar
     public void Atras(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.Intercambio);
-        builder.setMessage(R.string.SalirSalaEspera);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myref = database.getReference();
-                draceptados.removeEventListener(ValueAceptados);
-                for (int t=0;t<listaPersonajesSelec.size();t++){
-                    Personaje p=listaPersonajesSelec.get(t);
-                    p.setInvisible(false);
-                    p.setSelected(false);
-                }
-                myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("nombre").setValue("");
-                Naceptados++;
-                myref.child(textSala).child("Naceptados").setValue(Naceptados);
-                ModificarFireBase();
+        EliminarPersonaje();
+        /*Intent intent=getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);*/
+        finish();
+    }
 
-                Intent intent=getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
-                startActivity(intent);
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        builder.create().show();
+    private void EliminarPersonaje() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myref = database.getReference();
+        draceptados.removeEventListener(ValueAceptados);
+        for (int t=0;t<listaPersonajesSelec.size();t++){
+            Personaje p=listaPersonajesSelec.get(t);
+            p.setInvisible(false);
+            p.setSelected(false);
+        }
+        myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("nombre").setValue("");
+        Naceptados++;
+        myref.child(textSala).child("Naceptados").setValue(Naceptados);
+        ModificarFireBase();
     }
 
 
@@ -1444,7 +1456,6 @@ public class SelectionActivity extends AppCompatActivity{
             }
             ModificarFireBase();
         }
-
         PersonajesDeOtros();
         Intent intent=new Intent(this,JuegoActivity.class);
         intent.putExtra(JuegoActivity.KeyNombreSala,textSala);

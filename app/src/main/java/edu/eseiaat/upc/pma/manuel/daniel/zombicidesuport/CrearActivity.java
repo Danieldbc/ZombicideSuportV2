@@ -101,7 +101,7 @@ public class CrearActivity extends AppCompatActivity {
                         myref.child(textSala).child("nombre").setValue(textSala);
                         myref.child(textSala).child("Usuarios").child("Usuario1").child("nombre").setValue(textNombre);
                         myref.child(textSala).child("Usuarios").child("Nusuarios").setValue(1);
-                        myref.child(textSala).child("Naceptados").setValue("0");
+                        myref.child(textSala).child("Usuarios").child("Naceptados").setValue("0");
                         myref.child(textSala).child("intercambio").child("intercambiar").setValue(false);
                         myref.child(textSala).child("intercambio").child("aceptar").setValue(false);
                         myref.child(textSala).child("intercambio").child("personaje1").setValue("");

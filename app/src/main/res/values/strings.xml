@@ -96,4 +96,14 @@
     <string name="AcorazadoCaminante">Acorazado: Caminante</string>
     <string name="Francotirador">Francotirador</string>
     <string name="mas1dañoAdistancia">+1 al Daño: A distancia</string>
+    <string name="Saqueador">Saqueador</string>
+    <string name="Ambidiestro">Ambidiestro</string>
+    <string name="mas1acciondeBusquedaGratuita">+1 acción de búsqueda gratuita</string>
+    <string name="Putrefacion">Putrefación</string>
+    <string name="mas1acciondeequipogratuita">+1 acción de equipo gratuita</string>
+    <string name="Distribuidor">Distribuidor</string>
+    <string name="ManoFirme">Mano firme</string>
+    <string name="Busquedamas1carta">Busqueda: +1 carta</string>
+    <string name="mas1aldañocombate">+1 al Daño: Combate</string>
+    <string name="Tactico">Táctico</string>
 </resources>

@@ -139,10 +139,27 @@ public class SelectionActivity extends AppCompatActivity{
         }
     }
 
+    @Override
+    protected void onStop() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myref = database.getReference();
+        draceptados.removeEventListener(ValueAceptados);
+        for (int t=0;t<listaPersonajesSelec.size();t++){
+            Personaje p=listaPersonajesSelec.get(t);
+            p.setInvisible(false);
+            p.setSelected(false);
+        }
+        myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("nombre").setValue("");
+        Naceptados++;
+        myref.child(textSala).child("Naceptados").setValue(Naceptados);
+        ModificarFireBase();
+        super.onStop();
+
+    }
 
     /*Se crea la carta con la imagen y el nombre correspondiente y se añade a la lista en funcion
-    del tipo de carta que sea
-     todo RELLENAR PARA AÑADIR CARTAS */
+                del tipo de carta que sea
+                 todo RELLENAR PARA AÑADIR CARTAS */
     private void CrearCartas() {
         //Distancia
         mashotgun=new Carta((R.drawable.cmashotgun),"cmashotgun");
@@ -597,6 +614,173 @@ public class SelectionActivity extends AppCompatActivity{
                 habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
                 invisible,modozombie,selected,intercambiar,level,puntuacion,vuelta);
 
+        nombre="Joe";
+        habazul=getString(R.string.Saqueador);
+        habamarilla=getString(R.string.mas1accion);
+        habnaranja1=getString(R.string.mas1dadoCombate);
+        habnaranja2=getString(R.string.SegadoraCombate);
+        habroja1=getString(R.string.mas1accionDeCombateGratuita);
+        habroja2=getString( R.string.mas1alasTiradasDeCombate);
+        habroja3=getString(R.string.Ambidiestro);
+        foto=(R.drawable.pjoe);
+        cara=(R.drawable.pjoecara);
+        habazulZ=getString(R.string.Saqueador);
+        habamarillaZ=getString(R.string.mas1acciondeBusquedaGratuita);
+        habnaranja1Z=getString(R.string.SegadoraCombate);
+        habnaranja2Z=getString(R.string.Putrefacion);
+        habroja1Z=getString(R.string.mas1alasTiradasDeCombate);
+        habroja2Z=getString( R.string.Ambidiestro);
+        habroja3Z=getString(R.string.VinculoZombi);
+        fotoZ=(R.drawable.pjoezombie);
+        caraZ=(R.drawable.pjoecarazombie);
+        carta1=cartamano;
+        carta2=cartamano;
+        carta3=cartamano;
+        carta4=cartamano;
+        carta5=cartamano;
+        joe=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
+                habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
+                invisible,modozombie,selected,intercambiar,level,puntuacion,vuelta);
+
+        nombre="Terry";
+        habazul=getString(R.string.mas1acciondeequipogratuita);
+        habamarilla=getString(R.string.mas1accion);
+        habnaranja1=getString(R.string.mas1accionDeCombateGratuita);
+        habnaranja2=getString(R.string.Distribuidor);
+        habroja1=getString(R.string.mas1accionDeCombateGratuita);
+        habroja2=getString( R.string.EsoEsTodoLoQueTienes);
+        habroja3=getString(R.string.ManoFirme);
+        foto=(R.drawable.pterry);
+        cara=(R.drawable.pterrycara);
+        habazulZ=getString(R.string.mas1acciondeequipogratuita);
+        habamarillaZ=getString(R.string.mas1accionDeCombateCuerpoACuerpoGratuita);
+        habnaranja1Z=getString(R.string.Distribuidor);
+        habnaranja2Z=getString(R.string.VinculoZombi);
+        habroja1Z=getString(R.string.EsoEsTodoLoQueTienes);
+        habroja2Z=getString( R.string.SegadoraCombate);
+        habroja3Z=getString(R.string.ManoFirme);
+        fotoZ=(R.drawable.pterryzombie);
+        caraZ=(R.drawable.pterrycarazombie);
+        carta1=cartamano;
+        carta2=cartamano;
+        carta3=cartamano;
+        carta4=cartamano;
+        carta5=cartamano;
+        terry=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
+                habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
+                invisible,modozombie,selected,intercambiar,level,puntuacion,vuelta);
+
+        nombre="Louise";
+        habazul=getString(R.string.Busquedamas1carta);
+        habamarilla=getString(R.string.mas1accion);
+        habnaranja1=getString(R.string.mas1aLasTiradasADistancia);
+        habnaranja2=getString(R.string.mas1aldañocombate);
+        habroja1=getString(R.string.mas1accionDeCombateGratuita);
+        habroja2=getString( R.string.mas1dadoCombate);
+        habroja3=getString(R.string.Francotirador);
+        foto=(R.drawable.plouise);
+        cara=(R.drawable.plousiecara);
+        habazulZ=getString(R.string.Busquedamas1carta);
+        habamarillaZ=getString(R.string.mas1acciondeBusquedaGratuita);
+        habnaranja1Z=getString(R.string.mas1aldañocombate);
+        habnaranja2Z=getString(R.string.DisparoABocajarro);
+        habroja1Z=getString(R.string.mas1dadoCombate);
+        habroja2Z=getString( R.string.FrenesiCombate);
+        habroja3Z=getString(R.string.Francotirador);
+        fotoZ=(R.drawable.plousiezombie);
+        caraZ=(R.drawable.plouisecarazombie);
+        carta1=cartamano;
+        carta2=cartamano;
+        carta3=cartamano;
+        carta4=cartamano;
+        carta5=cartamano;
+        louise=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
+                habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
+                invisible,modozombie,selected,intercambiar,level,puntuacion,vuelta);
+
+        nombre="Dan";
+        habazul=getString(R.string.Socorrista);
+        habamarilla=getString(R.string.mas1accion);
+        habnaranja1=getString(R.string.mas1accionDeMovimientoGratuita);
+        habnaranja2=getString(R.string.Salto);
+        habroja1=getString(R.string.mas1accionDeCombateGratuita);
+        habroja2=getString( R.string.mas1AlDañoCuerpoACuerpo);
+        habroja3=getString(R.string.Tactico);
+        foto=(R.drawable.pdan);
+        cara=(R.drawable.pdancara);
+        habazulZ=getString(R.string.Socorrista);
+        habamarillaZ=getString(R.string.mas1accionDeCombateCuerpoACuerpoGratuita);
+        habnaranja1Z=getString(R.string.AcorazadoCaminante);
+        habnaranja2Z=getString(R.string.Salto);
+        habroja1Z=getString(R.string.mas1AlDañoCuerpoACuerpo);
+        habroja2Z=getString( R.string.Regeneracion);
+        habroja3Z=getString(R.string.Tactico);
+        fotoZ=(R.drawable.pdanzombie);
+        caraZ=(R.drawable.pdancarazombie);
+        carta1=cartamano;
+        carta2=cartamano;
+        carta3=cartamano;
+        carta4=cartamano;
+        carta5=cartamano;
+        dan=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
+                habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
+                invisible,modozombie,selected,intercambiar,level,puntuacion,vuelta);
+
+        nombre="Laurie";
+        habazul=getString(R.string.RecargaGratuita);
+        habamarilla=getString(R.string.mas1accion);
+        habnaranja1=getString(R.string.mas1accionADistanciaGratuita);
+        habnaranja2=getString(R.string.Amano);
+        habroja1=getString(R.string.mas1accionDeCombateGratuita);
+        habroja2=getString( R.string.mas1alasTiradasDeCombate);
+        habroja3=getString(R.string.AtaqueyRetirada);
+        foto=(R.drawable.plaurie);
+        cara=(R.drawable.plauriecara);
+        habazulZ=getString(R.string.RecargaGratuita);
+        habamarillaZ=getString(R.string.mas1accionADistanciaGratuita);
+        habnaranja1Z=getString(R.string.AferrarseAlaVida);
+        habnaranja2Z=getString(R.string.Amano);
+        habroja1Z=getString(R.string.mas1alasTiradasDeCombate);
+        habroja2Z=getString( R.string.AtaqueyRetirada);
+        habroja3Z=getString(R.string.SegadoraCombate);
+        fotoZ=(R.drawable.plauriezombie);
+        caraZ=(R.drawable.plauriecarazombie);
+        carta1=cartamano;
+        carta2=cartamano;
+        carta3=cartamano;
+        carta4=cartamano;
+        carta5=cartamano;
+        laurie=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
+                habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
+                invisible,modozombie,selected,intercambiar,level,puntuacion,vuelta);
+
+        nombre="Travis";
+        habazul=getString(R.string.SegadoraCombate);
+        habamarilla=getString(R.string.mas1accion);
+        habnaranja1=getString(R.string.mas1aLasTiradasADistancia);
+        habnaranja2=getString(R.string.AtaqueyRetirada);
+        habroja1=getString(R.string.mas1accionDeCombateGratuita);
+        habroja2=getString( R.string.mas1dadoCombate);
+        habroja3=getString(R.string.DisparoABocajarro);
+        foto=(R.drawable.ptravis);
+        cara=(R.drawable.ptraviscara);
+        habazulZ=getString(R.string.SegadoraCombate);
+        habamarillaZ=getString(R.string.mas1accionADistanciaGratuita);
+        habnaranja1Z=getString(R.string.SeddesangreCombate);
+        habnaranja2Z=getString(R.string.AtaqueyRetirada);
+        habroja1Z=getString(R.string.mas1dadoCombate);
+        habroja2Z=getString( R.string.FuegoAutomatico);
+        habroja3Z=getString(R.string.DisparoABocajarro);
+        fotoZ=(R.drawable.ptraviszombie);
+        caraZ=(R.drawable.ptraviscarazombie);
+        carta1=cartamano;
+        carta2=cartamano;
+        carta3=cartamano;
+        carta4=cartamano;
+        carta5=cartamano;
+        travis=new Personaje(nombre,habazul,habamarilla,habnaranja1,habnaranja2,habroja1,habroja2,habroja3,foto,cara,
+                habazulZ,habamarillaZ,habnaranja1Z,habnaranja2Z,habroja1Z,habroja2Z,habroja3Z,fotoZ,caraZ,carta1,carta2,carta3,carta4,carta5,
+                invisible,modozombie,selected,intercambiar,level,puntuacion,vuelta);
     }
     private void CrearListaPersonajes() {
         listaPersonajes=new ArrayList<>();
@@ -612,6 +796,12 @@ public class SelectionActivity extends AppCompatActivity{
         listaPersonajes.add(jane);
         listaPersonajes.add(cathy);
         listaPersonajes.add(james);
+        listaPersonajes.add(dan);
+        listaPersonajes.add(joe);
+        listaPersonajes.add(laurie);
+        listaPersonajes.add(louise);
+        listaPersonajes.add(terry);
+        listaPersonajes.add(travis);
         if (estado.equals("Crear")){
             ModificarFireBase();
         }
@@ -638,6 +828,12 @@ public class SelectionActivity extends AppCompatActivity{
         final DatabaseReference drparker = database.getReference().child(textSala).child("Parker");
         final DatabaseReference drcathy = database.getReference().child(textSala).child("Cathy");
         final DatabaseReference drjames = database.getReference().child(textSala).child("James");
+        final DatabaseReference drdan = database.getReference().child(textSala).child("Dan");
+        final DatabaseReference drjoe = database.getReference().child(textSala).child("Joe");
+        final DatabaseReference drlaurie = database.getReference().child(textSala).child("Laurie");
+        final DatabaseReference drlouise = database.getReference().child(textSala).child("Louise");
+        final DatabaseReference drterry = database.getReference().child(textSala).child("Terry");
+        final DatabaseReference drtravis = database.getReference().child(textSala).child("Travis");
 
         final DatabaseReference drfinal = database.getReference().child(textSala);
 
@@ -883,6 +1079,102 @@ public class SelectionActivity extends AppCompatActivity{
                 if (!finalizar){
                     james.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
                     james.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drdan.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    dan.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    dan.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drjoe.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    joe.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    joe.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drlaurie.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    laurie.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    laurie.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drlouise.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    louise.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    louise.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drterry.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    terry.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    terry.setSelected((Boolean) dataSnapshot.child("selected").getValue());
+                    adapterPersonajes.notifyDataSetChanged();
+                    adapterPersonajesSelec.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drtravis.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!finalizar){
+                    travis.setInvisible((Boolean) dataSnapshot.child("invisible").getValue());
+                    travis.setSelected((Boolean) dataSnapshot.child("selected").getValue());
                     adapterPersonajes.notifyDataSetChanged();
                     adapterPersonajesSelec.notifyDataSetChanged();
                 }

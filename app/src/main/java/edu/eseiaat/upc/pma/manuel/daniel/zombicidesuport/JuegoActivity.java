@@ -160,6 +160,12 @@ public class JuegoActivity extends AppCompatActivity {
         final DatabaseReference drparker = database.getReference().child(textSala).child("Parker");
         final DatabaseReference drcathy = database.getReference().child(textSala).child("Cathy");
         final DatabaseReference drjames = database.getReference().child(textSala).child("James");
+        final DatabaseReference drdan = database.getReference().child(textSala).child("Dan");
+        final DatabaseReference drjoe = database.getReference().child(textSala).child("Joe");
+        final DatabaseReference drlaurie = database.getReference().child(textSala).child("Laurie");
+        final DatabaseReference drlouise = database.getReference().child(textSala).child("Louise");
+        final DatabaseReference drterry = database.getReference().child(textSala).child("Terry");
+        final DatabaseReference drtravis = database.getReference().child(textSala).child("Travis");
 
         drfinal.addValueEventListener(new ValueEventListener() {
             @Override
@@ -380,6 +386,72 @@ public class JuegoActivity extends AppCompatActivity {
             }
         });
         drjames.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drdan.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drjoe.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drlaurie.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drlouise.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drterry.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ComprobarPersonajeFB(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drtravis.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ComprobarPersonajeFB(dataSnapshot);

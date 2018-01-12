@@ -60,8 +60,8 @@ public class SelectionActivity extends AppCompatActivity{
             goaliemask,flashligth,plentyofammo,plentyofammoshotgun,scope,molotov,bagorice,cannedfood,water,gasoline,glassbottle,wound,cartamano,automaticshotgun,
             clawhammer,concretesaw,gunblade,hatchet,kukri,meatcleaver,nailbat,nails,nigthstick,riotshield,wakizachi,ak47,booletproofvest,doublebarreredshotgun,guillotine,
             mac10,mp5,knife,crossbow,saber,sword,urbanmace;
-    private DatabaseReference draceptados;
-    private ValueEventListener ValueAceptados;
+    private DatabaseReference drusuarios;
+    private ValueEventListener valueUsuarios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,16 +111,28 @@ public class SelectionActivity extends AppCompatActivity{
         adapterPersonajesSelec =new PersonajesAdapter(this,listaPersonajesSelec);
         viewPersonajesSelec.setAdapter(adapterPersonajesSelec);
 
-        ValueAceptados=new ValueEventListener() {
+        valueUsuarios =new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!finalizar) {
-                    if(!cargar){
-                        Naceptados= Integer.parseInt(dataSnapshot.getValue().toString());
-                        if (Naceptados== nUsuarios){
-                            Entrar();
-                        }
+                if (!finalizar&!cargar) {
+
+                    nUsuarios = Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
+                    Naceptados= Integer.parseInt(dataSnapshot.child("Naceptados").getValue().toString());
+                    if (Naceptados== nUsuarios){
+                        Entrar();
                     }
+
+                    listaUsuarios.clear();
+                    for (int i = 1; i< nUsuarios +1; i++){
+                        String nombre=String.valueOf(dataSnapshot.child("Usuario"+i).child("nombre").getValue());
+                        if (!nombre.equals("")&!nombre.equals("null")){
+                            listaUsuarios.add(nombre);
+                        }
+
+                    }
+                    adapterUsuarios.notifyDataSetChanged();
+                    viewUsuarios.smoothScrollToPosition(listaUsuarios.size()-1);
+
                 }
 
 
@@ -142,7 +154,9 @@ public class SelectionActivity extends AppCompatActivity{
 
     @Override
     protected void onStop() {
-        EliminarPersonaje();
+        if (Naceptados!= nUsuarios){
+            EliminarPersonaje();
+        }
         super.onStop();
 
     }
@@ -831,9 +845,7 @@ public class SelectionActivity extends AppCompatActivity{
     * todo RELLENAR PARA AÑADIR PERSONAJES*/
     private void ListenerFireBase() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        draceptados=database.getReference().child(textSala).child("Naceptados");
-        final DatabaseReference drNusuario=database.getReference().child(textSala).child("Usuarios");
-        final DatabaseReference drusuario=database.getReference().child(textSala).child("Usuarios");
+        drusuarios =database.getReference().child(textSala).child("Usuarios");
         final DatabaseReference drwatts = database.getReference().child(textSala).child("watts");
         final DatabaseReference drbelle = database.getReference().child(textSala).child("Belle");
         final DatabaseReference drgrindlock = database.getReference().child(textSala).child("Grindlock");
@@ -872,45 +884,7 @@ public class SelectionActivity extends AppCompatActivity{
 
             }
         });
-        drNusuario.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!finalizar){
-                    nUsuarios = Integer.parseInt(dataSnapshot.child("Nusuarios").getValue().toString());
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        draceptados.addValueEventListener(ValueAceptados);
-        drusuario.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!finalizar){
-                    listaUsuarios.clear();
-                    for (int i = 1; i< nUsuarios +1; i++){
-                        String nombre=String.valueOf(dataSnapshot.child("Usuario"+i).child("nombre").getValue());
-                        if (!nombre.equals("")&!nombre.equals("null")){
-                            listaUsuarios.add(nombre);
-                        }
-
-                    }
-                    adapterUsuarios.notifyDataSetChanged();
-                    viewUsuarios.smoothScrollToPosition(listaUsuarios.size()-1);
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        drusuarios.addValueEventListener(valueUsuarios);
         drwatts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -1395,17 +1369,27 @@ public class SelectionActivity extends AppCompatActivity{
 
     //se cambia el nombre del personaje por "" y se añade un aceptar
     public void Atras(View view) {
-        EliminarPersonaje();
-        /*Intent intent=getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);*/
-        finish();
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle(R.string.Esperando);
+        builder.setMessage(R.string.SalirSalaEspera);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent=getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.create().show();
+
     }
 
     private void EliminarPersonaje() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myref = database.getReference();
-        draceptados.removeEventListener(ValueAceptados);
+        drusuarios.removeEventListener(valueUsuarios);
         for (int t=0;t<listaPersonajesSelec.size();t++){
             Personaje p=listaPersonajesSelec.get(t);
             p.setInvisible(false);
@@ -1413,7 +1397,7 @@ public class SelectionActivity extends AppCompatActivity{
         }
         myref.child(textSala).child("Usuarios").child("Usuario"+nusuario).child("nombre").setValue("");
         Naceptados++;
-        myref.child(textSala).child("Naceptados").setValue(Naceptados);
+        myref.child(textSala).child("Usuarios").child("Naceptados").setValue(Naceptados);
         ModificarFireBase();
     }
 
@@ -1425,7 +1409,7 @@ public class SelectionActivity extends AppCompatActivity{
             Naceptados++;
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myref = database.getReference();
-            myref.child(textSala).child("Naceptados").setValue(Naceptados);
+            myref.child(textSala).child("Usuarios").child("Naceptados").setValue(Naceptados);
             AlertDialog.Builder builder=new AlertDialog.Builder(this);
             builder.setTitle(R.string.Esperando);
             builder.setMessage(R.string.EspCompañeros);
